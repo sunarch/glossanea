@@ -78,5 +78,3 @@ def invocation_help(display_dev=False):
 
 if __name__ == "__main__":
     main()
-
-# END ---------------------------------------------------------------- #

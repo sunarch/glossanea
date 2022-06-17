@@ -92,5 +92,3 @@ class Unit(abc.ABC):
         for week in cls.generator_weeks():
             for day in cls.generator_days():
                 yield week, day
-
-# END ---------------------------------------------------------------- #

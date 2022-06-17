@@ -288,5 +288,3 @@ class CLIOutput:
     @classmethod
     def error(cls, text):
         print(text)
-
-# END ---------------------------------------------------------------- #

@@ -36,5 +36,3 @@ class DataFileLoader:
             raise ValueError("The given data file path is not a string!")
 
         return "../glossanea-data/" + arg_file_path
-
-# END ---------------------------------------------------------------- #

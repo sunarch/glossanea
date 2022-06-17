@@ -54,5 +54,3 @@ class CLIUserInput:
         user_input = cls._get_new("Press ENTER to continue...")
 
         return
-
-# END ---------------------------------------------------------------- #

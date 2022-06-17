@@ -36,5 +36,3 @@ class GUI(UserInterface):
         label.grid_configure(padx=5, pady=5)
 
         _root.mainloop()
-
-# END ---------------------------------------------------------------- #

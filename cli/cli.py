@@ -229,5 +229,3 @@ class CLI(UserInterface):
             day = "WR"
 
         return "Glossanea {0}/{1} $ ".format(week, day)
-
-# END ---------------------------------------------------------------- #

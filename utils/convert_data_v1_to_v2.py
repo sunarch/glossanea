@@ -371,5 +371,3 @@ class ConvertDataV1ToV2:
         content.append(json.dumps(""))
         
         return content
-
-# END ---------------------------------------------------------------- #

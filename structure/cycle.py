@@ -84,5 +84,3 @@ class Cycle:
         """Create an instance of the weekly review in a specific week"""
 
         return WeeklyReview(arg_week_no)
-
-# END ---------------------------------------------------------------- #

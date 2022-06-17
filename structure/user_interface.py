@@ -87,5 +87,3 @@ class UserInterface(abc.ABC):
     def display_task_3_matching(cls, arg_lecture):
         raise NotImplementedError
 '''
-
-# END ---------------------------------------------------------------- #
