@@ -28,7 +28,7 @@ class Cycle:
                 Unit.validate_week_no(next_week_no)
                 unit_object = Day(next_week_no, next_unit_no)
             except ValueError:
-                raise IndexError("End of units reached!")
+                raise IndexError('End of units reached!')
         else:
 
             if next_unit_no == Unit.WEEKLY_REVIEW_INDEX:
@@ -56,7 +56,7 @@ class Cycle:
         elif arg_unit_type == Unit.TYPE_WEEKLY_REVIEW:
             unit = Unit.WEEKLY_REVIEW_INDEX
         else:
-            raise ValueError("Incorrect unit type.")
+            raise ValueError('Incorrect unit type.')
 
         if unit == Unit.WEEKLY_REVIEW_INDEX:
             return WeeklyReview(week)

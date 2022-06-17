@@ -16,18 +16,18 @@ class GUI(UserInterface):
     def start(cls):
 
         _root = tk.Tk()
-        _root.title("Glossanea")
+        _root.title('Glossanea')
         _root.columnconfigure(0, weight=1)
         _root.rowconfigure(0, weight=1)
 
-        frame_intro = ttk.Frame(_root, padding="20 20 20 20")
+        frame_intro = ttk.Frame(_root, padding='20 20 20 20')
         frame_intro.grid(column=0, row=0)  # , sticky=(Tk.N, Tk.W, Tk.E, Tk.S)
         frame_intro.columnconfigure(0, weight=1)
         frame_intro.rowconfigure(0, weight=1)
 
-        intro_text = ("Glossanea is my favourite programme."
-                      "\n"
-                      "Good for practicing my English.")
+        intro_text = ('Glossanea is my favourite programme.'
+                      '\n'
+                      'Good for practicing my English.')
 
         label = ttk.Label(frame_intro, text=intro_text)
         label.grid(column=0, row=0)  # , sticky=(Tk.N, Tk.W, Tk.E, Tk.S)

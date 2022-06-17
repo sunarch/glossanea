@@ -5,8 +5,8 @@
 class CLIUserInput:
 
     # constants
-    TYPE_COMMAND = "command"
-    TYPE_ANSWER = "answer"
+    TYPE_COMMAND = 'command'
+    TYPE_ANSWER = 'answer'
 
     @classmethod
     def _get_new(cls, prompt):
@@ -25,7 +25,7 @@ class CLIUserInput:
         input_elements = user_input.split()
 
         if len(input_elements) < 1:
-            raise ValueError("No command given!")
+            raise ValueError('No command given!')
 
         command = input_elements.pop(0)
 
@@ -37,8 +37,8 @@ class CLIUserInput:
 
         user_input = cls._get_new(prompt)
         
-        command_test = user_input.split("cmd ")
-        if len(command_test) == 2 and command_test[0] == "":
+        command_test = user_input.split('cmd ')
+        if len(command_test) == 2 and command_test[0] == '':
             answer_type = cls.TYPE_COMMAND
             content = command_test[1]
         else:
@@ -51,6 +51,6 @@ class CLIUserInput:
     def wait_for_enter(cls):
         """Wait for the user to press ENTER"""
 
-        user_input = cls._get_new("Press ENTER to continue...")
+        user_input = cls._get_new('Press ENTER to continue...')
 
         return

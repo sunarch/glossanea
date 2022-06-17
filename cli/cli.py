@@ -16,15 +16,15 @@ from cli.day import CLIDay
 class CLI(UserInterface):
 
     # constants
-    CMD_HELP_ALIASES = ["h", "help"]
-    CMD_START_ALIASES = ["s", "start",
-                         "b", "begin"]
-    CMD_EXIT_ALIASES = ["e", "exit",
-                        "q", "quit"]
-    CMD_NEXT_ALIASES = ["n", "next"]
-    CMD_RANDOM_ALIASES = ["r", "random"]
-    CMD_GOTO_ALIASES = ["g", "goto",
-                        "j", "jump"]
+    CMD_HELP_ALIASES = ['h', 'help']
+    CMD_START_ALIASES = ['s', 'start',
+                         'b', 'begin']
+    CMD_EXIT_ALIASES = ['e', 'exit',
+                        'q', 'quit']
+    CMD_NEXT_ALIASES = ['n', 'next']
+    CMD_RANDOM_ALIASES = ['r', 'random']
+    CMD_GOTO_ALIASES = ['g', 'goto',
+                        'j', 'jump']
 
     # General variables #
     _done = False
@@ -79,7 +79,7 @@ class CLI(UserInterface):
 
                 # other inputs #
                 else:
-                    raise KeyError("Invalid command!")
+                    raise KeyError('Invalid command!')
 
             except KeyError as ke:
                 CLIOutput.warning(str(ke))
@@ -109,20 +109,20 @@ class CLI(UserInterface):
     def cmd_help(cls):
 
         collection = [
-            ["start",          "Start currently selected unit."],
-            ["begin",          "Same as 'start'."],
-            ["exit",           "Exit the program."],
-            ["quit",           "Same as 'exit'."],
-            ["q",              "Same as 'exit'."],
-            ["next",           "Go to an start next unit."],
-            ["goto WEEK",      "Change selected unit to the first day in WEEK."],
-            ["goto WEEK UNIT", "Change selected unit to UNIT in WEEK."],
-            ["jump",           "Same as 'goto'."],
-            ["help",           "Display this help text."]
+            ['start', 'Start currently selected unit.'],
+            ['begin', 'Same as "start".'],
+            ['exit', 'Exit the program.'],
+            ['quit', 'Same as "exit".'],
+            ['q', 'Same as "exit".'],
+            ['next', 'Go to an start next unit.'],
+            ['goto WEEK', 'Change selected unit to the first day in WEEK.'],
+            ['goto WEEK UNIT', 'Change selected unit to UNIT in WEEK.'],
+            ['jump', 'Same as "goto".'],
+            ['help', 'Display this help text.']
         ]
 
         CLIOutput.empty_line(1)
-        CLIOutput.center("Glossanea help")
+        CLIOutput.center('Glossanea help')
         CLIOutput.value_pair_list(collection, CLIOutput.FORMAT_WIDE, CLIOutput.SPACING_APART)
 
     @classmethod
@@ -183,7 +183,7 @@ class CLI(UserInterface):
                 raise
 
         else:
-            raise ValueError("Wrong number of arguments!")
+            raise ValueError('Wrong number of arguments!')
 
     @classmethod
     def cmd_random(cls, arguments):
@@ -198,7 +198,7 @@ class CLI(UserInterface):
                 if arg_count == 0:
                     cls._unit = Cycle.get_random_unit(None)
                 else:
-                    cls._unit = Cycle.get_random_unit(" ".join(arguments))
+                    cls._unit = Cycle.get_random_unit(' '.join(arguments))
             except ValueError:
                 raise
 
@@ -214,7 +214,7 @@ class CLI(UserInterface):
     @classmethod
     def display_introduction(cls):
         CLIOutput.empty_line(1)
-        CLIOutput.center("")  # TODO from migration: load from data
+        CLIOutput.center('')  # TODO from migration: load from data
         CLIOutput.empty_line(1)
 
     # other ---------------------------------------------------------- #
@@ -226,6 +226,6 @@ class CLI(UserInterface):
         day = cls._unit.get_unit_no()
 
         if day == Unit.WEEKLY_REVIEW_INDEX:
-            day = "WR"
+            day = 'WR'
 
-        return "Glossanea {0}/{1} $ ".format(week, day)
+        return 'Glossanea {0}/{1} $ '.format(week, day)

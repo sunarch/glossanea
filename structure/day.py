@@ -85,14 +85,14 @@ class Day(Unit):
         
         data = DataFileLoader.load(file_path)
         
-        self._title = data["title"]
-        self._new_words = data["new_words"]
-        self._new_words_extension = data["new_words_extension"]
-        self._intro_text = data["intro_text"]
-        self._sample_sentences = data["sample_sentences"]
-        self._definitions = data["definitions"]
-        self._matching = data["matching"]
-        self._other_new_words = data["other_new_words"]
+        self._title = data['title']
+        self._new_words = data['new_words']
+        self._new_words_extension = data['new_words_extension']
+        self._intro_text = data['intro_text']
+        self._sample_sentences = data['sample_sentences']
+        self._definitions = data['definitions']
+        self._matching = data['matching']
+        self._other_new_words = data['other_new_words']
 
     def __del__(self):
         pass

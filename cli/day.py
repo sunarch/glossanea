@@ -11,22 +11,22 @@ class CLIDay:
     # constants
     INTRO_TEXT_WIDTH = 60
 
-    CMD_HELP_ALIASES = ["h", "help"]
-    CMD_WORDS_ALIASES = ["w", "words"]
-    CMD_SKIP_ALIASES = ["s", "skip"]
-    CMD_EXIT_ALIASES = ["e", "exit",
-                        "q", "quit"]
-    CMD_NEXT_ALIASES = ["n", "next"]
-    CMD_PREV_ALIASES = ["p", "prev"]
+    CMD_HELP_ALIASES = ['h', 'help']
+    CMD_WORDS_ALIASES = ['w', 'words']
+    CMD_SKIP_ALIASES = ['s', 'skip']
+    CMD_EXIT_ALIASES = ['e', 'exit',
+                        'q', 'quit']
+    CMD_NEXT_ALIASES = ['n', 'next']
+    CMD_PREV_ALIASES = ['p', 'prev']
 
-    ACTION_EXIT = "exit"
-    ACTION_TITLE = "title"
-    ACTION_NEW_WORDS = "new words"
-    ACTION_INTRO_TEXT = "intro text"
-    ACTION_SAMPLE_SENTENCES = "sample sentences"
-    ACTION_DEFINITIONS = "definitions"
-    ACTION_MATCHING = "matching"
-    ACTION_OTHER_NEW_WORDS = "other new words"
+    ACTION_EXIT = 'exit'
+    ACTION_TITLE = 'title'
+    ACTION_NEW_WORDS = 'new words'
+    ACTION_INTRO_TEXT = 'intro text'
+    ACTION_SAMPLE_SENTENCES = 'sample sentences'
+    ACTION_DEFINITIONS = 'definitions'
+    ACTION_MATCHING = 'matching'
+    ACTION_OTHER_NEW_WORDS = 'other new words'
 
     # General variables #
     _next_action = None
@@ -40,7 +40,7 @@ class CLIDay:
     @classmethod
     def mainloop(cls):
     
-        cls._next_action = "title"
+        cls._next_action = 'title'
 
         while cls._next_action != cls.ACTION_EXIT:
 
@@ -77,7 +77,7 @@ class CLIDay:
                 cls.other_new_words()
 
             else:
-                raise KeyError("Unknown action request.")
+                raise KeyError('Unknown action request.')
 
 # day displays ------------------------------------------------------- #
 
@@ -96,11 +96,11 @@ class CLIDay:
         phonetic = list()
 
         for unit in cls._day.get_new_words():
-            regular.append(unit["regular"])
-            phonetic.append(unit["phonetic"])
+            regular.append(unit['regular'])
+            phonetic.append(unit['phonetic'])
 
         if display_in_full:
-            CLIOutput.section_title("NEW WORDS")
+            CLIOutput.section_title('NEW WORDS')
             CLIOutput.empty_line(1)
 
         CLIOutput.empty_line(1)
@@ -131,11 +131,11 @@ class CLIDay:
                     CLIOutput.empty_line(1)
                     l_pr_answer()
                     CLIOutput.empty_line(1)
-                    CLIOutput.simple("Correct!")
+                    CLIOutput.simple('Correct!')
 
                     return True
                 else:
-                    CLIOutput.warning("Incorrect, try again.")
+                    CLIOutput.warning('Incorrect, try again.')
 
             elif a_type == CLIUserInput.TYPE_COMMAND:
                 if a_content in cls.CMD_WORDS_ALIASES:
@@ -157,10 +157,10 @@ class CLIDay:
                 elif a_content in cls.CMD_HELP_ALIASES:
                     cls.help_cmd_in_task()
                 else:
-                    CLIOutput.warning("Invalid command.")
+                    CLIOutput.warning('Invalid command.')
 
             else:
-                raise ValueError("Unknown answer type.")
+                raise ValueError('Unknown answer type.')
 
 # tasks -------------------------------------------------------------- #
 
@@ -170,16 +170,16 @@ class CLIDay:
 
         data = cls._day.get_sample_sentences()
 
-        CLIOutput.section_title("SAMPLE SENTENCES")
+        CLIOutput.section_title('SAMPLE SENTENCES')
         
         CLIOutput.empty_line(1)
-        CLIOutput.simple(data["prompt"])
+        CLIOutput.simple(data['prompt'])
 
         CLIOutput.empty_line(1)
 
-        for sentence in data["sentences"]:
-            CLIOutput.numbered_sentence(sentence["id"],
-                                        sentence["beginning"] + CLIOutput.BLANK + sentence["end"],
+        for sentence in data['sentences']:
+            CLIOutput.numbered_sentence(sentence['id'],
+                                        sentence['beginning'] + CLIOutput.BLANK + sentence['end'],
                                         CLIOutput.FORMAT_INDENTED)
 
         new_words_extension = cls._day.get_new_words_extension()
@@ -188,25 +188,25 @@ class CLIDay:
 
         CLIOutput.empty_line(1)
 
-        for sentence in data["sentences"]:
+        for sentence in data['sentences']:
 
-            prompt = "{}. ".format(sentence["id"])
+            prompt = '{}. '.format(sentence['id'])
 
             def l_pr_question():
-                return CLIOutput.numbered_sentence(sentence["id"],
-                                                   sentence["beginning"] + CLIOutput.BLANK + sentence["end"],
+                return CLIOutput.numbered_sentence(sentence['id'],
+                                                   sentence['beginning'] + CLIOutput.BLANK + sentence['end'],
                                                    CLIOutput.FORMAT_REGULAR)
 
             answers = list()
             answers.append(sentence['answer'])
 
             full_answer = sentence['answer']
-            if len(sentence["beginning"]) > 0:
-                full_answer = sentence["beginning"] + " " + full_answer
-            if len(sentence["end"]) > 0:
-                if sentence["end"] not in [".", "!", "?", "?!", "!?"]:
-                    full_answer += " "
-                full_answer += sentence["end"]
+            if len(sentence['beginning']) > 0:
+                full_answer = sentence['beginning'] + ' ' + full_answer
+            if len(sentence['end']) > 0:
+                if sentence['end'] not in ['.', '!', '?', '?!', '!?']:
+                    full_answer += ' '
+                full_answer += sentence['end']
 
             def l_pr_answer():
                 return CLIOutput.simple(full_answer)
@@ -214,7 +214,7 @@ class CLIDay:
             prev_action = cls.ACTION_SAMPLE_SENTENCES
 
             def l_prev_msg():
-                return CLIOutput.general_message("This is the first task: Starting from the beginning.")
+                return CLIOutput.general_message('This is the first task: Starting from the beginning.')
 
             def l_next_msg():
                 return None
@@ -239,35 +239,35 @@ class CLIDay:
 
         data = cls._day.get_definitions()
 
-        CLIOutput.section_title("DEFINITIONS")
+        CLIOutput.section_title('DEFINITIONS')
 
         CLIOutput.empty_line(1)
-        CLIOutput.simple(data["prompt"])
+        CLIOutput.simple(data['prompt'])
 
         CLIOutput.empty_line(1)
-        for definition in data["definitions"]:
-            CLIOutput.numbered_sentence(definition["id"], definition["text"], CLIOutput.FORMAT_INDENTED)
+        for definition in data['definitions']:
+            CLIOutput.numbered_sentence(definition['id'], definition['text'], CLIOutput.FORMAT_INDENTED)
 
         def l_words():
-            return [CLIOutput.numbered_sentence(word["id"], word["text"], CLIOutput.FORMAT_INDENTED)
-                    for word in data["words"]]
+            return [CLIOutput.numbered_sentence(word['id'], word['text'], CLIOutput.FORMAT_INDENTED)
+                    for word in data['words']]
 
-        for definition in data["definitions"]:
+        for definition in data['definitions']:
 
-            prompt = "{}. ".format(definition["id"])
+            prompt = '{}. '.format(definition['id'])
 
             def l_pr_question():
-                return CLIOutput.numbered_sentence(definition["id"], definition["text"], CLIOutput.FORMAT_REGULAR)
+                return CLIOutput.numbered_sentence(definition['id'], definition['text'], CLIOutput.FORMAT_REGULAR)
 
             answers = list()
             answer_id = [value
-                         for (item_id, value) in data["answers"]
-                         if item_id == definition["id"]
+                         for (item_id, value) in data['answers']
+                         if item_id == definition['id']
                          ][0]
             answers.append(answer_id)
-            answer_text = [item["text"]
-                           for item in data["words"]
-                           if item["id"] == answer_id
+            answer_text = [item['text']
+                           for item in data['words']
+                           if item['id'] == answer_id
                            ][0]
             answers.append(answer_text)
 
@@ -303,35 +303,35 @@ class CLIDay:
 
         data = cls._day.get_matching()
 
-        CLIOutput.section_title(data["name"])
+        CLIOutput.section_title(data['name'])
 
         CLIOutput.empty_line(1)
-        CLIOutput.simple(data["prompt"])
+        CLIOutput.simple(data['prompt'])
 
         CLIOutput.empty_line(1)
-        for sentence in data["sentences"]:
-            CLIOutput.numbered_sentence(sentence["id"], sentence["text"], CLIOutput.FORMAT_INDENTED)
+        for sentence in data['sentences']:
+            CLIOutput.numbered_sentence(sentence['id'], sentence['text'], CLIOutput.FORMAT_INDENTED)
 
         def l_words():
-            return [CLIOutput.numbered_sentence(word["id"], word["text"], CLIOutput.FORMAT_INDENTED)
-                    for word in data["words"]]
+            return [CLIOutput.numbered_sentence(word['id'], word['text'], CLIOutput.FORMAT_INDENTED)
+                    for word in data['words']]
 
-        for sentence in data["sentences"]:
+        for sentence in data['sentences']:
 
-            prompt = "{}. ".format(sentence["id"])
+            prompt = '{}. '.format(sentence['id'])
 
             def l_pr_question():
-                return CLIOutput.numbered_sentence(sentence["id"], sentence["text"], CLIOutput.FORMAT_REGULAR)
+                return CLIOutput.numbered_sentence(sentence['id'], sentence['text'], CLIOutput.FORMAT_REGULAR)
 
             answers = list()
             answer_id = [value
-                         for (item_id, value) in data["answers"]
-                         if item_id == sentence["id"]
+                         for (item_id, value) in data['answers']
+                         if item_id == sentence['id']
                          ][0]
             answers.append(answer_id)
-            answer_text = [item["text"]
-                           for item in data["words"]
-                           if item["id"] == answer_id
+            answer_text = [item['text']
+                           for item in data['words']
+                           if item['id'] == answer_id
                            ][0]
             answers.append(answer_text)
 
@@ -364,13 +364,13 @@ class CLIDay:
 
         data = cls._day.get_other_new_words()
 
-        CLIOutput.section_title("OTHER NEW WORDS:")
+        CLIOutput.section_title('OTHER NEW WORDS:')
 
         CLIOutput.empty_line(1)
-        CLIOutput.simple(data["prompt"])
+        CLIOutput.simple(data['prompt'])
 
         CLIOutput.empty_line(1)
-        a_type, a_content = CLIUserInput.get_answer("")
+        a_type, a_content = CLIUserInput.get_answer('')
 
         CLIOutput.empty_line(1)
 
@@ -380,13 +380,13 @@ class CLIDay:
     def help_cmd_in_task(cls):
     
         collection = [
-            ["words", "Display New Words section again."],
-            ["skip", "Move on to the next part of the task."],
-            ["next", "Leave task and move on to the next one."],
-            ["prev", "Leave task and jump back to the previous one."],
-            ["exit", "Leave task an exit to top program level."]
+            ['words', 'Display New Words section again.'],
+            ['skip', 'Move on to the next part of the task.'],
+            ['next', 'Leave task and move on to the next one.'],
+            ['prev', 'Leave task and jump back to the previous one.'],
+            ['exit', 'Leave task an exit to top program level.']
         ]
 
         CLIOutput.empty_line(1)
-        CLIOutput.simple("Within the task, the following commands are available:")
+        CLIOutput.simple('Within the task, the following commands are available:')
         CLIOutput.value_pair_list(collection, CLIOutput.FORMAT_REGULAR, CLIOutput.SPACING_CLOSE)

@@ -9,12 +9,12 @@ class DataFileLoader:
 
     VERSION_COUNT = 2
     VERSIONS_DAY = (
-        "v1_day",
-        "v2_day"
+        'v1_day',
+        'v2_day'
     )
     VERSIONS_WEEKLY_REVIEW = (
         None,
-        "v2_weekly_review"
+        'v2_weekly_review'
     )
 
 # file loader -------------------------------------------------------- #
@@ -33,6 +33,6 @@ class DataFileLoader:
         """Add data folder prefix to data file path"""
 
         if not isinstance(arg_file_path, str):
-            raise ValueError("The given data file path is not a string!")
+            raise ValueError('The given data file path is not a string!')
 
-        return "../glossanea-data/" + arg_file_path
+        return '../glossanea-data/' + arg_file_path

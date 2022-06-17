@@ -9,8 +9,8 @@ class Unit(abc.ABC):
 
     # constants ------------------------------------------------------ #
 
-    TYPE_DAY = "day"
-    TYPE_WEEKLY_REVIEW = "weekly review"
+    TYPE_DAY = 'day'
+    TYPE_WEEKLY_REVIEW = 'weekly review'
 
     MIN_WEEK_NO = 1
     MAX_WEEK_NO = 12
@@ -38,10 +38,10 @@ class Unit(abc.ABC):
         """Validate a week number"""
 
         if not isinstance(arg_week_no, int):
-            raise ValueError("Given week number value is not an integer!")
+            raise ValueError('Given week number value is not an integer!')
 
         if arg_week_no < cls.MIN_WEEK_NO or arg_week_no > cls.MAX_WEEK_NO:
-            raise ValueError("Wrong week number!")
+            raise ValueError('Wrong week number!')
 
         return True
 
@@ -50,10 +50,10 @@ class Unit(abc.ABC):
         """Validate a day number"""
 
         if not isinstance(arg_day_no, int):
-            raise ValueError("Given day number value is not an integer!")
+            raise ValueError('Given day number value is not an integer!')
 
         if arg_day_no < cls.MIN_DAY_NO or arg_day_no > cls.MAX_DAY_NO:
-            raise ValueError("Wrong day number!")
+            raise ValueError('Wrong day number!')
 
         return True
 
@@ -62,16 +62,16 @@ class Unit(abc.ABC):
     @staticmethod
     def build_path_day(arg_week_no, arg_day_no):
 
-        file_dir = "week_{week:0>2}/".format(week=arg_week_no)
-        file_name = "day_{day}.json".format(day=arg_day_no)
+        file_dir = 'week_{week:0>2}/'.format(week=arg_week_no)
+        file_name = 'day_{day}.json'.format(day=arg_day_no)
 
         return file_dir + file_name
 
     @staticmethod
     def build_path_weekly_review(arg_week_no):
 
-        file_dir = "week_{week:0>2}/".format(week=arg_week_no)
-        file_name = "weekly_review.json"
+        file_dir = 'week_{week:0>2}/'.format(week=arg_week_no)
+        file_name = 'weekly_review.json'
 
         return file_dir + file_name
 
