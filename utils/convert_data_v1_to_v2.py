@@ -3,14 +3,14 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import os
-import sys
 
 import json
 
 from structure.unit import Unit
 from utils.data_file_loader import DataFileLoader
 
-class ConvertDataV1ToV2():
+
+class ConvertDataV1ToV2:
 
     V2_ITEM_COUNT = 70
 
@@ -227,7 +227,7 @@ class ConvertDataV1ToV2():
         except KeyError:
             definitions_available = False
         
-        if definitions_available == True:
+        if definitions_available:
             # 36: definitions > prompt
             content.append(json.dumps(""))
 

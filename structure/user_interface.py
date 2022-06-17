@@ -11,7 +11,8 @@ class UserInterface(abc.ABC):
     @abc.abstractmethod
     def start(cls):
         raise NotImplementedError
-        
+
+
 '''
     @classmethod
     @abc.abstractmethod

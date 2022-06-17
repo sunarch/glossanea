@@ -5,7 +5,7 @@
 import json
 
 
-class DataFileLoader():
+class DataFileLoader:
 
     VERSION_COUNT = 2
     VERSIONS_DAY = (
@@ -20,7 +20,7 @@ class DataFileLoader():
 # file loader -------------------------------------------------------- #
 
     @classmethod
-    def load(cls , arg_file_path):
+    def load(cls, arg_file_path):
         """Load a data file"""
 
         file_path = cls.build_full_path(arg_file_path)

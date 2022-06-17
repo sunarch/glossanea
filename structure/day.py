@@ -8,18 +8,18 @@ from utils.data_file_loader import DataFileLoader
 
 class Day(Unit):
 
-# general variables -------------------------------------------------- #
+    # general variables ---------------------------------------------- #
 
     _week_no = 1
     _day_no = 1
 
-# class methods ------------------------------------------------------ #
+    # class methods -------------------------------------------------- #
 
     @classmethod
-    def get_unit_type(self):
+    def get_unit_type(cls):
         return Unit.TYPE_DAY
 
-# content variables -------------------------------------------------- #
+    # content variables ---------------------------------------------- #
     
     _title = None
     _new_words = None
@@ -30,7 +30,7 @@ class Day(Unit):
     _matching = None
     _other_new_words = None
     
-# overridden getters ------------------------------------------------- #
+    # overridden getters --------------------------------------------- #
 
     def get_week_no(self):
         return self._week_no
@@ -38,7 +38,7 @@ class Day(Unit):
     def get_unit_no(self):
         return self._day_no
 
-# content getters ---------------------------------------------------- #
+    # content getters ------------------------------------------------ #
 
     def get_title(self):
         return self._title
@@ -64,7 +64,7 @@ class Day(Unit):
     def get_other_new_words(self):
         return self._other_new_words
 
-# init and data load ------------------------------------------------- #
+    # init and data load --------------------------------------------- #
 
     def __init__(self, arg_week_no, arg_day_no):
 

@@ -10,21 +10,21 @@ from structure.unit import Unit
 from cli.output import CLIOutput
 from cli.user_input import CLIUserInput
 from cli.day import CLIDay
-from cli.weekly_review import CLIWeeklyReview
+# from cli.weekly_review import CLIWeeklyReview
 
 
 class CLI(UserInterface):
 
     # constants
-    CMD_HELP_ALIASES   = [ "h", "help" ]
-    CMD_START_ALIASES  = [ "s", "start",
-                           "b", "begin" ]
-    CMD_EXIT_ALIASES   = [ "e", "exit",
-                           "q", "quit" ]
-    CMD_NEXT_ALIASES   = [ "n", "next" ]
-    CMD_RANDOM_ALIASES = [ "r", "random" ]
-    CMD_GOTO_ALIASES   = [ "g", "goto",
-                           "j", "jump" ]
+    CMD_HELP_ALIASES = ["h", "help"]
+    CMD_START_ALIASES = ["s", "start",
+                         "b", "begin"]
+    CMD_EXIT_ALIASES = ["e", "exit",
+                        "q", "quit"]
+    CMD_NEXT_ALIASES = ["n", "next"]
+    CMD_RANDOM_ALIASES = ["r", "random"]
+    CMD_GOTO_ALIASES = ["g", "goto",
+                        "j", "jump"]
 
     # General variables #
     _done = False
@@ -93,14 +93,12 @@ class CLI(UserInterface):
                 CLIOutput.warning(str(ie))
                 continue
 
-
         else:  # executes after while condition becomes false #
             pass
 
         # end of the Main Program Loop #
 
-
-# User Interface functions ------------------------------------------- #
+    # User Interface functions --------------------------------------- #
 
     @classmethod
     def cmd_exit(cls):
@@ -211,7 +209,7 @@ class CLI(UserInterface):
 
         cls.cmd_start()
 
-# general displays --------------------------------------------------- #
+    # general displays ----------------------------------------------- #
 
     @classmethod
     def display_introduction(cls):
@@ -219,7 +217,7 @@ class CLI(UserInterface):
         CLIOutput.center("")  # TODO from migration: load from data
         CLIOutput.empty_line(1)
 
-# other -------------------------------------------------------------- #
+    # other ---------------------------------------------------------- #
 
     @classmethod
     def build_command_prompt(cls):

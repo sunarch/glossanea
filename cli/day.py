@@ -6,27 +6,27 @@ from cli.output import CLIOutput
 from cli.user_input import CLIUserInput
 
 
-class CLIDay():
+class CLIDay:
 
     # constants
     INTRO_TEXT_WIDTH = 60
 
-    CMD_HELP_ALIASES   = [ "h", "help"  ]
-    CMD_WORDS_ALIASES  = [ "w", "words" ]
-    CMD_SKIP_ALIASES   = [ "s", "skip"  ]
-    CMD_EXIT_ALIASES   = [ "e", "exit",
-                           "q", "quit"  ]
-    CMD_NEXT_ALIASES   = [ "n", "next"  ]
-    CMD_PREV_ALIASES   = [ "p", "prev"  ]
+    CMD_HELP_ALIASES = ["h", "help"]
+    CMD_WORDS_ALIASES = ["w", "words"]
+    CMD_SKIP_ALIASES = ["s", "skip"]
+    CMD_EXIT_ALIASES = ["e", "exit",
+                        "q", "quit"]
+    CMD_NEXT_ALIASES = ["n", "next"]
+    CMD_PREV_ALIASES = ["p", "prev"]
 
-    ACTION_EXIT             = "exit"
-    ACTION_TITLE            = "title"
-    ACTION_NEW_WORDS        = "new words"
-    ACTION_INTRO_TEXT       = "intro text"
+    ACTION_EXIT = "exit"
+    ACTION_TITLE = "title"
+    ACTION_NEW_WORDS = "new words"
+    ACTION_INTRO_TEXT = "intro text"
     ACTION_SAMPLE_SENTENCES = "sample sentences"
-    ACTION_DEFINITIONS      = "definitions"
-    ACTION_MATCHING         = "matching"
-    ACTION_OTHER_NEW_WORDS  = "other new words"
+    ACTION_DEFINITIONS = "definitions"
+    ACTION_MATCHING = "matching"
+    ACTION_OTHER_NEW_WORDS = "other new words"
 
     # General variables #
     _next_action = None
@@ -178,7 +178,9 @@ class CLIDay():
         CLIOutput.empty_line(1)
 
         for sentence in data["sentences"]:
-            CLIOutput.numbered_sentence(sentence["id"], sentence["beginning"] + CLIOutput.BLANK + sentence["end"], CLIOutput.FORMAT_INDENTED)
+            CLIOutput.numbered_sentence(sentence["id"],
+                                        sentence["beginning"] + CLIOutput.BLANK + sentence["end"],
+                                        CLIOutput.FORMAT_INDENTED)
 
         new_words_extension = cls._day.get_new_words_extension()
 
@@ -190,7 +192,10 @@ class CLIDay():
 
             prompt = "{}. ".format(sentence["id"])
 
-            l_pr_question = lambda : CLIOutput.numbered_sentence(sentence["id"], sentence["beginning"] + CLIOutput.BLANK + sentence["end"], CLIOutput.FORMAT_REGULAR)
+            def l_pr_question():
+                return CLIOutput.numbered_sentence(sentence["id"],
+                                                   sentence["beginning"] + CLIOutput.BLANK + sentence["end"],
+                                                   CLIOutput.FORMAT_REGULAR)
 
             answers = list()
             answers.append(sentence['answer'])
@@ -202,13 +207,17 @@ class CLIDay():
                 if sentence["end"] not in [".", "!", "?", "?!", "!?"]:
                     full_answer += " "
                 full_answer += sentence["end"]
-            l_pr_answer = lambda : CLIOutput.simple(full_answer)
+
+            def l_pr_answer():
+                return CLIOutput.simple(full_answer)
 
             prev_action = cls.ACTION_SAMPLE_SENTENCES
 
-            l_prev_msg = lambda : CLIOutput.general_message("This is the first task: Starting from the beginning.")
+            def l_prev_msg():
+                return CLIOutput.general_message("This is the first task: Starting from the beginning.")
 
-            l_next_msg = lambda : None
+            def l_next_msg():
+                return None
 
             # answer cycle
 
@@ -220,7 +229,6 @@ class CLIDay():
                 return
 
             # return after answer cycle returns
-
 
     @classmethod
     def definitions(cls):
@@ -240,27 +248,39 @@ class CLIDay():
         for definition in data["definitions"]:
             CLIOutput.numbered_sentence(definition["id"], definition["text"], CLIOutput.FORMAT_INDENTED)
 
-        l_words = lambda : [CLIOutput.numbered_sentence(word["id"], word["text"], CLIOutput.FORMAT_INDENTED) for word in data["words"]]
+        def l_words():
+            return [CLIOutput.numbered_sentence(word["id"], word["text"], CLIOutput.FORMAT_INDENTED)
+                    for word in data["words"]]
 
         for definition in data["definitions"]:
 
             prompt = "{}. ".format(definition["id"])
 
-            l_pr_question = lambda : CLIOutput.numbered_sentence(definition["id"], definition["text"], CLIOutput.FORMAT_REGULAR)
+            def l_pr_question():
+                return CLIOutput.numbered_sentence(definition["id"], definition["text"], CLIOutput.FORMAT_REGULAR)
 
             answers = list()
-            answer_id = [value  for (id, value) in data["answers"] if id == definition["id"]][0]
+            answer_id = [value
+                         for (item_id, value) in data["answers"]
+                         if item_id == definition["id"]
+                         ][0]
             answers.append(answer_id)
-            answer_text = [item["text"]  for item in data["words"] if item["id"] == answer_id][0]
+            answer_text = [item["text"]
+                           for item in data["words"]
+                           if item["id"] == answer_id
+                           ][0]
             answers.append(answer_text)
 
-            l_pr_answer = lambda : CLIOutput.numbered_sentence(answer_id, answer_text, CLIOutput.FORMAT_REGULAR)
+            def l_pr_answer():
+                return CLIOutput.numbered_sentence(answer_id, answer_text, CLIOutput.FORMAT_REGULAR)
 
             prev_action = cls.ACTION_SAMPLE_SENTENCES
 
-            l_prev_msg = lambda : None
+            def l_prev_msg():
+                return None
 
-            l_next_msg = lambda : None
+            def l_next_msg():
+                return None
 
             # answer cycle
 
@@ -273,7 +293,6 @@ class CLIDay():
                 return
 
             # return after answer cycle returns
-
 
     @classmethod
     def matching(cls):
@@ -293,27 +312,39 @@ class CLIDay():
         for sentence in data["sentences"]:
             CLIOutput.numbered_sentence(sentence["id"], sentence["text"], CLIOutput.FORMAT_INDENTED)
 
-        l_words = lambda : [CLIOutput.numbered_sentence(word["id"], word["text"], CLIOutput.FORMAT_INDENTED) for word in data["words"]]
+        def l_words():
+            return [CLIOutput.numbered_sentence(word["id"], word["text"], CLIOutput.FORMAT_INDENTED)
+                    for word in data["words"]]
 
         for sentence in data["sentences"]:
 
             prompt = "{}. ".format(sentence["id"])
 
-            l_pr_question = lambda : CLIOutput.numbered_sentence(sentence["id"], sentence["text"], CLIOutput.FORMAT_REGULAR)
+            def l_pr_question():
+                return CLIOutput.numbered_sentence(sentence["id"], sentence["text"], CLIOutput.FORMAT_REGULAR)
 
             answers = list()
-            answer_id = [value  for (id, value) in data["answers"] if id == sentence["id"]][0]
+            answer_id = [value
+                         for (item_id, value) in data["answers"]
+                         if item_id == sentence["id"]
+                         ][0]
             answers.append(answer_id)
-            answer_text = [item["text"]  for item in data["words"] if item["id"] == answer_id][0]
+            answer_text = [item["text"]
+                           for item in data["words"]
+                           if item["id"] == answer_id
+                           ][0]
             answers.append(answer_text)
 
-            l_pr_answer = lambda : CLIOutput.numbered_sentence(answer_id, answer_text, CLIOutput.FORMAT_REGULAR)
+            def l_pr_answer():
+                return CLIOutput.numbered_sentence(answer_id, answer_text, CLIOutput.FORMAT_REGULAR)
 
             prev_action = cls.ACTION_SAMPLE_SENTENCES
 
-            l_prev_msg = lambda : None
+            def l_prev_msg():
+                return None
 
-            l_next_msg = lambda : None
+            def l_next_msg():
+                return None
 
             # answer cycle
 
@@ -326,7 +357,6 @@ class CLIDay():
                 return
 
             # return after answer cycle returns
-
 
     @classmethod
     def other_new_words(cls):
@@ -351,10 +381,10 @@ class CLIDay():
     
         collection = [
             ["words", "Display New Words section again."],
-            ["skip",  "Move on to the next part of the task."],
-            ["next",  "Leave task and move on to the next one."],
-            ["prev",  "Leave task and jump back to the previous one."],
-            ["exit",  "Leave task an exit to top program level."]
+            ["skip", "Move on to the next part of the task."],
+            ["next", "Leave task and move on to the next one."],
+            ["prev", "Leave task and jump back to the previous one."],
+            ["exit", "Leave task an exit to top program level."]
         ]
 
         CLIOutput.empty_line(1)

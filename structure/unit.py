@@ -7,9 +7,9 @@ import abc
 
 class Unit(abc.ABC):
 
-# constants ---------------------------------------------------------- #
+    # constants ------------------------------------------------------ #
 
-    TYPE_DAY           = "day"
+    TYPE_DAY = "day"
     TYPE_WEEKLY_REVIEW = "weekly review"
 
     MIN_WEEK_NO = 1
@@ -91,6 +91,6 @@ class Unit(abc.ABC):
     def generator_day_tuples(cls):
         for week in cls.generator_weeks():
             for day in cls.generator_days():
-                yield (week, day)
+                yield week, day
 
 # END ---------------------------------------------------------------- #

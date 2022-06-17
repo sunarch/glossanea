@@ -2,25 +2,25 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-class CLIOutput():
+class CLIOutput:
 
-# constants ---------------------------------------------------------- #
+    # constants ------------------------------------------------------ #
 
     DISPLAY_WIDTH = 100
     BLANK = " ............ "
     
-    ALIGN_LEFT   = "left"
+    ALIGN_LEFT = "left"
     ALIGN_CENTER = "center"
-    ALIGN_RIGHT  = "right"
+    ALIGN_RIGHT = "right"
     
-    FORMAT_REGULAR  = "regular"
-    FORMAT_WIDE     = "wide"
+    FORMAT_REGULAR = "regular"
+    FORMAT_WIDE = "wide"
     FORMAT_INDENTED = "indented"
     
     SPACING_CLOSE = "close"
     SPACING_APART = "apart"
 
-# template creation -------------------------------------------------- #
+    # template creation ---------------------------------------------- #
 
     @classmethod
     def _template(cls, filler=" ", align="left", width=-1):
@@ -110,7 +110,7 @@ class CLIOutput():
 
         return line_build
 
-# displays ----------------------------------------------------------- #
+    # displays ------------------------------------------------------- #
 
     @classmethod
     def section_title(cls, title):
@@ -177,7 +177,7 @@ class CLIOutput():
 
             if "\u00a0" in part:
                 to_pad = width - len(part)
-                padding_right = to_pad // 2 # div
+                padding_right = to_pad // 2  # div
                 size_with_right = len(part) + padding_right
                 # padding_left = padding_right + (to_pad % 2) # same + mod
 
@@ -195,14 +195,14 @@ class CLIOutput():
         cls.center("".ljust(width + 2, "-"))
 
     @classmethod
-    def numbered_sentence(cls, number, sentence, format=""):
+    def numbered_sentence(cls, number, sentence, formatting=""):
 
-        if format == "":
-            format = cls.FORMAT_REGULAR
+        if formatting == "":
+            formatting = cls.FORMAT_REGULAR
 
         line_start_first = "{}.".format(number)
 
-        if format == cls.FORMAT_INDENTED:
+        if formatting == cls.FORMAT_INDENTED:
             line_start_all = "  | "
         else:
             line_start_all = ""
@@ -233,15 +233,15 @@ class CLIOutput():
         print(template.format(text))
 
     @classmethod
-    def value_pair_list(cls, collection, format="", spacing=""):
+    def value_pair_list(cls, collection, formatting="", spacing=""):
         
-        if format == "":
-            format = cls.FORMAT_REGULAR
+        if formatting == "":
+            formatting = cls.FORMAT_REGULAR
             
         if spacing == "":
             spacing = cls.SPACING_CLOSE
         
-        if format == cls.FORMAT_REGULAR:
+        if formatting == cls.FORMAT_REGULAR:
             longest_key = 1
             
             for pair in collection:
@@ -250,7 +250,7 @@ class CLIOutput():
             
             template = "  " + cls._template(" ", cls.ALIGN_LEFT, longest_key) + " : {}"
         
-        elif format == cls.FORMAT_WIDE:
+        elif formatting == cls.FORMAT_WIDE:
             for pair in collection:
                 pair[0] = pair[0] + " "
         
@@ -267,7 +267,7 @@ class CLIOutput():
                 cls.empty_line(1)
             print(template.format(pair[0], pair[1]))
 
-# special displays --------------------------------------------------- #
+    # special displays ----------------------------------------------- #
 
     @classmethod
     def empty_line(cls, count=1):
@@ -279,7 +279,7 @@ class CLIOutput():
         for i in range(1, count + 1):
             print(cls._template(character, cls.ALIGN_CENTER, cls.DISPLAY_WIDTH).format(""))
 
-# message displays --------------------------------------------------- #
+    # message displays ----------------------------------------------- #
 
     @classmethod
     def warning(cls, text):

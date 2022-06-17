@@ -9,15 +9,15 @@ from structure.day import Day
 from structure.weekly_review import WeeklyReview
 
 
-class Cycle():
+class Cycle:
 
-# next unit ---------------------------------------------------------- #
+    # next unit ------------------------------------------------------ #
 
     @classmethod
     def get_next_unit(cls, arg_week_no, arg_unit_no):
         """Create an instance of the next unit"""
 
-        object = None
+        unit_object = None
 
         next_week_no = arg_week_no
         next_unit_no = (arg_unit_no + 1) % Unit.UNITS_PER_WEEK
@@ -26,19 +26,19 @@ class Cycle():
             try:
                 next_week_no = arg_week_no + 1
                 Unit.validate_week_no(next_week_no)
-                object = Day(next_week_no, next_unit_no)
+                unit_object = Day(next_week_no, next_unit_no)
             except ValueError:
                 raise IndexError("End of units reached!")
         else:
 
             if next_unit_no == Unit.WEEKLY_REVIEW_INDEX:
-                object = WeeklyReview(next_week_no)
+                unit_object = WeeklyReview(next_week_no)
             else:
-                object = Day(next_week_no, next_unit_no)
+                unit_object = Day(next_week_no, next_unit_no)
 
-        return object
+        return unit_object
 
-# random unit -------------------------------------------------------- #
+    # random unit ---------------------------------------------------- #
 
     @classmethod
     def get_random_unit(cls, arg_unit_type):
@@ -47,7 +47,7 @@ class Cycle():
         week = random.randint(Unit.MIN_WEEK_NO, Unit.MAX_WEEK_NO)
         unit = Unit.MIN_DAY_NO
 
-        if arg_unit_type == None:
+        if arg_unit_type is None:
             unit = random.randint(Unit.MIN_DAY_NO, Unit.UNITS_PER_WEEK)
             if unit == Unit.UNITS_PER_WEEK:
                 unit = Unit.WEEKLY_REVIEW_INDEX
@@ -63,7 +63,7 @@ class Cycle():
         else:
             return Day(week, unit)
 
-# day getters -------------------------------------------------------- #
+    # day getters ---------------------------------------------------- #
 
     @classmethod
     def get_first_day_by_week(cls, arg_week_no):
@@ -77,7 +77,7 @@ class Cycle():
 
         return Day(arg_week_no, arg_day_no)
 
-# weekly review getters ---------------------------------------------- #
+    # weekly review getters ------------------------------------------ #
 
     @classmethod
     def get_weekly_review_by_week(cls, arg_week_no):

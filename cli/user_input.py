@@ -2,11 +2,11 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-class CLIUserInput():
+class CLIUserInput:
 
     # constants
     TYPE_COMMAND = "command"
-    TYPE_ANSWER  = "answer"
+    TYPE_ANSWER = "answer"
 
     @classmethod
     def _get_new(cls, prompt):
@@ -29,7 +29,7 @@ class CLIUserInput():
 
         command = input_elements.pop(0)
 
-        return (command, input_elements)
+        return command, input_elements
 
     @classmethod
     def get_answer(cls, prompt):
@@ -39,13 +39,13 @@ class CLIUserInput():
         
         command_test = user_input.split("cmd ")
         if len(command_test) == 2 and command_test[0] == "":
-            type = cls.TYPE_COMMAND
+            answer_type = cls.TYPE_COMMAND
             content = command_test[1]
         else:
-            type = cls.TYPE_ANSWER
+            answer_type = cls.TYPE_ANSWER
             content = user_input
         
-        return (type, content)
+        return answer_type, content
 
     @classmethod
     def wait_for_enter(cls):

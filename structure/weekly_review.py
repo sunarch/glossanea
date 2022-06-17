@@ -8,21 +8,21 @@ from utils.data_file_loader import DataFileLoader
 
 class WeeklyReview(Unit):
 
-# general variables -------------------------------------------------- #
+    # general variables ---------------------------------------------- #
 
     _week_no = 1
 
-# class methods ------------------------------------------------------ #
+    # class methods -------------------------------------------------- #
 
     @classmethod
-    def get_unit_type(self):
+    def get_unit_type(cls):
         return Unit.TYPE_WEEKLY_REVIEW
 
-# content variables -------------------------------------------------- #
+    # content variables ---------------------------------------------- #
 
     _data = None
 
-# overridden getters ------------------------------------------------- #
+    # overridden getters --------------------------------------------- #
 
     def get_week_no(self):
         return self._week_no
@@ -30,12 +30,12 @@ class WeeklyReview(Unit):
     def get_unit_no(self):
         return Unit.WEEKLY_REVIEW_INDEX
 
-# content getters ---------------------------------------------------- #
+    # content getters ------------------------------------------------ #
 
     def get_data(self):
         pass
 
-# init and data load ------------------------------------------------- #
+    # init and data load --------------------------------------------- #
 
     def __init__(self, arg_week_no):
 

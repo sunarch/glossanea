@@ -9,27 +9,25 @@ from cli.output import CLIOutput
 
 def main():
 
-    argList = list(sys.argv)
-    filename = argList.pop(0)
-    arguments = argList
-    argumentCount = len(arguments)
+    arguments = sys.argv[1:]
+    argument_count = len(arguments)
 
     try:
-        if argumentCount == 0 or (argumentCount == 1 and arguments[0] == "--gui"):
+        if argument_count == 0 or (argument_count == 1 and arguments[0] == "--gui"):
             from gui.gui import GUI as ui
 
-        elif argumentCount == 1 and arguments[0] == "--cli":
+        elif argument_count == 1 and arguments[0] == "--cli":
             from cli.cli import CLI as ui
 
-        elif argumentCount == 1 and arguments[0] == "--help":
+        elif argument_count == 1 and arguments[0] == "--help":
             invocation_help()
             sys.exit(0)
         
-        elif argumentCount == 2 and arguments[0] == "--help" and arguments[1] == "--dev":
+        elif argument_count == 2 and arguments[0] == "--help" and arguments[1] == "--dev":
             invocation_help(display_dev=True)
             sys.exit(0)
 
-        elif argumentCount in [1, 2] and arguments[0] == "--convert-data-v1-to-v2":
+        elif argument_count in [1, 2] and arguments[0] == "--convert-data-v1-to-v2":
             arguments.pop(0)
             from utils.convert_data_v1_to_v2 import ConvertDataV1ToV2
             ConvertDataV1ToV2.run(arguments)
@@ -44,6 +42,7 @@ def main():
 
     else:
         ui.start()
+
 
 # help --------------------------------------------------------------- #
 
@@ -61,7 +60,7 @@ def invocation_help(display_dev=False):
     CLIOutput.empty_line(1)
     CLIOutput.value_pair_list(options, CLIOutput.FORMAT_REGULAR, CLIOutput.SPACING_CLOSE)
     
-    if display_dev == True:
+    if display_dev:
 
         dev_options = [
             ["--convert-data-v1-to-v2 all",        "Upgrade all data files."],
@@ -74,11 +73,10 @@ def invocation_help(display_dev=False):
         CLIOutput.empty_line(1)
         CLIOutput.value_pair_list(dev_options, CLIOutput.FORMAT_REGULAR, CLIOutput.SPACING_CLOSE)
 
-    
 
 # script main start -------------------------------------------------- #
 
-if __name__== "__main__":
+if __name__ == "__main__":
     main()
 
 # END ---------------------------------------------------------------- #
