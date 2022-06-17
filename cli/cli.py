@@ -124,7 +124,7 @@ class CLI(UserInterface):
         ]
 
         CLIOutput.empty_line(1)
-        CLIOutput.center("WOYO help")
+        CLIOutput.center("Glossanea help")
         CLIOutput.value_pair_list(collection, CLIOutput.FORMAT_WIDE, CLIOutput.SPACING_APART)
 
     @classmethod
@@ -230,6 +230,6 @@ class CLI(UserInterface):
         if day == Unit.WEEKLY_REVIEW_INDEX:
             day = "WR"
 
-        return "WOYO {0}/{1} $ ".format(week, day)
+        return "Glossanea {0}/{1} $ ".format(week, day)
 
 # END ---------------------------------------------------------------- #

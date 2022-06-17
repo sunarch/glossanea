@@ -35,6 +35,6 @@ class DataFileLoader():
         if not isinstance(arg_file_path, str):
             raise ValueError("The given data file path is not a string!")
 
-        return "../woyo-data/" + arg_file_path
+        return "../glossanea-data/" + arg_file_path
 
 # END ---------------------------------------------------------------- #

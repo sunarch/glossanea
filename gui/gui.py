@@ -18,7 +18,7 @@ class GUI(UserInterface):
     def start(cls):
 
         _root = Tk.Tk()
-        _root.title("WOYO")
+        _root.title("Glossanea")
         _root.columnconfigure(0, weight=1)
         _root.rowconfigure(0, weight=1)
 
@@ -27,7 +27,7 @@ class GUI(UserInterface):
         frame_intro.columnconfigure(0, weight=1)
         frame_intro.rowconfigure(0, weight=1)
 
-        intro_text= ( "WOYO is my favourite programme."
+        intro_text= ( "Glossanea is my favourite programme."
                       "\n"
                       "Good for practicing my English." )
 

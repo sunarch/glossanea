@@ -56,7 +56,7 @@ def invocation_help(display_dev=False):
     ]
     
     CLIOutput.empty_line(1)
-    CLIOutput.simple("WOYO help")
+    CLIOutput.simple("Glossanea help")
     
     CLIOutput.empty_line(1)
     CLIOutput.value_pair_list(options, CLIOutput.FORMAT_REGULAR, CLIOutput.SPACING_CLOSE)
@@ -69,7 +69,7 @@ def invocation_help(display_dev=False):
         ]
         
         CLIOutput.empty_line(1)
-        CLIOutput.simple("WOYO developer options")
+        CLIOutput.simple("Glossanea developer options")
         
         CLIOutput.empty_line(1)
         CLIOutput.value_pair_list(dev_options, CLIOutput.FORMAT_REGULAR, CLIOutput.SPACING_CLOSE)
