@@ -25,7 +25,7 @@ class DataFileLoader:
 
         file_path = cls.build_full_path(arg_file_path)
 
-        with open(file_path, mode='rt', encoding='utf-8', newline=None) as data_file:
+        with open(file_path, mode='r', encoding='UTF-8', newline=None) as data_file:
             return json.load(data_file)
 
     @classmethod
