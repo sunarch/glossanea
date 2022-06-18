@@ -62,15 +62,15 @@ class Unit(abc.ABC):
     @staticmethod
     def build_path_day(arg_week_no, arg_day_no):
 
-        file_dir = 'week_{week:0>2}/'.format(week=arg_week_no)
-        file_name = 'day_{day}.json'.format(day=arg_day_no)
+        file_dir = f'week_{arg_week_no:0>2}/'
+        file_name = f'day_{arg_day_no}.json'
 
         return file_dir + file_name
 
     @staticmethod
     def build_path_weekly_review(arg_week_no):
 
-        file_dir = 'week_{week:0>2}/'.format(week=arg_week_no)
+        file_dir = f'week_{arg_week_no:0>2}/'
         file_name = 'weekly_review.json'
 
         return file_dir + file_name

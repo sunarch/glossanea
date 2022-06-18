@@ -190,7 +190,7 @@ class CLIDay:
 
         for sentence in data['sentences']:
 
-            prompt = '{}. '.format(sentence['id'])
+            prompt = f'{sentence["id"]}. '
 
             def l_pr_question():
                 return CLIOutput.numbered_sentence(sentence['id'],
@@ -202,7 +202,7 @@ class CLIDay:
 
             full_answer = sentence['answer']
             if len(sentence['beginning']) > 0:
-                full_answer = sentence['beginning'] + ' ' + full_answer
+                full_answer = f'{sentence["beginning"]} {full_answer}'
             if len(sentence['end']) > 0:
                 if sentence['end'] not in ['.', '!', '?', '?!', '!?']:
                     full_answer += ' '
@@ -254,7 +254,7 @@ class CLIDay:
 
         for definition in data['definitions']:
 
-            prompt = '{}. '.format(definition['id'])
+            prompt = f'{definition["id"]}. '
 
             def l_pr_question():
                 return CLIOutput.numbered_sentence(definition['id'], definition['text'], CLIOutput.FORMAT_REGULAR)
@@ -318,7 +318,7 @@ class CLIDay:
 
         for sentence in data['sentences']:
 
-            prompt = '{}. '.format(sentence['id'])
+            prompt = f'{definition["id"]}. '
 
             def l_pr_question():
                 return CLIOutput.numbered_sentence(sentence['id'], sentence['text'], CLIOutput.FORMAT_REGULAR)

@@ -103,10 +103,10 @@ class CLIOutput:
         line_build = ''
 
         if len(line_start_all) > 0:
-            line_build += '{} '.format(line_start_all)
+            line_build += f'{line_start_all} '
 
         if len(line_start_first) > 0:
-            line_build += '{} '.format(line_start_first)
+            line_build += f'{line_start_first} '
 
         return line_build
 

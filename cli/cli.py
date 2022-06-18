@@ -228,4 +228,4 @@ class CLI(UserInterface):
         if day == Unit.WEEKLY_REVIEW_INDEX:
             day = 'WR'
 
-        return 'Glossanea {0}/{1} $ '.format(week, day)
+        return f'Glossanea {week}/{day} $ '

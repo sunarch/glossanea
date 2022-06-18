@@ -25,8 +25,7 @@ class GUI(UserInterface):
         frame_intro.columnconfigure(0, weight=1)
         frame_intro.rowconfigure(0, weight=1)
 
-        intro_text = ('Glossanea is my favourite programme.'
-                      '\n'
+        intro_text = ('Glossanea is my favourite programme.\n'
                       'Good for practicing my English.')
 
         label = ttk.Label(frame_intro, text=intro_text)

@@ -38,7 +38,7 @@ class ConvertDataV1ToV2:
         for day_tuple in Unit.generator_day_tuples():
             file_path = Unit.build_path_day(day_tuple[0], day_tuple[1])
             print('')
-            print('=> Upgrading {:=<59}'.format(file_path + '  '))
+            print('=>', 'Upgrading', f'{file_path + "  ":=<59}')
             cls.convert_one(file_path)
     
     @classmethod
@@ -71,7 +71,7 @@ class ConvertDataV1ToV2:
         try:
             filled_template = cls._fill_template_v2_with_data_v1(data)
         except KeyError as ke:
-            print('Content for {} is not present, will be left empty in the upgrade.'.format(ke))
+            print(f'Content for {ke} is not present, will be left empty in the upgrade.')
             print(filled_template)
         
         with open(file_path, mode='wt', encoding='utf-8', newline='\r\n') as new_file:
@@ -91,7 +91,7 @@ class ConvertDataV1ToV2:
         format_content = cls._build_format_content_list(arg_data, template)
         
         if len(format_content) != cls.V2_ITEM_COUNT:
-            raise RuntimeError('Data item count is {0} instead of {1}!'.format(len(format_content), cls.V2_ITEM_COUNT)) 
+            raise RuntimeError(f'Data item count is {len(format_content)} instead of {cls.V2_ITEM_COUNT}!')
         
         return template.format(*format_content)
     
