@@ -17,7 +17,7 @@ import pkg_resources
 from glossanea import version
 from glossanea.gui.gui import GUI
 from glossanea.cli.cli import CLI
-from glossanea.utils.convert_data_v1_to_v2 import ConvertDataV1ToV2
+from glossanea.utils import convert_data_v1_to_v2
 
 
 class UserInterfaceType(Enum):
@@ -79,7 +79,7 @@ def main() -> None:
 
     try:
         if args.convert_data_v1_to_v2:
-            ConvertDataV1ToV2.run('all')
+            convert_data_v1_to_v2.convert_all()
             return
     except AttributeError:
         pass
