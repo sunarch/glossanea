@@ -24,7 +24,7 @@ default: dict = config_v1
 
 
 def _config_dir_path() -> str:
-    config_dir_path = os.path.join(xdg_config_home(), version.program_name)
+    config_dir_path = os.path.join(xdg_config_home(), version.PROGRAM_NAME)
 
     if not os.path.isdir(config_dir_path):
         os.makedirs(config_dir_path, mode=0o740, exist_ok=True)

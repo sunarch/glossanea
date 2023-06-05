@@ -16,7 +16,7 @@ from glossanea import version
 
 
 def _cache_dir_path() -> str:
-    cache_dir_path = os.path.join(xdg_cache_home(), version.program_name)
+    cache_dir_path = os.path.join(xdg_cache_home(), version.PROGRAM_NAME)
 
     if not os.path.isdir(cache_dir_path):
         os.makedirs(cache_dir_path, mode=0o740, exist_ok=True)
@@ -25,7 +25,7 @@ def _cache_dir_path() -> str:
 
 
 def _log_file_name() -> str:
-    return f'{version.program_name}-{version.__version__}.log'
+    return f'{version.PROGRAM_NAME}-{version.__version__}.log'
 
 
 def _log_file_path() -> str:
