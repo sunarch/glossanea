@@ -7,17 +7,17 @@
 
 # imports: library
 from argparse import ArgumentParser
-import configparser
 from enum import Enum
 import logging
 import logging.config
-import pkg_resources
 
 # imports: project
 from glossanea import version
 from glossanea.gui.gui import GUI
 from glossanea.cli.cli import CLI
 from glossanea.utils import convert_data_v1_to_v2
+import glossanea.config.logging as logging_config
+import glossanea.config.app as app_config
 
 
 class UserInterfaceType(Enum):
@@ -28,17 +28,7 @@ class UserInterfaceType(Enum):
 
 def main() -> None:
 
-    logger_config_name = 'data/logger.ini'
-
-    if not pkg_resources.resource_exists(__name__, logger_config_name):
-        logging.error('logger config does not exist')
-        return
-
-    logger_config = pkg_resources.resource_stream(__name__, logger_config_name)
-    logger_config_str = logger_config.read().decode('UTF-8')
-    logger_config_parser = configparser.ConfigParser()
-    logger_config_parser.read_string(logger_config_str)
-    logging.config.fileConfig(logger_config_parser)
+    logging.config.dictConfig(logging_config.default)
 
     logging.info(version.program_name)
     logging.info('-' * len(version.program_name))
@@ -91,6 +81,9 @@ def main() -> None:
     else:
         raise ValueError(f'Unrecognized "user interface" argument {args.user_interface}')
 
+    app_config.check_data_dir_path()
+
+    # start User Interface
     ui.start()
 
 

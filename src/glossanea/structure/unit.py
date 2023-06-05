@@ -6,6 +6,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import abc
+import os.path
 
 
 class Unit(abc.ABC):
@@ -65,18 +66,18 @@ class Unit(abc.ABC):
     @staticmethod
     def build_path_day(arg_week_no, arg_day_no):
 
-        file_dir = f'week_{arg_week_no:0>2}/'
+        file_dir = f'week_{arg_week_no:0>2}'
         file_name = f'day_{arg_day_no}.json'
 
-        return file_dir + file_name
+        return os.path.join(file_dir, file_name)
 
     @staticmethod
     def build_path_weekly_review(arg_week_no):
 
-        file_dir = f'week_{arg_week_no:0>2}/'
+        file_dir = f'week_{arg_week_no:0>2}'
         file_name = 'weekly_review.json'
 
-        return file_dir + file_name
+        return os.path.join(file_dir, file_name)
 
 # generators --------------------------------------------------------- #
 
@@ -84,7 +85,7 @@ class Unit(abc.ABC):
     def generator_weeks(cls):
         for week in range(cls.MIN_WEEK_NO, cls.MAX_WEEK_NO + 1):
             yield week
-    
+
     @classmethod
     def generator_days(cls):
         for day in range(cls.MIN_DAY_NO, cls.MAX_DAY_NO + 1):

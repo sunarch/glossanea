@@ -5,7 +5,12 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+# imports: library
 import json
+import os.path
+
+# imports: project
+from glossanea.config.app import data_dir_path
 
 
 class DataFileLoader:
@@ -38,4 +43,4 @@ class DataFileLoader:
         if not isinstance(arg_file_path, str):
             raise ValueError('The given data file path is not a string!')
 
-        return '../glossanea-data/' + arg_file_path
+        return os.path.join(data_dir_path(), arg_file_path)
