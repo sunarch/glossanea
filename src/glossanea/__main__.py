@@ -40,7 +40,7 @@ def main() -> None:
 
     parser.add_argument('--version',
                         help='Display version',
-                        action='store_const', const=True, default=False,
+                        action='store_true',
                         dest='version')
 
     user_interface_group = parser.add_mutually_exclusive_group(required=False)
@@ -61,7 +61,7 @@ def main() -> None:
 
     parser_dev.add_argument('--convert-data-v1-to-v2',
                             help='Upgrade all data files',
-                            action='store_const', const=True, default=False,
+                            action='store_true',
                             dest='convert_data_v1_to_v2')
 
     args = parser.parse_args()
