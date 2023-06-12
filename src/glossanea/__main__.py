@@ -8,15 +8,17 @@
 # imports: library
 from argparse import ArgumentParser
 from enum import Enum
-import logging
-import logging.config
+
+# imports: dependencies
+from libmonty_logging.config.file_and_stream.v1 import config as logging_config
+import libmonty_logging.helper as logging_helper
+import libmonty_logging.message as logging_message
 
 # imports: project
 from glossanea import version
 from glossanea.gui.gui import GUI
 from glossanea.cli.cli import CLI
 from glossanea.utils import convert_data_v1_to_v2
-import glossanea.config.logging as logging_config
 import glossanea.config.app as app_config
 
 
@@ -28,10 +30,11 @@ class UserInterfaceType(Enum):
 
 def main() -> None:
 
-    logging.config.dictConfig(logging_config.default)
+    logging_helper.apply_config(version.PROGRAM_NAME,
+                                version.__version__,
+                                logging_config)
 
-    logging.info(version.PROGRAM_NAME)
-    logging.info('-' * len(version.PROGRAM_NAME))
+    logging_message.program_header(version.PROGRAM_NAME)
 
     parser = ArgumentParser(prog=version.PROGRAM_NAME)
 
