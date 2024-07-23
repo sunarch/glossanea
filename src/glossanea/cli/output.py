@@ -7,13 +7,14 @@
 
 NO_BREAK_SPACE: str = '\u00a0'
 
+DISPLAY_WIDTH: int = 100
+
 
 class CLIOutput:
     """CLI Output"""
 
     # constants ------------------------------------------------------ #
 
-    DISPLAY_WIDTH: int = 100
     BLANK: str = ' ............ '
 
     ALIGN_LEFT: str = 'left'
@@ -34,7 +35,7 @@ class CLIOutput:
         """Template"""
 
         if width == -1:
-            width = cls.DISPLAY_WIDTH
+            width = DISPLAY_WIDTH
 
         filler_replace: dict[str, str] = {
             '{': '\{',
@@ -77,7 +78,7 @@ class CLIOutput:
         """Block lines"""
 
         if width == -1:
-            width = cls.DISPLAY_WIDTH
+            width = DISPLAY_WIDTH
 
         lines: list[str] = []
 
@@ -147,7 +148,7 @@ class CLIOutput:
         if len(list_regular) != len(list_phonetic):
             raise ValueError('Word lists are not equal length')
 
-        unit_width: int = int(cls.DISPLAY_WIDTH / len(list_regular)) - 3
+        unit_width: int = int(DISPLAY_WIDTH / len(list_regular)) - 3
 
         for word in list_regular:
             unit_width = max(unit_width, len(word))
@@ -173,11 +174,11 @@ class CLIOutput:
 
         cls.empty_line(1)
 
-        print_list: list[str] = cls._block_lines(data.pop(0), cls.DISPLAY_WIDTH, '□ ', '')
+        print_list: list[str] = cls._block_lines(data.pop(0), DISPLAY_WIDTH, '□ ', '')
 
         if len(data) > 0:
             for unit in data:
-                print_list += cls._block_lines(unit, cls.DISPLAY_WIDTH, '  ', '')
+                print_list += cls._block_lines(unit, DISPLAY_WIDTH, '  ', '')
 
         for line in print_list:
             print(line)
@@ -186,8 +187,8 @@ class CLIOutput:
     def framed(cls, parts: list[str], width: int) -> None:
         """Framed"""
 
-        if width > cls.DISPLAY_WIDTH:
-            width = cls.DISPLAY_WIDTH - 4
+        if width > DISPLAY_WIDTH:
+            width = DISPLAY_WIDTH - 4
 
         lines = []
 
@@ -226,7 +227,7 @@ class CLIOutput:
         else:
             line_start_all: str = ''
 
-        print_list: list[str] = cls._block_lines(sentence, cls.DISPLAY_WIDTH, line_start_first, line_start_all)
+        print_list: list[str] = cls._block_lines(sentence, DISPLAY_WIDTH, line_start_first, line_start_all)
 
         for line in print_list:
             print(line)
@@ -244,7 +245,7 @@ class CLIOutput:
     def simple(cls, text: str):
         """Simple"""
 
-        print_list: list[str] = cls._block_lines(text, cls.DISPLAY_WIDTH, '', '')
+        print_list: list[str] = cls._block_lines(text, DISPLAY_WIDTH, '', '')
 
         for line in print_list:
             print(line)
@@ -253,7 +254,7 @@ class CLIOutput:
     def center(cls, text: str, filler: str = ' ') -> None:
         """Center"""
 
-        template: str = cls._template(filler, cls.ALIGN_CENTER, cls.DISPLAY_WIDTH)
+        template: str = cls._template(filler, cls.ALIGN_CENTER, DISPLAY_WIDTH)
         text: str = ' ' + text + ' '
         print(template.format(text))
 
@@ -308,7 +309,7 @@ class CLIOutput:
     def filled_line(cls, character: str, count: int = 1) -> None:
         """Filled line"""
         for _ in range(1, count + 1):
-            print(cls._template(character, cls.ALIGN_CENTER, cls.DISPLAY_WIDTH).format(''))
+            print(cls._template(character, cls.ALIGN_CENTER, DISPLAY_WIDTH).format(''))
 
     # message displays ----------------------------------------------- #
 
