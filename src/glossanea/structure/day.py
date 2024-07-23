@@ -5,7 +5,7 @@
 """Day"""
 
 from glossanea.structure.unit import Unit
-from glossanea.config.app import load_data_file, REQUIRED_VERSION_DAY
+from glossanea.files.data import load_data_file, REQUIRED_VERSION_DAY
 
 
 class Day(Unit):

@@ -7,7 +7,7 @@
 from glossanea.structure.cycle import Cycle
 from glossanea.structure.unit import Unit
 
-from glossanea.config.app import data_file_path
+from glossanea.files.data import data_file_path
 from glossanea.cli.output import CLIOutput
 from glossanea.cli.user_input import CLIUserInput
 from glossanea.cli.day import CLIDay
