@@ -7,6 +7,7 @@
 # imports: library
 import json
 import os.path
+from typing import Any
 
 # imports: dependencies
 from xdg_base_dirs import xdg_config_home
@@ -15,15 +16,15 @@ from xdg_base_dirs import xdg_config_home
 from glossanea import version
 
 
-config_v1: dict = {}
+config_v1: dict[str, Any] = {}
 
-default: dict = config_v1
+default: dict[str, Any] = config_v1
 
 
 def _config_dir_path() -> str:
     """Config dir path"""
 
-    config_dir_path = os.path.join(xdg_config_home(), version.PROGRAM_NAME)
+    config_dir_path: str = os.path.join(xdg_config_home(), version.PROGRAM_NAME)
 
     if not os.path.isdir(config_dir_path):
         os.makedirs(config_dir_path, mode=0o740, exist_ok=True)
@@ -59,7 +60,7 @@ def data_dir_path() -> str:
     return data_folder_path
 
 
-def check_data_dir_path():
+def check_data_dir_path() -> None:
     """Check data dir path"""
     _ = data_dir_path()
 
@@ -69,7 +70,7 @@ def _config_file_path() -> str:
     return os.path.join(_config_dir_path(), 'config.json')
 
 
-def config() -> dict:
+def config() -> dict[str, Any]:
     """Config"""
 
     config_file_path: str = _config_file_path()

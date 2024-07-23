@@ -5,7 +5,7 @@
 """Main"""
 
 # imports: library
-from argparse import ArgumentParser
+from argparse import ArgumentParser, Namespace
 
 # imports: dependencies
 import libmonty_logging
@@ -34,7 +34,7 @@ def main() -> None:
                         action='store_true',
                         dest='version')
 
-    args = parser.parse_args()
+    args: Namespace = parser.parse_args()
 
     if args.version:
         print(f'{version.PROGRAM_NAME} {version.__version__}')

@@ -4,9 +4,9 @@
 
 """CLI"""
 
+# imports: project
 from glossanea.structure.cycle import Cycle
 from glossanea.structure.unit import Unit
-
 from glossanea.files.data import data_file_path
 from glossanea.cli.output import CLIOutput
 from glossanea.cli.user_input import CLIUserInput
@@ -18,29 +18,35 @@ class CLI:
     """CLI"""
 
     # constants
-    CMD_HELP_ALIASES = ['h', 'help']
-    CMD_START_ALIASES = ['s', 'start',
-                         'b', 'begin']
-    CMD_EXIT_ALIASES = ['e', 'exit',
-                        'q', 'quit']
-    CMD_NEXT_ALIASES = ['n', 'next']
-    CMD_RANDOM_ALIASES = ['r', 'random']
-    CMD_GOTO_ALIASES = ['g', 'goto',
-                        'j', 'jump']
+    CMD_HELP_ALIASES: list[str] = ['h', 'help']
+    CMD_START_ALIASES: list[str] = [
+        's', 'start',
+        'b', 'begin',
+    ]
+    CMD_EXIT_ALIASES: list[str] = [
+        'e', 'exit',
+        'q', 'quit',
+    ]
+    CMD_NEXT_ALIASES: list[str] = ['n', 'next']
+    CMD_RANDOM_ALIASES: list[str] = ['r', 'random']
+    CMD_GOTO_ALIASES: list[str] = [
+        'g', 'goto',
+        'j', 'jump',
+    ]
 
     # General variables #
-    _done = False
-    _unit = None
+    _done: bool = False
+    _unit: Unit | None = None
 
     @classmethod
-    def start(cls):
+    def start(cls) -> None:
         """Start"""
 
         cls._unit = Cycle.get_day_by_number(1, 1)
         cls.mainloop()
 
     @classmethod
-    def mainloop(cls):
+    def mainloop(cls) -> None:
         """Main loop"""
 
         # Introduction #
@@ -86,16 +92,16 @@ class CLI:
                 else:
                     raise KeyError('Invalid command!')
 
-            except KeyError as ke:
-                CLIOutput.warning(str(ke))
+            except KeyError as exc:
+                CLIOutput.warning(str(exc))
                 continue
 
-            except ValueError as ve:
-                CLIOutput.warning(str(ve))
+            except ValueError as exc:
+                CLIOutput.warning(str(exc))
                 continue
 
-            except IndexError as ie:
-                CLIOutput.warning(str(ie))
+            except IndexError as exc:
+                CLIOutput.warning(str(exc))
                 continue
 
         # else:  # executes after while condition becomes false #
@@ -106,16 +112,16 @@ class CLI:
     # User Interface functions --------------------------------------- #
 
     @classmethod
-    def cmd_exit(cls):
+    def cmd_exit(cls) -> None:
         """Command: exit"""
 
         cls._done = True
 
     @classmethod
-    def cmd_help(cls):
+    def cmd_help(cls) -> None:
         """Command: help"""
 
-        collection = [
+        collection: list[list[str]] = [
             ['start', 'Start currently selected unit.'],
             ['begin', 'Same as "start".'],
             ['exit', 'Exit the program.'],
@@ -133,37 +139,37 @@ class CLI:
         CLIOutput.value_pair_list(collection, CLIOutput.FORMAT_WIDE, CLIOutput.SPACING_APART)
 
     @classmethod
-    def cmd_start(cls):
+    def cmd_start(cls) -> None:
         """Command: start"""
 
         CLIDay.start(cls._unit)
 
     @classmethod
-    def cmd_next(cls):
+    def cmd_next(cls) -> None:
         """Command: next"""
 
-        week_no = cls._unit.get_week_no()
-        unit_no = cls._unit.get_unit_no()
+        week_number: int = cls._unit.get_week_no()
+        unit_number: int = cls._unit.get_unit_no()
 
         try:
-            prev_unit = cls._unit
-            cls._unit = Cycle.get_next_unit(week_no, unit_no)
+            prev_unit: Unit = cls._unit
+            cls._unit = Cycle.get_next_unit(week_number, unit_number)
             del prev_unit
         except IndexError as exc:
             raise IndexError from exc
 
         # TODO: temporary skip of weekly review until implemented ˇˇˇˇ #
-        week_no = cls._unit.get_week_no()
-        unit_no = cls._unit.get_unit_no()
+        week_number: int = cls._unit.get_week_no()
+        unit_number: int = cls._unit.get_unit_no()
 
         if cls._unit.get_unit_type() == Unit.TYPE_WEEKLY_REVIEW:
             try:
-                prev_unit = cls._unit
-                cls._unit = Cycle.get_next_unit(week_no, unit_no)
+                prev_unit: Unit = cls._unit
+                cls._unit = Cycle.get_next_unit(week_number, unit_number)
                 del prev_unit
             except IndexError as exc:
                 raise IndexError from exc
-        # END TODO ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ #
+        # END_TODO ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ #
 
         cls.cmd_start()
 
@@ -171,23 +177,23 @@ class CLI:
     def cmd_goto(cls, arguments):
         """Command: goto"""
 
-        arg_count = len(arguments)
+        arg_count: int = len(arguments)
 
         if arg_count == 1:
             try:
-                week_no = int(arguments[0])
-                prev_unit = cls._unit
-                cls._unit = Cycle.get_first_day_by_week(week_no)
+                week_number: int = int(arguments[0])
+                prev_unit: Unit = cls._unit
+                cls._unit = Cycle.get_first_day_by_week(week_number)
                 del prev_unit
             except ValueError as exc:
                 raise ValueError from exc
 
         elif arg_count == 2:
             try:
-                week_no = int(arguments[0])
-                day_no = int(arguments[1])
-                prev_unit = cls._unit
-                cls._unit = Cycle.get_day_by_number(week_no, day_no)
+                week_number: int = int(arguments[0])
+                day_number: int = int(arguments[1])
+                prev_unit: Unit = cls._unit
+                cls._unit = Cycle.get_day_by_number(week_number, day_number)
                 del prev_unit
             except ValueError as exc:
                 raise ValueError from exc
@@ -196,11 +202,11 @@ class CLI:
             raise ValueError('Wrong number of arguments!')
 
     @classmethod
-    def cmd_random(cls, arguments):
+    def cmd_random(cls, arguments: list[str]):
         """Command: random"""
 
-        arg_count = len(arguments)
-        prev_unit = cls._unit
+        arg_count: int = len(arguments)
+        prev_unit: Unit = cls._unit
 
         while True:
             # TODO: remove loop after Weekly Reviews are implemented
@@ -226,7 +232,7 @@ class CLI:
     def display_introduction(cls):
         """Display introduction"""
 
-        path = data_file_path('introduction.txt')
+        path: str = data_file_path('introduction.txt')
         CLIOutput.empty_line(1)
         with open(path, 'r', encoding='UTF-8') as fh_intro:
             for line in fh_intro.readlines():
@@ -239,8 +245,8 @@ class CLI:
     def build_command_prompt(cls):
         """Build command prompt"""
 
-        week = cls._unit.get_week_no()
-        day = cls._unit.get_unit_no()
+        week: int = cls._unit.get_week_no()
+        day: int | str = cls._unit.get_unit_no()
 
         if day == Unit.WEEKLY_REVIEW_INDEX:
             day = 'WR'

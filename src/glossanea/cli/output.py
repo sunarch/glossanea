@@ -5,40 +5,43 @@
 """Output"""
 
 
+NO_BREAK_SPACE: str = '\u00a0'
+
+
 class CLIOutput:
     """CLI Output"""
 
     # constants ------------------------------------------------------ #
 
-    DISPLAY_WIDTH = 100
-    BLANK = ' ............ '
+    DISPLAY_WIDTH: int = 100
+    BLANK: str = ' ............ '
 
-    ALIGN_LEFT = 'left'
-    ALIGN_CENTER = 'center'
-    ALIGN_RIGHT = 'right'
+    ALIGN_LEFT: str = 'left'
+    ALIGN_CENTER: str = 'center'
+    ALIGN_RIGHT: str = 'right'
 
-    FORMAT_REGULAR = 'regular'
-    FORMAT_WIDE = 'wide'
-    FORMAT_INDENTED = 'indented'
+    FORMAT_REGULAR: str = 'regular'
+    FORMAT_WIDE: str = 'wide'
+    FORMAT_INDENTED: str = 'indented'
 
-    SPACING_CLOSE = 'close'
-    SPACING_APART = 'apart'
+    SPACING_CLOSE: str = 'close'
+    SPACING_APART: str = 'apart'
 
     # template creation ---------------------------------------------- #
 
     @classmethod
-    def _template(cls, filler=' ', align='left', width=-1):
+    def _template(cls, filler: str = ' ', align: str = 'left', width: int = -1) -> str:
         """Template"""
 
         if width == -1:
             width = cls.DISPLAY_WIDTH
 
-        filler_replace = {
+        filler_replace: dict[str, str] = {
             '{': '\{',
             '}': '\}'
         }
 
-        template = ':'
+        template: str = ':'
 
         if filler in filler_replace:
             filler = filler_replace[filler]
@@ -65,18 +68,23 @@ class CLIOutput:
         return '{' + template + '}'
 
     @classmethod
-    def _block_lines(cls, text, width=-1, line_start_first='', line_start_all=''):
+    def _block_lines(cls,
+                     text: str,
+                     width: int = -1,
+                     line_start_first: str = '',
+                     line_start_all: str = ''
+                     ) -> list[str]:
         """Block lines"""
 
         if width == -1:
             width = cls.DISPLAY_WIDTH
 
-        lines = []
+        lines: list[str] = []
 
-        line_build = cls._init_line(line_start_first, line_start_all)
-        line_start_length = len(line_build)
+        line_build: str = cls._init_line(line_start_first, line_start_all)
+        line_start_length: int = len(line_build)
 
-        words = text.split(' ')
+        words: list[str] = text.split(' ')
 
         while True:
 
@@ -104,10 +112,10 @@ class CLIOutput:
         return lines
 
     @classmethod
-    def _init_line(cls, line_start_first, line_start_all):
+    def _init_line(cls, line_start_first: str, line_start_all: str) -> str:
         """Init line"""
 
-        line_build = ''
+        line_build: str = ''
 
         if len(line_start_all) > 0:
             line_build += f'{line_start_all} '
@@ -120,10 +128,10 @@ class CLIOutput:
     # displays ------------------------------------------------------- #
 
     @classmethod
-    def section_title(cls, title):
+    def section_title(cls, title: str) -> None:
         """Section title"""
 
-        title = title.upper()
+        title: str = title.upper()
 
         cls.empty_line(2)
         cls.center(''.ljust(len(title) + 10, '='))
@@ -131,15 +139,15 @@ class CLIOutput:
         cls.center(''.ljust(len(title) + 10, '='))
 
     @classmethod
-    def words_table(cls, list_regular, list_phonetic):
+    def words_table(cls, list_regular: list[str], list_phonetic: list[str]) -> None:
         """Words table"""
 
-        template = ''
+        template: str = ''
 
         if len(list_regular) != len(list_phonetic):
             raise ValueError('Word lists are not equal length')
 
-        unit_width = int(cls.DISPLAY_WIDTH / len(list_regular)) - 3
+        unit_width: int = int(cls.DISPLAY_WIDTH / len(list_regular)) - 3
 
         for word in list_regular:
             unit_width = max(unit_width, len(word))
@@ -157,7 +165,7 @@ class CLIOutput:
         print(template.format(*list_phonetic))
 
     @classmethod
-    def new_words_extension(cls, data):
+    def new_words_extension(cls, data: list[str]):
         """New words extension"""
 
         if len(data) == 0:
@@ -165,7 +173,7 @@ class CLIOutput:
 
         cls.empty_line(1)
 
-        print_list = cls._block_lines(data.pop(0), cls.DISPLAY_WIDTH, '□ ', '')
+        print_list: list[str] = cls._block_lines(data.pop(0), cls.DISPLAY_WIDTH, '□ ', '')
 
         if len(data) > 0:
             for unit in data:
@@ -175,7 +183,7 @@ class CLIOutput:
             print(line)
 
     @classmethod
-    def framed(cls, parts, width):
+    def framed(cls, parts: list[str], width: int) -> None:
         """Framed"""
 
         if width > cls.DISPLAY_WIDTH:
@@ -185,10 +193,10 @@ class CLIOutput:
 
         for part in parts:
 
-            if '\u00a0' in part:
-                to_pad = width - len(part)
-                padding_right = to_pad // 2  # div
-                size_with_right = len(part) + padding_right
+            if NO_BREAK_SPACE in part:
+                to_pad: int = width - len(part)
+                padding_right: int = to_pad // 2  # div
+                size_with_right: int = len(part) + padding_right
                 # padding_left = padding_right + (to_pad % 2) # same + mod
 
                 lines.append(part.rjust(size_with_right, ' ').ljust(width, ' '))
@@ -205,26 +213,26 @@ class CLIOutput:
         cls.center(''.ljust(width + 2, '-'))
 
     @classmethod
-    def numbered_sentence(cls, number, sentence, formatting=''):
+    def numbered_sentence(cls, number: int, sentence: str, formatting: str = '') -> None:
         """Numbered sentence"""
 
         if formatting == '':
             formatting = cls.FORMAT_REGULAR
 
-        line_start_first = f'{number}.'
+        line_start_first: str = f'{number}.'
 
         if formatting == cls.FORMAT_INDENTED:
-            line_start_all = '  | '
+            line_start_all: str = '  | '
         else:
-            line_start_all = ''
+            line_start_all: str = ''
 
-        print_list = cls._block_lines(sentence, cls.DISPLAY_WIDTH, line_start_first, line_start_all)
+        print_list: list[str] = cls._block_lines(sentence, cls.DISPLAY_WIDTH, line_start_first, line_start_all)
 
         for line in print_list:
             print(line)
 
     @classmethod
-    def general_message(cls, message):
+    def general_message(cls, message: str) -> None:
         """General message"""
 
         cls.empty_line(1)
@@ -233,24 +241,28 @@ class CLIOutput:
         cls.filled_line('#')
 
     @classmethod
-    def simple(cls, text):
+    def simple(cls, text: str):
         """Simple"""
 
-        print_list = cls._block_lines(text, cls.DISPLAY_WIDTH, '', '')
+        print_list: list[str] = cls._block_lines(text, cls.DISPLAY_WIDTH, '', '')
 
         for line in print_list:
             print(line)
 
     @classmethod
-    def center(cls, text, filler=' '):
+    def center(cls, text: str, filler: str = ' ') -> None:
         """Center"""
 
-        template = cls._template(filler, cls.ALIGN_CENTER, cls.DISPLAY_WIDTH)
-        text = ' ' + text + ' '
+        template: str = cls._template(filler, cls.ALIGN_CENTER, cls.DISPLAY_WIDTH)
+        text: str = ' ' + text + ' '
         print(template.format(text))
 
     @classmethod
-    def value_pair_list(cls, collection, formatting='', spacing=''):
+    def value_pair_list(cls,
+                        collection: list[list[str]],
+                        formatting: str = '',
+                        spacing: str = '',
+                        ) -> None:
         """Value pair list"""
 
         if formatting == '':
@@ -265,13 +277,13 @@ class CLIOutput:
             for pair in collection:
                 longest_key = max(longest_key, len(pair[0]))
 
-            template = '  ' + cls._template(' ', cls.ALIGN_LEFT, longest_key) + ' : {}'
+            template: str = '  ' + cls._template(' ', cls.ALIGN_LEFT, longest_key) + ' : {}'
 
         elif formatting == cls.FORMAT_WIDE:
             for pair in collection:
                 pair[0] = pair[0] + ' '
 
-            template = '  {0:.<46} : {1: <49}'
+            template: str = '  {0:.<46} : {1: <49}'
 
         else:
             raise ValueError('Illegal format parameter')
@@ -287,13 +299,13 @@ class CLIOutput:
     # special displays ----------------------------------------------- #
 
     @classmethod
-    def empty_line(cls, count=1):
+    def empty_line(cls, count: int = 1) -> None:
         """Empty line"""
         for _ in range(1, count + 1):
             print('')
 
     @classmethod
-    def filled_line(cls, character, count=1):
+    def filled_line(cls, character: str, count: int = 1) -> None:
         """Filled line"""
         for _ in range(1, count + 1):
             print(cls._template(character, cls.ALIGN_CENTER, cls.DISPLAY_WIDTH).format(''))
@@ -301,11 +313,11 @@ class CLIOutput:
     # message displays ----------------------------------------------- #
 
     @classmethod
-    def warning(cls, text):
+    def warning(cls, text: str) -> None:
         """Warning"""
         print(text)
 
     @classmethod
-    def error(cls, text):
+    def error(cls, text: str) -> None:
         """Error"""
         print(text)

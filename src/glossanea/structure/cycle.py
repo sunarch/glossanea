@@ -4,8 +4,10 @@
 
 """Cycle"""
 
+# imports: library
 import random
 
+# imports: project
 from glossanea.structure.unit import Unit
 from glossanea.structure.day import Day
 from glossanea.structure.weekly_review import WeeklyReview
@@ -17,18 +19,18 @@ class Cycle:
     # next unit ------------------------------------------------------ #
 
     @classmethod
-    def get_next_unit(cls, arg_week_no, arg_unit_no):
+    def get_next_unit(cls, week_number: int, unit_number: int) -> Unit:
         """Create an instance of the next unit"""
 
         unit_object = None
 
-        next_week_no = arg_week_no
-        next_unit_no = (arg_unit_no + 1) % Unit.UNITS_PER_WEEK
+        next_week_no: int = week_number
+        next_unit_no: int = (unit_number + 1) % Unit.UNITS_PER_WEEK
 
-        if arg_unit_no == Unit.WEEKLY_REVIEW_INDEX:
+        if unit_number == Unit.WEEKLY_REVIEW_INDEX:
             try:
-                next_week_no = arg_week_no + 1
-                Unit.validate_week_no(next_week_no)
+                next_week_no = week_number + 1
+                Unit.validate_week_number(next_week_no)
                 unit_object = Day(next_week_no, next_unit_no)
             except ValueError as exc:
                 raise IndexError('End of units reached!') from exc
@@ -44,47 +46,47 @@ class Cycle:
     # random unit ---------------------------------------------------- #
 
     @classmethod
-    def get_random_unit(cls, arg_unit_type):
+    def get_random_unit(cls, unit_type: str | None) -> Unit:
         """Create an instance of a random unit"""
 
-        week = random.randint(Unit.MIN_WEEK_NO, Unit.MAX_WEEK_NO)
-        unit = Unit.MIN_DAY_NO
+        week_number: int = random.randint(Unit.MIN_WEEK_NUMBER, Unit.MAX_WEEK_NUMBER)
+        unit_number: int = Unit.MIN_DAY_NUMBER
 
-        if arg_unit_type is None:
-            unit = random.randint(Unit.MIN_DAY_NO, Unit.UNITS_PER_WEEK)
-            if unit == Unit.UNITS_PER_WEEK:
-                unit = Unit.WEEKLY_REVIEW_INDEX
-        elif arg_unit_type == Unit.TYPE_DAY:
-            unit = random.randint(Unit.MIN_DAY_NO, Unit.MAX_DAY_NO)
-        elif arg_unit_type == Unit.TYPE_WEEKLY_REVIEW:
-            unit = Unit.WEEKLY_REVIEW_INDEX
+        if unit_type is None:
+            unit_number = random.randint(Unit.MIN_DAY_NUMBER, Unit.UNITS_PER_WEEK)
+            if unit_number == Unit.UNITS_PER_WEEK:
+                unit_number = Unit.WEEKLY_REVIEW_INDEX
+        elif unit_type == Unit.TYPE_DAY:
+            unit_number = random.randint(Unit.MIN_DAY_NUMBER, Unit.MAX_DAY_NUMBER)
+        elif unit_type == Unit.TYPE_WEEKLY_REVIEW:
+            unit_number = Unit.WEEKLY_REVIEW_INDEX
         else:
             raise ValueError('Incorrect unit type.')
 
         # pylint: disable=no-else-return
-        if unit == Unit.WEEKLY_REVIEW_INDEX:
-            return WeeklyReview(week)
+        if unit_number == Unit.WEEKLY_REVIEW_INDEX:
+            return WeeklyReview(week_number)
         else:
-            return Day(week, unit)
+            return Day(week_number, unit_number)
 
     # day getters ---------------------------------------------------- #
 
     @classmethod
-    def get_first_day_by_week(cls, arg_week_no):
+    def get_first_day_by_week(cls, week_number: int) -> Day:
         """Create an instance of the first day in a specific week"""
 
-        return Day(arg_week_no, Unit.MIN_DAY_NO)
+        return Day(week_number, Unit.MIN_DAY_NUMBER)
 
     @classmethod
-    def get_day_by_number(cls, arg_week_no, arg_day_no):
+    def get_day_by_number(cls, week_number: int, day_number: int) -> Day:
         """Create an instance of a specific day"""
 
-        return Day(arg_week_no, arg_day_no)
+        return Day(week_number, day_number)
 
     # weekly review getters ------------------------------------------ #
 
     @classmethod
-    def get_weekly_review_by_week(cls, arg_week_no):
+    def get_weekly_review_by_week(cls, week_number: int) -> WeeklyReview:
         """Create an instance of the weekly review in a specific week"""
 
-        return WeeklyReview(arg_week_no)
+        return WeeklyReview(week_number)

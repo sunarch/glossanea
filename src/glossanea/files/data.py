@@ -7,16 +7,17 @@
 # imports: library
 import json
 import os.path
+from typing import Any
 
 # imports: project
 from glossanea.files.config import data_dir_path
 
 
 REQUIRED_VERSION_DAY: str = 'v2_day'
-REQUIRED_VERSION_WEEKLY_REVIEW = 'v2_weekly_review'
+REQUIRED_VERSION_WEEKLY_REVIEW: str = 'v2_weekly_review'
 
 
-def data_file_path(file_subpath: str):
+def data_file_path(file_subpath: str) -> str:
     """Add data folder prefix to data file path"""
 
     if not isinstance(file_subpath, str):
@@ -25,7 +26,7 @@ def data_file_path(file_subpath: str):
     return os.path.join(data_dir_path(), file_subpath)
 
 
-def load_data_file(file_subpath: str):
+def load_data_file(file_subpath: str) -> dict[str, Any]:
     """Load a data file"""
 
     full_path: str = data_file_path(file_subpath)

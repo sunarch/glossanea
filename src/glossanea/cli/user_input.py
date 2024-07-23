@@ -9,50 +9,50 @@ class CLIUserInput:
     """CLI User Input"""
 
     # constants
-    TYPE_COMMAND = 'command'
-    TYPE_ANSWER = 'answer'
+    TYPE_COMMAND: str = 'command'
+    TYPE_ANSWER: str = 'answer'
 
     @classmethod
-    def _get_new(cls, prompt):
+    def _get_new(cls, prompt: str) -> str:
         """Get user input"""
 
-        user_input = input(prompt)
+        user_input: str = input(prompt)
 
         return user_input
 
     @classmethod
-    def get_command(cls, prompt):
+    def get_command(cls, prompt: str) -> tuple[str, list[str]]:
         """Get user input - top level command"""
 
-        user_input = cls._get_new(prompt)
+        user_input: str = cls._get_new(prompt)
 
-        input_elements = user_input.split()
+        input_elements: list[str] = user_input.split()
 
         if len(input_elements) < 1:
             raise ValueError('No command given!')
 
-        command = input_elements.pop(0)
+        command: str = input_elements.pop(0)
 
         return command, input_elements
 
     @classmethod
-    def get_answer(cls, prompt):
+    def get_answer(cls, prompt: str) -> tuple[str, str]:
         """Get user input - answer"""
 
-        user_input = cls._get_new(prompt)
+        user_input: str = cls._get_new(prompt)
 
-        command_test = user_input.split('cmd ')
+        command_test: list[str] = user_input.split('cmd ')
         if len(command_test) == 2 and command_test[0] == '':
-            answer_type = cls.TYPE_COMMAND
-            content = command_test[1]
+            answer_type: str = cls.TYPE_COMMAND
+            content: str = command_test[1]
         else:
-            answer_type = cls.TYPE_ANSWER
-            content = user_input
+            answer_type: str = cls.TYPE_ANSWER
+            content: str = user_input
 
         return answer_type, content
 
     @classmethod
-    def wait_for_enter(cls):
+    def wait_for_enter(cls) -> None:
         """Wait for the user to press ENTER"""
 
         _ = cls._get_new('Press ENTER to continue...')
