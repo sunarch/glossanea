@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -10,15 +8,15 @@ class CLIOutput:
 
     DISPLAY_WIDTH = 100
     BLANK = ' ............ '
-    
+
     ALIGN_LEFT = 'left'
     ALIGN_CENTER = 'center'
     ALIGN_RIGHT = 'right'
-    
+
     FORMAT_REGULAR = 'regular'
     FORMAT_WIDE = 'wide'
     FORMAT_INDENTED = 'indented'
-    
+
     SPACING_CLOSE = 'close'
     SPACING_APART = 'apart'
 
@@ -236,34 +234,34 @@ class CLIOutput:
 
     @classmethod
     def value_pair_list(cls, collection, formatting='', spacing=''):
-        
+
         if formatting == '':
             formatting = cls.FORMAT_REGULAR
-            
+
         if spacing == '':
             spacing = cls.SPACING_CLOSE
-        
+
         if formatting == cls.FORMAT_REGULAR:
             longest_key = 1
-            
+
             for pair in collection:
                 if len(pair[0]) > longest_key:
                     longest_key = len(pair[0])
-            
+
             template = '  ' + cls._template(' ', cls.ALIGN_LEFT, longest_key) + ' : {}'
-        
+
         elif formatting == cls.FORMAT_WIDE:
             for pair in collection:
                 pair[0] = pair[0] + ' '
-        
+
             template = '  {0:.<46} : {1: <49}'
-        
+
         else:
             raise ValueError('Illegal format parameter')
-        
+
         if spacing == cls.SPACING_CLOSE:
             cls.empty_line(1)
-        
+
         for pair in collection:
             if spacing == cls.SPACING_APART:
                 cls.empty_line(1)
@@ -275,7 +273,7 @@ class CLIOutput:
     def empty_line(cls, count=1):
         for i in range(1, count + 1):
             print('')
-    
+
     @classmethod
     def filled_line(cls, character, count=1):
         for i in range(1, count + 1):

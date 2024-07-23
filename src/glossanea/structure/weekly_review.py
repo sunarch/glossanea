@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -28,7 +26,7 @@ class WeeklyReview(Unit):
 
     def get_week_no(self):
         return self._week_no
-    
+
     def get_unit_no(self):
         return Unit.WEEKLY_REVIEW_INDEX
 
@@ -51,9 +49,9 @@ class WeeklyReview(Unit):
         self._load()
 
     def _load(self):
-        
+
         file_path = Unit.build_path_weekly_review(self._week_no)
-        
+
         data = DataFileLoader.load(file_path)
 
         self._data = data

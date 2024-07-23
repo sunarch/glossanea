@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -41,7 +39,7 @@ class CLIDay:
 
     @classmethod
     def mainloop(cls):
-    
+
         cls._next_action = 'title'
 
         while cls._next_action != cls.ACTION_EXIT:
@@ -93,7 +91,7 @@ class CLIDay:
     @classmethod
     def new_words(cls, display_in_full=True):
         """Display new words section"""
-        
+
         regular = list()
         phonetic = list()
 
@@ -173,7 +171,7 @@ class CLIDay:
         data = cls._day.get_sample_sentences()
 
         CLIOutput.section_title('SAMPLE SENTENCES')
-        
+
         CLIOutput.empty_line(1)
         CLIOutput.simple(data['prompt'])
 
@@ -380,7 +378,7 @@ class CLIDay:
 
     @classmethod
     def help_cmd_in_task(cls):
-    
+
         collection = [
             ['words', 'Display New Words section again.'],
             ['skip', 'Move on to the next part of the task.'],

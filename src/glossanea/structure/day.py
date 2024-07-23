@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -22,7 +20,7 @@ class Day(Unit):
         return Unit.TYPE_DAY
 
     # content variables ---------------------------------------------- #
-    
+
     _title = None
     _new_words = None
     _new_words_extension = None
@@ -31,7 +29,7 @@ class Day(Unit):
     _definitions = None
     _matching = None
     _other_new_words = None
-    
+
     # overridden getters --------------------------------------------- #
 
     def get_week_no(self):
@@ -84,9 +82,9 @@ class Day(Unit):
     def _load(self):
 
         file_path = Unit.build_path_day(self._week_no, self._day_no)
-        
+
         data = DataFileLoader.load(file_path)
-        
+
         self._title = data['title']
         self._new_words = data['new_words']
         self._new_words_extension = data['new_words_extension']

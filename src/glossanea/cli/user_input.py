@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -38,7 +36,7 @@ class CLIUserInput:
         """Get user input - answer"""
 
         user_input = cls._get_new(prompt)
-        
+
         command_test = user_input.split('cmd ')
         if len(command_test) == 2 and command_test[0] == '':
             answer_type = cls.TYPE_COMMAND
@@ -46,7 +44,7 @@ class CLIUserInput:
         else:
             answer_type = cls.TYPE_ANSWER
             content = user_input
-        
+
         return answer_type, content
 
     @classmethod
