@@ -5,7 +5,7 @@
 """Day"""
 
 from glossanea.structure.unit import Unit
-from glossanea.utils.data_file_loader import DataFileLoader
+from glossanea.config.app import load_data_file, REQUIRED_VERSION_DAY
 
 
 class Day(Unit):
@@ -98,7 +98,10 @@ class Day(Unit):
 
         file_path = Unit.build_path_day(self._week_no, self._day_no)
 
-        data = DataFileLoader.load(file_path)
+        data = load_data_file(file_path)
+
+        if data['version'] != REQUIRED_VERSION_DAY:
+            raise ValueError(f'Incorrect data file version: {self._week_no}/{self._day_no}')
 
         self._title = data['title']
         self._new_words = data['new_words']

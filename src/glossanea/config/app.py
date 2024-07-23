@@ -15,6 +15,10 @@ from xdg_base_dirs import xdg_config_home
 from glossanea import version
 
 
+REQUIRED_VERSION_DAY: str = 'v2_day'
+REQUIRED_VERSION_WEEKLY_REVIEW = 'v2_weekly_review'
+
+
 config_v1: dict = {
     'data_folder': ''
 }
@@ -64,6 +68,24 @@ def data_dir_path() -> str:
 def check_data_dir_path():
     """Check data dir path"""
     _ = data_dir_path()
+
+
+def data_file_path(file_subpath: str):
+    """Add data folder prefix to data file path"""
+
+    if not isinstance(file_subpath, str):
+        raise ValueError('The given data file path is not a string!')
+
+    return os.path.join(data_dir_path(), file_subpath)
+
+
+def load_data_file(file_subpath: str):
+    """Load a data file"""
+
+    full_path: str = data_file_path(file_subpath)
+
+    with open(full_path, mode='r', encoding='UTF-8', newline=None) as data_file:
+        return json.load(data_file)
 
 
 def _config_file_path() -> str:

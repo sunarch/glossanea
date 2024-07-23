@@ -5,7 +5,7 @@
 """Weekly Review"""
 
 from glossanea.structure.unit import Unit
-from glossanea.utils.data_file_loader import DataFileLoader
+from glossanea.config.app import load_data_file, REQUIRED_VERSION_WEEKLY_REVIEW
 
 
 class WeeklyReview(Unit):
@@ -61,9 +61,10 @@ class WeeklyReview(Unit):
 
         file_path = Unit.build_path_weekly_review(self._week_no)
 
-        data = DataFileLoader.load(file_path)
+        self._data = load_data_file(file_path)
 
-        self._data = data
+        if self._data['version'] != REQUIRED_VERSION_WEEKLY_REVIEW:
+            raise ValueError(f'Incorrect data file version: {self._week_no}/WR')
 
     def __del__(self):
         pass
