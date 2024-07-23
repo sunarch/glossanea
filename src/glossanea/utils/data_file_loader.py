@@ -2,6 +2,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+"""Data file loader"""
+
 # imports: library
 import json
 import os.path
@@ -11,6 +13,7 @@ from glossanea.config.app import data_dir_path
 
 
 class DataFileLoader:
+    """Data file loader"""
 
     VERSION_COUNT = 2
     VERSIONS_DAY = (

@@ -2,14 +2,18 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+"""User Interface"""
+
 import abc
 
 
 class UserInterface(abc.ABC):
+    """User Interface"""
 
     @classmethod
     @abc.abstractmethod
     def start(cls):
+        """Start"""
         raise NotImplementedError
 
 

@@ -2,6 +2,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+"""App"""
+
 # imports: library
 import json
 import os.path
@@ -21,6 +23,8 @@ default: dict = config_v1
 
 
 def _config_dir_path() -> str:
+    """Config dir path"""
+
     config_dir_path = os.path.join(xdg_config_home(), version.PROGRAM_NAME)
 
     if not os.path.isdir(config_dir_path):
@@ -30,10 +34,13 @@ def _config_dir_path() -> str:
 
 
 def _data_folder_path_file_path() -> str:
+    """Data folder path file path"""
     return os.path.join(_config_dir_path(), 'data-folder.txt')
 
 
 def data_dir_path() -> str:
+    """Data dir path"""
+
     data_folder_path_file_path: str = _data_folder_path_file_path()
 
     try:
@@ -55,14 +62,18 @@ def data_dir_path() -> str:
 
 
 def check_data_dir_path():
+    """Check data dir path"""
     _ = data_dir_path()
 
 
 def _config_file_path() -> str:
+    """Config file path"""
     return os.path.join(_config_dir_path(), 'config.json')
 
 
 def config() -> dict:
+    """Config"""
+
     config_file_path: str = _config_file_path()
 
     try:

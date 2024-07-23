@@ -2,11 +2,14 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+"""Day"""
+
 from glossanea.structure.unit import Unit
 from glossanea.utils.data_file_loader import DataFileLoader
 
 
 class Day(Unit):
+    """Day"""
 
     # general variables ---------------------------------------------- #
 
@@ -17,6 +20,7 @@ class Day(Unit):
 
     @classmethod
     def get_unit_type(cls):
+        """Get unit type"""
         return Unit.TYPE_DAY
 
     # content variables ---------------------------------------------- #
@@ -33,35 +37,45 @@ class Day(Unit):
     # overridden getters --------------------------------------------- #
 
     def get_week_no(self):
+        """Get week number"""
         return self._week_no
 
     def get_unit_no(self):
+        """Get unit number"""
         return self._day_no
 
     # content getters ------------------------------------------------ #
 
     def get_title(self):
+        """Get title"""
         return self._title
 
     def get_new_words(self):
+        """Get new words"""
         return self._new_words
 
     def get_new_words_extension(self):
+        """Get new words extension"""
         return self._new_words_extension
 
     def get_intro_text(self):
+        """Get intro text"""
         return self._intro_text
 
     def get_sample_sentences(self):
+        """Get sample sentences"""
         return self._sample_sentences
 
     def get_definitions(self):
+        """Get definitions"""
         return self._definitions
 
     def get_matching(self):
+        """Get matching"""
         return self._matching
 
     def get_other_new_words(self):
+        """Get other new words"""
         return self._other_new_words
 
     # init and data load --------------------------------------------- #
@@ -80,6 +94,7 @@ class Day(Unit):
         self._load()
 
     def _load(self):
+        """Load"""
 
         file_path = Unit.build_path_day(self._week_no, self._day_no)
 

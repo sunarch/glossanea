@@ -2,6 +2,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+"""CLI"""
+
 from glossanea.structure.user_interface import UserInterface
 
 from glossanea.structure.cycle import Cycle
@@ -14,6 +16,7 @@ from glossanea.cli.day import CLIDay
 
 
 class CLI(UserInterface):
+    """CLI"""
 
     # constants
     CMD_HELP_ALIASES = ['h', 'help']
@@ -32,11 +35,14 @@ class CLI(UserInterface):
 
     @classmethod
     def start(cls):
+        """Start"""
+
         cls._unit = Cycle.get_day_by_number(1, 1)
         cls.mainloop()
 
     @classmethod
     def mainloop(cls):
+        """Main loop"""
 
         # Introduction #
         cls.display_introduction()
@@ -102,11 +108,13 @@ class CLI(UserInterface):
 
     @classmethod
     def cmd_exit(cls):
+        """Command: exit"""
 
         cls._done = True
 
     @classmethod
     def cmd_help(cls):
+        """Command: help"""
 
         collection = [
             ['start', 'Start currently selected unit.'],
@@ -127,11 +135,13 @@ class CLI(UserInterface):
 
     @classmethod
     def cmd_start(cls):
+        """Command: start"""
 
         CLIDay.start(cls._unit)
 
     @classmethod
     def cmd_next(cls):
+        """Command: next"""
 
         week_no = cls._unit.get_week_no()
         unit_no = cls._unit.get_unit_no()
@@ -160,6 +170,7 @@ class CLI(UserInterface):
 
     @classmethod
     def cmd_goto(cls, arguments):
+        """Command: goto"""
 
         arg_count = len(arguments)
 
@@ -187,6 +198,7 @@ class CLI(UserInterface):
 
     @classmethod
     def cmd_random(cls, arguments):
+        """Command: random"""
 
         arg_count = len(arguments)
         prev_unit = cls._unit
@@ -213,6 +225,8 @@ class CLI(UserInterface):
 
     @classmethod
     def display_introduction(cls):
+        """Display introduction"""
+
         CLIOutput.empty_line(1)
         CLIOutput.center('')  # TODO from migration: load from data
         CLIOutput.empty_line(1)
@@ -221,6 +235,7 @@ class CLI(UserInterface):
 
     @classmethod
     def build_command_prompt(cls):
+        """Build command prompt"""
 
         week = cls._unit.get_week_no()
         day = cls._unit.get_unit_no()

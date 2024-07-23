@@ -2,6 +2,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+"""GUI"""
+
 import tkinter as tk
 from tkinter import ttk
 
@@ -9,11 +11,13 @@ from glossanea.structure.user_interface import UserInterface
 
 
 class GUI(UserInterface):
+    """GUI"""
 
     _root = None
 
     @classmethod
     def start(cls):
+        """Start"""
 
         _root = tk.Tk()
         _root.title('Glossanea')

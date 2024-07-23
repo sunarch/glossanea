@@ -2,7 +2,11 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+"""Output"""
+
+
 class CLIOutput:
+    """CLI Output"""
 
     # constants ------------------------------------------------------ #
 
@@ -24,6 +28,7 @@ class CLIOutput:
 
     @classmethod
     def _template(cls, filler=' ', align='left', width=-1):
+        """Template"""
 
         if width == -1:
             width = cls.DISPLAY_WIDTH
@@ -61,6 +66,7 @@ class CLIOutput:
 
     @classmethod
     def _block_lines(cls, text, width=-1, line_start_first='', line_start_all=''):
+        """Block lines"""
 
         if width == -1:
             width = cls.DISPLAY_WIDTH
@@ -99,6 +105,7 @@ class CLIOutput:
 
     @classmethod
     def _init_line(cls, line_start_first, line_start_all):
+        """Init line"""
 
         line_build = ''
 
@@ -114,6 +121,7 @@ class CLIOutput:
 
     @classmethod
     def section_title(cls, title):
+        """Section title"""
 
         title = title.upper()
 
@@ -124,6 +132,7 @@ class CLIOutput:
 
     @classmethod
     def words_table(cls, list_regular, list_phonetic):
+        """Words table"""
 
         template = ''
 
@@ -150,6 +159,7 @@ class CLIOutput:
 
     @classmethod
     def new_words_extension(cls, data):
+        """New words extension"""
 
         if len(data) == 0:
             return
@@ -167,6 +177,7 @@ class CLIOutput:
 
     @classmethod
     def framed(cls, parts, width):
+        """Framed"""
 
         if width > cls.DISPLAY_WIDTH:
             width = cls.DISPLAY_WIDTH - 4
@@ -196,6 +207,7 @@ class CLIOutput:
 
     @classmethod
     def numbered_sentence(cls, number, sentence, formatting=''):
+        """Numbered sentence"""
 
         if formatting == '':
             formatting = cls.FORMAT_REGULAR
@@ -214,6 +226,8 @@ class CLIOutput:
 
     @classmethod
     def general_message(cls, message):
+        """General message"""
+
         cls.empty_line(1)
         cls.filled_line('#')
         cls.center(message, '#')
@@ -221,6 +235,8 @@ class CLIOutput:
 
     @classmethod
     def simple(cls, text):
+        """Simple"""
+
         print_list = cls._block_lines(text, cls.DISPLAY_WIDTH, '', '')
 
         for line in print_list:
@@ -228,12 +244,15 @@ class CLIOutput:
 
     @classmethod
     def center(cls, text, filler=' '):
+        """Center"""
+
         template = cls._template(filler, cls.ALIGN_CENTER, cls.DISPLAY_WIDTH)
         text = ' ' + text + ' '
         print(template.format(text))
 
     @classmethod
     def value_pair_list(cls, collection, formatting='', spacing=''):
+        """Value pair list"""
 
         if formatting == '':
             formatting = cls.FORMAT_REGULAR
@@ -271,11 +290,13 @@ class CLIOutput:
 
     @classmethod
     def empty_line(cls, count=1):
+        """Empty line"""
         for i in range(1, count + 1):
             print('')
 
     @classmethod
     def filled_line(cls, character, count=1):
+        """Filled line"""
         for i in range(1, count + 1):
             print(cls._template(character, cls.ALIGN_CENTER, cls.DISPLAY_WIDTH).format(''))
 
@@ -283,8 +304,10 @@ class CLIOutput:
 
     @classmethod
     def warning(cls, text):
+        """Warning"""
         print(text)
 
     @classmethod
     def error(cls, text):
+        """Error"""
         print(text)

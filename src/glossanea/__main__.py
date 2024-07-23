@@ -2,6 +2,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+"""Main"""
+
 # imports: library
 from argparse import ArgumentParser
 from enum import Enum
@@ -19,12 +21,15 @@ import glossanea.config.app as app_config
 
 
 class UserInterfaceType(Enum):
+    """User Interface Type"""
+
     CLI = 'cli'
     GUI = 'gui'
     DEFAULT = 'gui'
 
 
 def main() -> None:
+    """Main"""
 
     libmonty_logging.apply_default_console_and_file(
         version.PROGRAM_NAME,

@@ -2,11 +2,14 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+"""Day"""
+
 from glossanea.cli.output import CLIOutput
 from glossanea.cli.user_input import CLIUserInput
 
 
 class CLIDay:
+    """CLI Day"""
 
     # constants
     INTRO_TEXT_WIDTH = 60
@@ -34,11 +37,14 @@ class CLIDay:
 
     @classmethod
     def start(cls, day):
+        """Start"""
+
         cls._day = day
         cls.mainloop()
 
     @classmethod
     def mainloop(cls):
+        """Main loop"""
 
         cls._next_action = 'title'
 
@@ -193,6 +199,7 @@ class CLIDay:
             prompt = f'{sentence["id"]}. '
 
             def l_pr_question():
+                """l_pr_question"""
                 return CLIOutput.numbered_sentence(sentence['id'],
                                                    sentence['beginning'] + CLIOutput.BLANK + sentence['end'],
                                                    CLIOutput.FORMAT_REGULAR)
@@ -209,14 +216,17 @@ class CLIDay:
                 full_answer += sentence['end']
 
             def l_pr_answer():
+                """l_pr_answer"""
                 return CLIOutput.simple(full_answer)
 
             prev_action = cls.ACTION_SAMPLE_SENTENCES
 
             def l_prev_msg():
+                """l_prev_msg"""
                 return CLIOutput.general_message('This is the first task: Starting from the beginning.')
 
             def l_next_msg():
+                """l_next_msg"""
                 return None
 
             # answer cycle
@@ -249,6 +259,7 @@ class CLIDay:
             CLIOutput.numbered_sentence(definition['id'], definition['text'], CLIOutput.FORMAT_INDENTED)
 
         def l_words():
+            """l_words"""
             return [CLIOutput.numbered_sentence(word['id'], word['text'], CLIOutput.FORMAT_INDENTED)
                     for word in data['words']]
 
@@ -257,6 +268,7 @@ class CLIDay:
             prompt = f'{definition["id"]}. '
 
             def l_pr_question():
+                """l_pr_question"""
                 return CLIOutput.numbered_sentence(definition['id'], definition['text'], CLIOutput.FORMAT_REGULAR)
 
             answers = list()
@@ -272,14 +284,17 @@ class CLIDay:
             answers.append(answer_text)
 
             def l_pr_answer():
+                """l_pr_answer"""
                 return CLIOutput.numbered_sentence(answer_id, answer_text, CLIOutput.FORMAT_REGULAR)
 
             prev_action = cls.ACTION_SAMPLE_SENTENCES
 
             def l_prev_msg():
+                """l_prev_msg"""
                 return None
 
             def l_next_msg():
+                """l_next_msg"""
                 return None
 
             # answer cycle
@@ -313,6 +328,7 @@ class CLIDay:
             CLIOutput.numbered_sentence(sentence['id'], sentence['text'], CLIOutput.FORMAT_INDENTED)
 
         def l_words():
+            """l_words"""
             return [CLIOutput.numbered_sentence(word['id'], word['text'], CLIOutput.FORMAT_INDENTED)
                     for word in data['words']]
 
@@ -321,6 +337,7 @@ class CLIDay:
             prompt = f'{definition["id"]}. '
 
             def l_pr_question():
+                """l_pr_question"""
                 return CLIOutput.numbered_sentence(sentence['id'], sentence['text'], CLIOutput.FORMAT_REGULAR)
 
             answers = list()
@@ -336,14 +353,17 @@ class CLIDay:
             answers.append(answer_text)
 
             def l_pr_answer():
+                """l_pr_answer"""
                 return CLIOutput.numbered_sentence(answer_id, answer_text, CLIOutput.FORMAT_REGULAR)
 
             prev_action = cls.ACTION_SAMPLE_SENTENCES
 
             def l_prev_msg():
+                """l_prev_msg"""
                 return None
 
             def l_next_msg():
+                """l_next_msg"""
                 return None
 
             # answer cycle
@@ -378,6 +398,7 @@ class CLIDay:
 
     @classmethod
     def help_cmd_in_task(cls):
+        """Help cmd in task"""
 
         collection = [
             ['words', 'Display New Words section again.'],

@@ -2,11 +2,14 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+"""Unit"""
+
 import abc
 import os.path
 
 
 class Unit(abc.ABC):
+    """Unit"""
 
     # constants ------------------------------------------------------ #
 
@@ -25,11 +28,13 @@ class Unit(abc.ABC):
     @classmethod
     @abc.abstractmethod
     def get_unit_no(cls):
+        """Get unit number"""
         raise NotImplementedError
 
     @classmethod
     @abc.abstractmethod
     def get_unit_type(cls):
+        """Get unit type"""
         raise NotImplementedError
 
 # validators --------------------------------------------------------- #
@@ -62,6 +67,7 @@ class Unit(abc.ABC):
 
     @staticmethod
     def build_path_day(arg_week_no, arg_day_no):
+        """Build path day"""
 
         file_dir = f'week_{arg_week_no:0>2}'
         file_name = f'day_{arg_day_no}.json'
@@ -70,6 +76,7 @@ class Unit(abc.ABC):
 
     @staticmethod
     def build_path_weekly_review(arg_week_no):
+        """Build path weekly review"""
 
         file_dir = f'week_{arg_week_no:0>2}'
         file_name = 'weekly_review.json'
@@ -80,16 +87,19 @@ class Unit(abc.ABC):
 
     @classmethod
     def generator_weeks(cls):
+        """Generator weeks"""
         for week in range(cls.MIN_WEEK_NO, cls.MAX_WEEK_NO + 1):
             yield week
 
     @classmethod
     def generator_days(cls):
+        """Generator days"""
         for day in range(cls.MIN_DAY_NO, cls.MAX_DAY_NO + 1):
             yield day
 
     @classmethod
     def generator_day_tuples(cls):
+        """Generator day tuples"""
         for week in cls.generator_weeks():
             for day in cls.generator_days():
                 yield week, day

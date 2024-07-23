@@ -2,6 +2,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+"""Cycle"""
+
 import random
 
 from glossanea.structure.unit import Unit
@@ -10,6 +12,7 @@ from glossanea.structure.weekly_review import WeeklyReview
 
 
 class Cycle:
+    """Cycle"""
 
     # next unit ------------------------------------------------------ #
 
