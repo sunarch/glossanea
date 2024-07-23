@@ -19,9 +19,7 @@ REQUIRED_VERSION_DAY: str = 'v2_day'
 REQUIRED_VERSION_WEEKLY_REVIEW = 'v2_weekly_review'
 
 
-config_v1: dict = {
-    'data_folder': ''
-}
+config_v1: dict = {}
 
 default: dict = config_v1
 
