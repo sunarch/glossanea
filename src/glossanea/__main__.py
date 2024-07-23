@@ -6,7 +6,6 @@
 
 # imports: library
 from argparse import ArgumentParser
-from enum import Enum
 
 # imports: dependencies
 import libmonty_logging
@@ -14,18 +13,9 @@ import libmonty_logging.message as logging_message
 
 # imports: project
 from glossanea import version
-from glossanea.gui.gui import GUI
 from glossanea.cli.cli import CLI
 from glossanea.utils import convert_data_v1_to_v2
 import glossanea.config.app as app_config
-
-
-class UserInterfaceType(Enum):
-    """User Interface Type"""
-
-    CLI = 'cli'
-    GUI = 'gui'
-    DEFAULT = 'gui'
 
 
 def main() -> None:
@@ -44,18 +34,6 @@ def main() -> None:
                         help='Display version',
                         action='store_true',
                         dest='version')
-
-    user_interface_group = parser.add_mutually_exclusive_group(required=False)
-    user_interface_group.add_argument('--gui',
-                                      help='[Default] Start with Graphical User Interface',
-                                      action='store_const', const=UserInterfaceType.GUI,
-                                      default=UserInterfaceType.DEFAULT,
-                                      dest='user_interface')
-    user_interface_group.add_argument('--cli',
-                                      help='Start with Command Line Interface',
-                                      action='store_const', const=UserInterfaceType.CLI,
-                                      default=UserInterfaceType.DEFAULT,
-                                      dest='user_interface')
 
     subparsers = parser.add_subparsers(help='Subcommands')
 
@@ -79,12 +57,7 @@ def main() -> None:
     except AttributeError:
         pass
 
-    if args.user_interface == UserInterfaceType.GUI:
-        ui = GUI
-    elif args.user_interface == UserInterfaceType.CLI:
-        ui = CLI
-    else:
-        raise ValueError(f'Unrecognized "user interface" argument {args.user_interface}')
+    ui = CLI
 
     app_config.check_data_dir_path()
 

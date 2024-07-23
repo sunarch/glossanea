@@ -4,8 +4,6 @@
 
 """CLI"""
 
-from glossanea.structure.user_interface import UserInterface
-
 from glossanea.structure.cycle import Cycle
 from glossanea.structure.unit import Unit
 
@@ -16,7 +14,7 @@ from glossanea.cli.day import CLIDay
 from glossanea.utils import data_file_loader
 
 
-class CLI(UserInterface):
+class CLI:
     """CLI"""
 
     # constants
