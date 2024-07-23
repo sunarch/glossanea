@@ -9,8 +9,7 @@ from argparse import ArgumentParser
 from enum import Enum
 
 # imports: dependencies
-from libmonty_logging.config.file_and_stream.v1 import config as logging_config
-import libmonty_logging.helper as logging_helper
+import libmonty_logging
 import libmonty_logging.message as logging_message
 
 # imports: project
@@ -29,9 +28,10 @@ class UserInterfaceType(Enum):
 
 def main() -> None:
 
-    logging_helper.apply_config(version.PROGRAM_NAME,
-                                version.__version__,
-                                logging_config)
+    libmonty_logging.apply_default_console_and_file(
+        version.PROGRAM_NAME,
+        version.__version__
+    )
 
     logging_message.program_header(version.PROGRAM_NAME)
 
