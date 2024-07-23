@@ -137,7 +137,7 @@ class CLI:
 
         CLIOutput.empty_line(1)
         CLIOutput.center('Glossanea help')
-        CLIOutput.value_pair_list(collection, output.Formatting.WIDE, CLIOutput.SPACING_APART)
+        CLIOutput.value_pair_list(collection, output.Formatting.WIDE, output.Spacing.APART)
 
     @classmethod
     def cmd_start(cls) -> None:

@@ -27,13 +27,14 @@ class Formatting(enum.Enum):
     INDENTED = enum.auto()
 
 
+class Spacing(enum.Enum):
+    """Enum of spacing types"""
+    CLOSE = enum.auto()
+    APART = enum.auto()
+
+
 class CLIOutput:
     """CLI Output"""
-
-    # constants ------------------------------------------------------ #
-
-    SPACING_CLOSE: str = 'close'
-    SPACING_APART: str = 'apart'
 
     # template creation ---------------------------------------------- #
 
@@ -257,12 +258,9 @@ class CLIOutput:
     def value_pair_list(cls,
                         collection: list[list[str]],
                         formatting: Formatting = Formatting.REGULAR,
-                        spacing: str = '',
+                        spacing: Spacing = Spacing.CLOSE,
                         ) -> None:
         """Value pair list"""
-
-        if spacing == '':
-            spacing = cls.SPACING_CLOSE
 
         if formatting == Formatting.REGULAR:
             longest_key = 1
@@ -281,11 +279,11 @@ class CLIOutput:
         else:
             raise ValueError('Illegal format parameter')
 
-        if spacing == cls.SPACING_CLOSE:
+        if spacing == Spacing.CLOSE:
             cls.empty_line(1)
 
         for pair in collection:
-            if spacing == cls.SPACING_APART:
+            if spacing == Spacing.APART:
                 cls.empty_line(1)
             print(template.format(pair[0], pair[1]))
 
