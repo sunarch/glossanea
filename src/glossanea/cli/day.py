@@ -435,4 +435,4 @@ class CLIDay:
 
         CLIOutput.empty_line(1)
         CLIOutput.simple('Within the task, the following commands are available:')
-        CLIOutput.value_pair_list(collection, spacing=output.Spacing.CLOSE)
+        CLIOutput.value_pair_list(collection)
