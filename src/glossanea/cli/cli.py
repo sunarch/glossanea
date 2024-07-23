@@ -13,6 +13,7 @@ from glossanea.cli.output import CLIOutput
 from glossanea.cli.user_input import CLIUserInput
 from glossanea.cli.day import CLIDay
 # from glossanea.cli.weekly_review import CLIWeeklyReview
+from glossanea.utils import data_file_loader
 
 
 class CLI(UserInterface):
@@ -227,8 +228,11 @@ class CLI(UserInterface):
     def display_introduction(cls):
         """Display introduction"""
 
+        path = data_file_loader.DataFileLoader.build_full_path('introduction.txt')
         CLIOutput.empty_line(1)
-        CLIOutput.center('')  # TODO from migration: load from data
+        with open(path, 'r', encoding='UTF-8') as fh_intro:
+            for line in fh_intro.readlines():
+                CLIOutput.center(line.rstrip())
         CLIOutput.empty_line(1)
 
     # other ---------------------------------------------------------- #
