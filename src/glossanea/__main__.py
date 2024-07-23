@@ -14,7 +14,6 @@ import libmonty_logging.message as logging_message
 # imports: project
 from glossanea import version
 from glossanea.cli.cli import CLI
-from glossanea.utils import convert_data_v1_to_v2
 import glossanea.config.app as app_config
 
 
@@ -35,27 +34,11 @@ def main() -> None:
                         action='store_true',
                         dest='version')
 
-    subparsers = parser.add_subparsers(help='Subcommands')
-
-    parser_dev = subparsers.add_parser('dev', help='Glossanea developer options')
-
-    parser_dev.add_argument('--convert-data-v1-to-v2',
-                            help='Upgrade all data files',
-                            action='store_true',
-                            dest='convert_data_v1_to_v2')
-
     args = parser.parse_args()
 
     if args.version:
         print(f'{version.PROGRAM_NAME} {version.__version__}')
         return
-
-    try:
-        if args.convert_data_v1_to_v2:
-            convert_data_v1_to_v2.convert_all()
-            return
-    except AttributeError:
-        pass
 
     ui = CLI
 
