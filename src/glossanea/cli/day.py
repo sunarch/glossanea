@@ -16,6 +16,7 @@ class CLIDay:
 
     CMD_HELP_ALIASES = ['h', 'help']
     CMD_WORDS_ALIASES = ['w', 'words']
+    CMD_HINT_ALIASES = ['hint']
     CMD_SKIP_ALIASES = ['s', 'skip']
     CMD_EXIT_ALIASES = ['e', 'exit',
                         'q', 'quit']
@@ -153,6 +154,9 @@ class CLIDay:
                     cls.new_words(False)
                     CLIOutput.empty_line(1)
                     l_pr_question()
+                elif a_content in cls.CMD_HINT_ALIASES:
+                    print('HINT: ' + ' / '.join([f'"{answer}"' for answer in answers]))
+                    continue
                 elif a_content in cls.CMD_SKIP_ALIASES:
                     return True
                 elif a_content in cls.CMD_NEXT_ALIASES:
@@ -403,6 +407,7 @@ class CLIDay:
 
         collection = [
             ['words', 'Display New Words section again.'],
+            ['hint', 'Display the answer hint (use sparingly!)'],
             ['skip', 'Move on to the next part of the task.'],
             ['next', 'Leave task and move on to the next one.'],
             ['prev', 'Leave task and jump back to the previous one.'],
