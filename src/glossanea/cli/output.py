@@ -5,7 +5,7 @@
 """Output"""
 
 # imports: library
-from enum import Enum
+import enum
 
 NO_BREAK_SPACE: str = '\u00a0'
 
@@ -13,21 +13,24 @@ DISPLAY_WIDTH: int = 100
 BLANK: str = ' ............ '
 
 
-class Align(Enum):
+class Align(enum.Enum):
     """Enum of string alignments with formatter values"""
     LEFT = '<'
     CENTER = '^'
     RIGHT = '>'
 
 
+class Formatting(enum.Enum):
+    """Enum of formatting types"""
+    REGULAR = enum.auto()
+    WIDE = enum.auto()
+    INDENTED = enum.auto()
+
+
 class CLIOutput:
     """CLI Output"""
 
     # constants ------------------------------------------------------ #
-
-    FORMAT_REGULAR: str = 'regular'
-    FORMAT_WIDE: str = 'wide'
-    FORMAT_INDENTED: str = 'indented'
 
     SPACING_CLOSE: str = 'close'
     SPACING_APART: str = 'apart'
@@ -210,18 +213,14 @@ class CLIOutput:
         cls.center(''.ljust(width + 2, '-'))
 
     @classmethod
-    def numbered_sentence(cls, number: int, sentence: str, formatting: str = '') -> None:
+    def numbered_sentence(cls, number: int, sentence: str, formatting: Formatting = Formatting.REGULAR) -> None:
         """Numbered sentence"""
-
-        if formatting == '':
-            formatting = cls.FORMAT_REGULAR
 
         line_start_first: str = f'{number}.'
 
-        if formatting == cls.FORMAT_INDENTED:
-            line_start_all: str = '  | '
-        else:
-            line_start_all: str = ''
+        line_start_all: str = ''
+        if formatting == Formatting.INDENTED:
+            line_start_all = '  | '
 
         print_list: list[str] = cls._block_lines(sentence, DISPLAY_WIDTH, line_start_first, line_start_all)
 
@@ -257,18 +256,15 @@ class CLIOutput:
     @classmethod
     def value_pair_list(cls,
                         collection: list[list[str]],
-                        formatting: str = '',
+                        formatting: Formatting = Formatting.REGULAR,
                         spacing: str = '',
                         ) -> None:
         """Value pair list"""
 
-        if formatting == '':
-            formatting = cls.FORMAT_REGULAR
-
         if spacing == '':
             spacing = cls.SPACING_CLOSE
 
-        if formatting == cls.FORMAT_REGULAR:
+        if formatting == Formatting.REGULAR:
             longest_key = 1
 
             for pair in collection:
@@ -276,7 +272,7 @@ class CLIOutput:
 
             template: str = '  ' + cls._template(' ', Align.LEFT, longest_key) + ' : {}'
 
-        elif formatting == cls.FORMAT_WIDE:
+        elif formatting == Formatting.WIDE:
             for pair in collection:
                 pair[0] = pair[0] + ' '
 

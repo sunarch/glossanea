@@ -8,6 +8,7 @@
 from glossanea.structure.cycle import Cycle
 from glossanea.structure.unit import Unit
 from glossanea.files.data import data_file_path
+from glossanea.cli import output
 from glossanea.cli.output import CLIOutput
 from glossanea.cli.user_input import CLIUserInput
 from glossanea.cli.day import CLIDay
@@ -136,7 +137,7 @@ class CLI:
 
         CLIOutput.empty_line(1)
         CLIOutput.center('Glossanea help')
-        CLIOutput.value_pair_list(collection, CLIOutput.FORMAT_WIDE, CLIOutput.SPACING_APART)
+        CLIOutput.value_pair_list(collection, output.Formatting.WIDE, CLIOutput.SPACING_APART)
 
     @classmethod
     def cmd_start(cls) -> None:

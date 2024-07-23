@@ -208,7 +208,7 @@ class CLIDay:
         for sentence in data['sentences']:
             CLIOutput.numbered_sentence(sentence['id'],
                                         sentence['beginning'] + output.BLANK + sentence['end'],
-                                        CLIOutput.FORMAT_INDENTED)
+                                        output.Formatting.INDENTED)
 
         new_words_extension: list[str] = cls._day.get_new_words_extension()
 
@@ -223,8 +223,7 @@ class CLIDay:
             def l_pr_question() -> None:
                 """l_pr_question"""
                 return CLIOutput.numbered_sentence(sentence['id'],
-                                                   sentence['beginning'] + output.BLANK + sentence['end'],
-                                                   CLIOutput.FORMAT_REGULAR)
+                                                   sentence['beginning'] + output.BLANK + sentence['end'])
 
             answers: list[str] = [sentence['answer']]
 
@@ -277,11 +276,11 @@ class CLIDay:
 
         CLIOutput.empty_line(1)
         for definition in data['definitions']:
-            CLIOutput.numbered_sentence(definition['id'], definition['text'], CLIOutput.FORMAT_INDENTED)
+            CLIOutput.numbered_sentence(definition['id'], definition['text'], output.Formatting.INDENTED)
 
         def l_words() -> list[None]:
             """l_words"""
-            return [CLIOutput.numbered_sentence(word['id'], word['text'], CLIOutput.FORMAT_INDENTED)
+            return [CLIOutput.numbered_sentence(word['id'], word['text'], output.Formatting.INDENTED)
                     for word in data['words']]
 
         for definition in data['definitions']:
@@ -290,7 +289,7 @@ class CLIDay:
 
             def l_pr_question() -> None:
                 """l_pr_question"""
-                return CLIOutput.numbered_sentence(definition['id'], definition['text'], CLIOutput.FORMAT_REGULAR)
+                return CLIOutput.numbered_sentence(definition['id'], definition['text'])
 
             answers: list[str] = []
             answer_id: str = [
@@ -308,7 +307,7 @@ class CLIDay:
 
             def l_pr_answer() -> None:
                 """l_pr_answer"""
-                return CLIOutput.numbered_sentence(answer_id, answer_text, CLIOutput.FORMAT_REGULAR)
+                return CLIOutput.numbered_sentence(answer_id, answer_text)
 
             prev_action: str = cls.ACTION_SAMPLE_SENTENCES
 
@@ -348,11 +347,11 @@ class CLIDay:
 
         CLIOutput.empty_line(1)
         for sentence in data['sentences']:
-            CLIOutput.numbered_sentence(sentence['id'], sentence['text'], CLIOutput.FORMAT_INDENTED)
+            CLIOutput.numbered_sentence(sentence['id'], sentence['text'], output.Formatting.INDENTED)
 
         def l_words() -> list[None]:
             """l_words"""
-            return [CLIOutput.numbered_sentence(word['id'], word['text'], CLIOutput.FORMAT_INDENTED)
+            return [CLIOutput.numbered_sentence(word['id'], word['text'], output.Formatting.INDENTED)
                     for word in data['words']]
 
         for sentence in data['sentences']:
@@ -361,7 +360,7 @@ class CLIDay:
 
             def l_pr_question() -> None:
                 """l_pr_question"""
-                return CLIOutput.numbered_sentence(sentence['id'], sentence['text'], CLIOutput.FORMAT_REGULAR)
+                return CLIOutput.numbered_sentence(sentence['id'], sentence['text'])
 
             answers: list[str] = []
             answer_id: str = [
@@ -379,7 +378,7 @@ class CLIDay:
 
             def l_pr_answer() -> None:
                 """l_pr_answer"""
-                return CLIOutput.numbered_sentence(answer_id, answer_text, CLIOutput.FORMAT_REGULAR)
+                return CLIOutput.numbered_sentence(answer_id, answer_text)
 
             prev_action: str = cls.ACTION_SAMPLE_SENTENCES
 
@@ -436,4 +435,4 @@ class CLIDay:
 
         CLIOutput.empty_line(1)
         CLIOutput.simple('Within the task, the following commands are available:')
-        CLIOutput.value_pair_list(collection, CLIOutput.FORMAT_REGULAR, CLIOutput.SPACING_CLOSE)
+        CLIOutput.value_pair_list(collection, spacing=CLIOutput.SPACING_CLOSE)
