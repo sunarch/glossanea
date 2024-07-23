@@ -177,9 +177,7 @@ class CLI:
     def cmd_goto(cls, arguments):
         """Command: goto"""
 
-        arg_count: int = len(arguments)
-
-        if arg_count == 1:
+        if len(arguments) == 1:
             try:
                 week_number: int = int(arguments[0])
                 prev_unit: Unit = cls._unit
@@ -188,7 +186,7 @@ class CLI:
             except ValueError as exc:
                 raise ValueError from exc
 
-        elif arg_count == 2:
+        elif len(arguments) == 2:
             try:
                 week_number: int = int(arguments[0])
                 day_number: int = int(arguments[1])
@@ -205,14 +203,13 @@ class CLI:
     def cmd_random(cls, arguments: list[str]):
         """Command: random"""
 
-        arg_count: int = len(arguments)
         prev_unit: Unit = cls._unit
 
         while True:
             # TODO: remove loop after Weekly Reviews are implemented
 
             try:
-                if arg_count == 0:
+                if len(arguments) == 0:
                     cls._unit = Cycle.get_random_unit(None)
                 else:
                     cls._unit = Cycle.get_random_unit(' '.join(arguments))
