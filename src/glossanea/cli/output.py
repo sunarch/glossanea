@@ -71,7 +71,7 @@ class CLIOutput:
         if width == -1:
             width = cls.DISPLAY_WIDTH
 
-        lines = list()
+        lines = []
 
         line_build = cls._init_line(line_start_first, line_start_all)
         line_start_length = len(line_build)
@@ -142,14 +142,13 @@ class CLIOutput:
         unit_width = int(cls.DISPLAY_WIDTH / len(list_regular)) - 3
 
         for word in list_regular:
-            if len(word) > unit_width:
-                unit_width = len(word)
+            unit_width = max(unit_width, len(word))
 
         for word in list_phonetic:
             if (len(word) + 2) > unit_width:
                 unit_width = len(word)
 
-        for i in range(1, len(list_regular) + 1):
+        for _ in range(1, len(list_regular) + 1):
             template += '| '
             template += cls._template(' ', 'left', unit_width)
             template += ' '
@@ -182,7 +181,7 @@ class CLIOutput:
         if width > cls.DISPLAY_WIDTH:
             width = cls.DISPLAY_WIDTH - 4
 
-        lines = list()
+        lines = []
 
         for part in parts:
 
@@ -212,7 +211,7 @@ class CLIOutput:
         if formatting == '':
             formatting = cls.FORMAT_REGULAR
 
-        line_start_first = '{}.'.format(number)
+        line_start_first = f'{number}.'
 
         if formatting == cls.FORMAT_INDENTED:
             line_start_all = '  | '
@@ -264,8 +263,7 @@ class CLIOutput:
             longest_key = 1
 
             for pair in collection:
-                if len(pair[0]) > longest_key:
-                    longest_key = len(pair[0])
+                longest_key = max(longest_key, len(pair[0]))
 
             template = '  ' + cls._template(' ', cls.ALIGN_LEFT, longest_key) + ' : {}'
 
@@ -291,13 +289,13 @@ class CLIOutput:
     @classmethod
     def empty_line(cls, count=1):
         """Empty line"""
-        for i in range(1, count + 1):
+        for _ in range(1, count + 1):
             print('')
 
     @classmethod
     def filled_line(cls, character, count=1):
         """Filled line"""
-        for i in range(1, count + 1):
+        for _ in range(1, count + 1):
             print(cls._template(character, cls.ALIGN_CENTER, cls.DISPLAY_WIDTH).format(''))
 
     # message displays ----------------------------------------------- #

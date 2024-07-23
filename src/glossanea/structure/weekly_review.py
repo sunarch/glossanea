@@ -40,6 +40,7 @@ class WeeklyReview(Unit):
 
     def get_data(self):
         """Get data"""
+        # pylint: disable=unnecessary-pass
         pass
 
     # init and data load --------------------------------------------- #
@@ -48,8 +49,8 @@ class WeeklyReview(Unit):
 
         try:
             Unit.validate_week_no(arg_week_no)
-        except ValueError:
-            raise
+        except ValueError as exc:
+            raise ValueError from exc
 
         self._week_no = arg_week_no
 

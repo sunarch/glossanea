@@ -85,8 +85,8 @@ class Day(Unit):
         try:
             Unit.validate_week_no(arg_week_no)
             Unit.validate_day_no(arg_day_no)
-        except ValueError:
-            raise
+        except ValueError as exc:
+            raise ValueError from exc
 
         self._week_no = arg_week_no
         self._day_no = arg_day_no

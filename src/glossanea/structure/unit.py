@@ -25,9 +25,13 @@ class Unit(abc.ABC):
 
 # abstract content getters ------------------------------------------- #
 
-    @classmethod
     @abc.abstractmethod
-    def get_unit_no(cls):
+    def get_week_no(self):
+        """Get week number"""
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def get_unit_no(self):
         """Get unit number"""
         raise NotImplementedError
 
@@ -88,14 +92,12 @@ class Unit(abc.ABC):
     @classmethod
     def generator_weeks(cls):
         """Generator weeks"""
-        for week in range(cls.MIN_WEEK_NO, cls.MAX_WEEK_NO + 1):
-            yield week
+        yield from range(cls.MIN_WEEK_NO, cls.MAX_WEEK_NO + 1)
 
     @classmethod
     def generator_days(cls):
         """Generator days"""
-        for day in range(cls.MIN_DAY_NO, cls.MAX_DAY_NO + 1):
-            yield day
+        yield from range(cls.MIN_DAY_NO, cls.MAX_DAY_NO + 1)
 
     @classmethod
     def generator_day_tuples(cls):

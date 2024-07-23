@@ -29,13 +29,13 @@ def convert_one(arg_data_file_path):
 
     try:
         data = DataFileLoader.load(arg_data_file_path)
-    except FileNotFoundError:
-        raise RuntimeError('Given file does not exist.')
+    except FileNotFoundError as exc:
+        raise RuntimeError('Given file does not exist.') from exc
 
     try:
         if data['template'] == DataFileLoader.VERSIONS_DAY[1]:
             raise RuntimeError('Data file has already been converted to version "v2_day".')
-        elif data['template'] != DataFileLoader.VERSIONS_DAY[0]:
+        if data['template'] != DataFileLoader.VERSIONS_DAY[0]:
             raise RuntimeError('Data file version is invalid.')
     except KeyError:
         print('Data file has no template identifier. Assuming version "v1_day".')
@@ -83,7 +83,7 @@ def _build_format_content_list(arg_data, arg_template):
 
     definitions_available = True
 
-    content = list()
+    content = []
 
     # TITLE ---------------------------------------------------------- #
 

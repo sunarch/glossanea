@@ -98,8 +98,8 @@ class CLIDay:
     def new_words(cls, display_in_full=True):
         """Display new words section"""
 
-        regular = list()
-        phonetic = list()
+        regular = []
+        phonetic = []
 
         for unit in cls._day.get_new_words():
             regular.append(unit['regular'])
@@ -131,19 +131,24 @@ class CLIDay:
             CLIOutput.empty_line(1)
             a_type, a_content = CLIUserInput.get_answer(prompt)
 
+            if a_type not in {CLIUserInput.TYPE_ANSWER, CLIUserInput.TYPE_COMMAND}:
+                raise ValueError('Unknown answer type.')
+
             if a_type == CLIUserInput.TYPE_ANSWER:
 
-                if a_content in answers:
-                    CLIOutput.empty_line(1)
-                    l_pr_answer()
-                    CLIOutput.empty_line(1)
-                    CLIOutput.simple('Correct!')
-
-                    return True
-                else:
+                if a_content not in answers:
                     CLIOutput.warning('Incorrect, try again.')
+                    continue
 
-            elif a_type == CLIUserInput.TYPE_COMMAND:
+                CLIOutput.empty_line(1)
+                l_pr_answer()
+                CLIOutput.empty_line(1)
+                CLIOutput.simple('Correct!')
+
+                return True
+
+            if a_type == CLIUserInput.TYPE_COMMAND:
+
                 if a_content in cls.CMD_WORDS_ALIASES:
                     cls.new_words(False)
                     CLIOutput.empty_line(1)
@@ -164,9 +169,6 @@ class CLIDay:
                     cls.help_cmd_in_task()
                 else:
                     CLIOutput.warning('Invalid command.')
-
-            else:
-                raise ValueError('Unknown answer type.')
 
 # tasks -------------------------------------------------------------- #
 
@@ -204,8 +206,7 @@ class CLIDay:
                                                    sentence['beginning'] + CLIOutput.BLANK + sentence['end'],
                                                    CLIOutput.FORMAT_REGULAR)
 
-            answers = list()
-            answers.append(sentence['answer'])
+            answers = [sentence['answer']]
 
             full_answer = sentence['answer']
             if len(sentence['beginning']) > 0:
@@ -271,7 +272,7 @@ class CLIDay:
                 """l_pr_question"""
                 return CLIOutput.numbered_sentence(definition['id'], definition['text'], CLIOutput.FORMAT_REGULAR)
 
-            answers = list()
+            answers = []
             answer_id = [value
                          for (item_id, value) in data['answers']
                          if item_id == definition['id']
@@ -340,7 +341,7 @@ class CLIDay:
                 """l_pr_question"""
                 return CLIOutput.numbered_sentence(sentence['id'], sentence['text'], CLIOutput.FORMAT_REGULAR)
 
-            answers = list()
+            answers = []
             answer_id = [value
                          for (item_id, value) in data['answers']
                          if item_id == sentence['id']

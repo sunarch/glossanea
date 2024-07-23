@@ -99,8 +99,8 @@ class CLI(UserInterface):
                 CLIOutput.warning(str(ie))
                 continue
 
-        else:  # executes after while condition becomes false #
-            pass
+        # else:  # executes after while condition becomes false #
+        #     pass
 
         # end of the Main Program Loop #
 
@@ -150,8 +150,8 @@ class CLI(UserInterface):
             prev_unit = cls._unit
             cls._unit = Cycle.get_next_unit(week_no, unit_no)
             del prev_unit
-        except IndexError:
-            raise
+        except IndexError as exc:
+            raise IndexError from exc
 
         # TODO: temporary skip of weekly review until implemented ˇˇˇˇ #
         week_no = cls._unit.get_week_no()
@@ -162,8 +162,8 @@ class CLI(UserInterface):
                 prev_unit = cls._unit
                 cls._unit = Cycle.get_next_unit(week_no, unit_no)
                 del prev_unit
-            except IndexError:
-                raise
+            except IndexError as exc:
+                raise IndexError from exc
         # END TODO ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ #
 
         cls.cmd_start()
@@ -180,8 +180,8 @@ class CLI(UserInterface):
                 prev_unit = cls._unit
                 cls._unit = Cycle.get_first_day_by_week(week_no)
                 del prev_unit
-            except ValueError:
-                raise
+            except ValueError as exc:
+                raise ValueError from exc
 
         elif arg_count == 2:
             try:
@@ -190,8 +190,8 @@ class CLI(UserInterface):
                 prev_unit = cls._unit
                 cls._unit = Cycle.get_day_by_number(week_no, day_no)
                 del prev_unit
-            except ValueError:
-                raise
+            except ValueError as exc:
+                raise ValueError from exc
 
         else:
             raise ValueError('Wrong number of arguments!')
@@ -211,8 +211,8 @@ class CLI(UserInterface):
                     cls._unit = Cycle.get_random_unit(None)
                 else:
                     cls._unit = Cycle.get_random_unit(' '.join(arguments))
-            except ValueError:
-                raise
+            except ValueError as exc:
+                raise ValueError from exc
 
             if cls._unit.get_unit_type() == Unit.TYPE_DAY:
                 break

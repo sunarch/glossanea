@@ -55,6 +55,4 @@ class CLIUserInput:
     def wait_for_enter(cls):
         """Wait for the user to press ENTER"""
 
-        user_input = cls._get_new('Press ENTER to continue...')
-
-        return
+        _ = cls._get_new('Press ENTER to continue...')

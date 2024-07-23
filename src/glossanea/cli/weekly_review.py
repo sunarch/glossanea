@@ -10,4 +10,5 @@
 
 class CLIWeeklyReview:
     """CLI Weekly Review"""
+    # pylint: disable=unnecessary-pass
     pass
