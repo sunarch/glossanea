@@ -4,6 +4,8 @@
 
 """Output"""
 
+# imports: library
+from enum import Enum
 
 NO_BREAK_SPACE: str = '\u00a0'
 
@@ -11,14 +13,17 @@ DISPLAY_WIDTH: int = 100
 BLANK: str = ' ............ '
 
 
+class Align(Enum):
+    """Enum of string alignments with formatter values"""
+    LEFT = '<'
+    CENTER = '^'
+    RIGHT = '>'
+
+
 class CLIOutput:
     """CLI Output"""
 
     # constants ------------------------------------------------------ #
-
-    ALIGN_LEFT: str = 'left'
-    ALIGN_CENTER: str = 'center'
-    ALIGN_RIGHT: str = 'right'
 
     FORMAT_REGULAR: str = 'regular'
     FORMAT_WIDE: str = 'wide'
@@ -30,7 +35,7 @@ class CLIOutput:
     # template creation ---------------------------------------------- #
 
     @classmethod
-    def _template(cls, filler: str = ' ', align: str = 'left', width: int = -1) -> str:
+    def _template(cls, filler: str = ' ', align: Align = Align.LEFT, width: int = -1) -> str:
         """Template"""
 
         if width == -1:
@@ -47,15 +52,7 @@ class CLIOutput:
             filler = filler_replace[filler]
 
         template += filler
-
-        if align == cls.ALIGN_LEFT:
-            template += '<'
-        elif align == cls.ALIGN_CENTER:
-            template += '^'
-        elif align == cls.ALIGN_RIGHT:
-            template += '>'
-        else:
-            raise ValueError('Incorrect alignment parameter')
+        template += align.value
 
         if not isinstance(width, int):
             raise ValueError('Given width is not an integer')
@@ -158,7 +155,7 @@ class CLIOutput:
 
         for _ in range(1, len(list_regular) + 1):
             template += '| '
-            template += cls._template(' ', 'left', unit_width)
+            template += cls._template(' ', Align.LEFT, unit_width)
             template += ' '
 
         print(template.format(*list_regular))
@@ -253,7 +250,7 @@ class CLIOutput:
     def center(cls, text: str, filler: str = ' ') -> None:
         """Center"""
 
-        template: str = cls._template(filler, cls.ALIGN_CENTER, DISPLAY_WIDTH)
+        template: str = cls._template(filler, Align.CENTER, DISPLAY_WIDTH)
         text: str = ' ' + text + ' '
         print(template.format(text))
 
@@ -277,7 +274,7 @@ class CLIOutput:
             for pair in collection:
                 longest_key = max(longest_key, len(pair[0]))
 
-            template: str = '  ' + cls._template(' ', cls.ALIGN_LEFT, longest_key) + ' : {}'
+            template: str = '  ' + cls._template(' ', Align.LEFT, longest_key) + ' : {}'
 
         elif formatting == cls.FORMAT_WIDE:
             for pair in collection:
@@ -308,7 +305,7 @@ class CLIOutput:
     def filled_line(cls, character: str, count: int = 1) -> None:
         """Filled line"""
         for _ in range(1, count + 1):
-            print(cls._template(character, cls.ALIGN_CENTER, DISPLAY_WIDTH).format(''))
+            print(cls._template(character, Align.CENTER, DISPLAY_WIDTH).format(''))
 
     # message displays ----------------------------------------------- #
 
