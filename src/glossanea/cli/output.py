@@ -8,14 +8,13 @@
 NO_BREAK_SPACE: str = '\u00a0'
 
 DISPLAY_WIDTH: int = 100
+BLANK: str = ' ............ '
 
 
 class CLIOutput:
     """CLI Output"""
 
     # constants ------------------------------------------------------ #
-
-    BLANK: str = ' ............ '
 
     ALIGN_LEFT: str = 'left'
     ALIGN_CENTER: str = 'center'

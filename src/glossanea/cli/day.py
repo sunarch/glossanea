@@ -8,6 +8,7 @@
 from typing import Any, Callable
 
 # imports: project
+from glossanea.cli import output
 from glossanea.cli.output import CLIOutput
 from glossanea.cli.user_input import CLIUserInput
 from glossanea.structure.day import Day
@@ -206,7 +207,7 @@ class CLIDay:
 
         for sentence in data['sentences']:
             CLIOutput.numbered_sentence(sentence['id'],
-                                        sentence['beginning'] + CLIOutput.BLANK + sentence['end'],
+                                        sentence['beginning'] + output.BLANK + sentence['end'],
                                         CLIOutput.FORMAT_INDENTED)
 
         new_words_extension: list[str] = cls._day.get_new_words_extension()
@@ -222,7 +223,7 @@ class CLIDay:
             def l_pr_question() -> None:
                 """l_pr_question"""
                 return CLIOutput.numbered_sentence(sentence['id'],
-                                                   sentence['beginning'] + CLIOutput.BLANK + sentence['end'],
+                                                   sentence['beginning'] + output.BLANK + sentence['end'],
                                                    CLIOutput.FORMAT_REGULAR)
 
             answers: list[str] = [sentence['answer']]
