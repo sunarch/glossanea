@@ -4,6 +4,9 @@
 
 """CLI"""
 
+# imports: library
+import enum
+
 # imports: project
 from glossanea.structure.cycle import Cycle
 from glossanea.structure.unit import Unit
@@ -15,25 +18,35 @@ from glossanea.cli.day import CLIDay
 # from glossanea.cli.weekly_review import CLIWeeklyReview
 
 
+class Command(enum.Enum):
+    """Commands with default help values"""
+    EMPTY = 'EMPTY'
+    HELP = 'help'
+    EXIT = 'quit'
+
+    START = 'start'
+    NEXT = 'next'
+    RANDOM = 'random'
+    GOTO = 'jump'
+
+
+COMMAND_TEXTS: dict[str, Command] = {
+    # only one option per starting letter (except typo options)
+    'begin': Command.START,  # alias
+    'exit': Command.EXIT,
+    'goto': Command.GOTO,
+    'help': Command.HELP,
+    'jump': Command.GOTO,  # alias
+    'next': Command.NEXT,
+    'quit': Command.EXIT,  # alias
+    'random': Command.RANDOM,
+    'ransom': Command.RANDOM,  # typo option
+    'start': Command.START,
+}
+
+
 class CLI:
     """CLI"""
-
-    # constants
-    CMD_HELP_ALIASES: list[str] = ['h', 'help']
-    CMD_START_ALIASES: list[str] = [
-        's', 'start',
-        'b', 'begin',
-    ]
-    CMD_EXIT_ALIASES: list[str] = [
-        'e', 'exit',
-        'q', 'quit',
-    ]
-    CMD_NEXT_ALIASES: list[str] = ['n', 'next']
-    CMD_RANDOM_ALIASES: list[str] = ['r', 'random']
-    CMD_GOTO_ALIASES: list[str] = [
-        'g', 'goto',
-        'j', 'jump',
-    ]
 
     # General variables #
     _done: bool = False
@@ -58,35 +71,46 @@ class CLI:
         while not cls._done:
 
             try:
-                command, arguments = CLIUserInput.get_command(cls.build_command_prompt())
+                command_text, arguments = CLIUserInput.get_command(cls.build_command_prompt())
             except ValueError as ve:
                 CLIOutput.warning(str(ve))
                 continue
+
+            command: Command = Command.EMPTY
+            if command_text in COMMAND_TEXTS:
+                command = COMMAND_TEXTS[command_text]
+            else:
+                for key, value in COMMAND_TEXTS.items():
+                    try:
+                        if key.index(command_text) == 0:
+                            command = value
+                    except ValueError:
+                        pass
 
             # UI function invocations #
             try:
                 # UI commands with zero arguments #
 
-                if command in cls.CMD_HELP_ALIASES:
+                if command == Command.HELP:
                     cls.cmd_help()
 
-                elif command in cls.CMD_START_ALIASES:
+                elif command == Command.START:
                     cls.cmd_start()
 
-                elif command in cls.CMD_NEXT_ALIASES:
+                elif command == Command.NEXT:
                     cls.cmd_next()
 
-                elif command in cls.CMD_EXIT_ALIASES:
+                elif command == Command.EXIT:
                     cls.cmd_exit()
 
                 # UI commands with variable arguments #
 
-                elif command in cls.CMD_RANDOM_ALIASES:
+                elif command == Command.RANDOM:
                     cls.cmd_random(arguments)
 
                 # UI commands with one or more arguments #
 
-                elif command in cls.CMD_GOTO_ALIASES:
+                elif command == Command.GOTO:
                     cls.cmd_goto(arguments)
 
                 # other inputs #
@@ -123,16 +147,13 @@ class CLI:
         """Command: help"""
 
         collection: list[list[str]] = [
-            ['start', 'Start currently selected unit.'],
-            ['begin', 'Same as "start".'],
-            ['exit', 'Exit the program.'],
-            ['quit', 'Same as "exit".'],
-            ['q', 'Same as "exit".'],
-            ['next', 'Go to an start next unit.'],
-            ['goto WEEK', 'Change selected unit to the first day in WEEK.'],
-            ['goto WEEK UNIT', 'Change selected unit to UNIT in WEEK.'],
-            ['jump', 'Same as "goto".'],
-            ['help', 'Display this help text.']
+            [Command.START.value, 'Start currently selected unit.'],
+            [Command.EXIT.value, 'Exit the program.'],
+            [Command.NEXT.value, 'Go to an start next unit.'],
+            [f'{Command.GOTO.value} WEEK', 'Change to the unit of the first day in WEEK.'],
+            [f'{Command.GOTO.value} WEEK UNIT', 'Change to UNIT in WEEK.'],
+            [Command.RANDOM.value, 'Go to a random unit.'],
+            [Command.HELP.value, 'Display this help text.']
         ]
 
         CLIOutput.empty_line(1)

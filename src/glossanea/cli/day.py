@@ -5,6 +5,7 @@
 """Day"""
 
 # imports: library
+import enum
 from typing import Any, Callable
 
 # imports: project
@@ -14,22 +15,39 @@ from glossanea.cli.user_input import CLIUserInput
 from glossanea.structure.day import Day
 
 
+class Command(enum.Enum):
+    """Commands with default help values"""
+    EMPTY = 'EMPTY'
+    HELP = 'help'
+    EXIT = 'quit'
+
+    WORDS = 'words'
+    SOLUTION = 'solution'
+
+    PREVIOUS = 'previous'
+    NEXT = 'next'
+    JUMP = 'jump'
+
+
+COMMAND_TEXTS: dict[str, Command] = {
+    # only one option per starting letter (except typo options)
+    'exit': Command.EXIT,
+    'help': Command.HELP,
+    'jump': Command.JUMP,
+    'next': Command.NEXT,
+    'previous': Command.PREVIOUS,
+    'quit': Command.EXIT,  # alias
+    'solution': Command.SOLUTION,
+    'solve': Command.SOLUTION,  # alias
+    'words': Command.WORDS,
+}
+
+
 class CLIDay:
     """CLI Day"""
 
     # constants
     INTRO_TEXT_WIDTH: int = 60
-
-    CMD_HELP_ALIASES: list[str] = ['h', 'help']
-    CMD_WORDS_ALIASES: list[str] = ['w', 'words']
-    CMD_HINT_ALIASES: list[str] = ['hint']
-    CMD_SKIP_ALIASES: list[str] = ['s', 'skip']
-    CMD_EXIT_ALIASES: list[str] = [
-        'e', 'exit',
-        'q', 'quit',
-    ]
-    CMD_NEXT_ALIASES: list[str] = ['n', 'next']
-    CMD_PREV_ALIASES: list[str] = ['p', 'prev']
 
     ACTION_EXIT: str = 'exit'
     ACTION_TITLE: str = 'title'
@@ -166,26 +184,37 @@ class CLIDay:
 
             if a_type == CLIUserInput.TYPE_COMMAND:
 
-                if a_content in cls.CMD_WORDS_ALIASES:
+                command: Command = Command.EMPTY
+                if a_content in COMMAND_TEXTS:
+                    command = COMMAND_TEXTS[a_content]
+                else:
+                    for key, value in COMMAND_TEXTS.items():
+                        try:
+                            if key.index(a_content) == 0:
+                                command = value
+                        except ValueError:
+                            pass
+
+                if command == Command.WORDS:
                     cls.new_words(False)
                     CLIOutput.empty_line(1)
                     l_pr_question()
-                elif a_content in cls.CMD_HINT_ALIASES:
+                elif command == Command.SOLUTION:
                     print('HINT: ' + ' / '.join([f'"{answer}"' for answer in answers]))
                     continue
-                elif a_content in cls.CMD_SKIP_ALIASES:
+                elif command == Command.NEXT:
                     return True
-                elif a_content in cls.CMD_NEXT_ALIASES:
+                elif command == Command.JUMP:
                     l_next_msg()
                     return False
-                elif a_content in cls.CMD_PREV_ALIASES:
+                elif command == Command.PREVIOUS:
                     l_prev_msg()
                     cls._next_action = prev_action
                     return False
-                elif a_content in cls.CMD_EXIT_ALIASES:
+                elif command == Command.EXIT:
                     cls._next_action = cls.ACTION_EXIT
                     return False
-                elif a_content in cls.CMD_HELP_ALIASES:
+                elif command == Command.HELP:
                     cls.help_cmd_in_task()
                 else:
                     CLIOutput.warning('Invalid command.')
@@ -425,12 +454,12 @@ class CLIDay:
         """Help cmd in task"""
 
         collection: list[list[str]] = [
-            ['words', 'Display New Words section again.'],
-            ['hint', 'Display the answer hint (use sparingly!)'],
-            ['skip', 'Move on to the next part of the task.'],
-            ['next', 'Leave task and move on to the next one.'],
-            ['prev', 'Leave task and jump back to the previous one.'],
-            ['exit', 'Leave task an exit to top program level.']
+            [Command.WORDS.value, 'Display New Words section again.'],
+            [Command.SOLUTION.value, 'Display the answer hint (use sparingly!)'],
+            [Command.NEXT.value, 'Move on to the next part of the task.'],
+            [Command.JUMP.value, 'Leave task and move on to the next one.'],
+            [Command.PREVIOUS.value, 'Leave task and jump back to the previous one.'],
+            [Command.EXIT.value, 'Leave task an exit to top program level.']
         ]
 
         CLIOutput.empty_line(1)
