@@ -40,12 +40,10 @@ def main() -> None:
         print(f'{version.PROGRAM_NAME} {version.__version__}')
         return
 
-    ui = CLI
-
     config.check_data_dir_path()
 
     # start User Interface
-    ui.start()
+    CLI.start()
 
 
 if __name__ == '__main__':
