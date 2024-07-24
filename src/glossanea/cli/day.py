@@ -18,7 +18,6 @@ class CLIDay:
 
     # General variables #
     _unit_finished: bool = False
-    _task_index: int = 0
 
     @classmethod
     def start(cls, day: Day) -> None:
@@ -38,31 +37,31 @@ class CLIDay:
             (tasks.other_new_words, [day.get_other_new_words()]),
         ]
 
-        cls._task_index = 0
+        task_index: int = 0
         cls._unit_finished = False
         while not cls._unit_finished:
 
-            if cls._task_index < 0:
-                raise IndexError(f'Step index out of bounds: {cls._task_index}')
+            if task_index < 0:
+                raise IndexError(f'Step index out of bounds: {task_index}')
 
-            if cls._task_index >= len(task_list):
+            if task_index >= len(task_list):
                 cls._unit_finished = True
                 break
 
-            task_function: Callable = task_list[cls._task_index][0]
-            task_arguments: list[Any] = task_list[cls._task_index][1]
+            task_function: Callable = task_list[task_index][0]
+            task_arguments: list[Any] = task_list[task_index][1]
             task_result: tasks.TaskResult = task_function(*task_arguments)
 
             match task_result:
 
                 case tasks.TaskResult.BACK_TO_PREVIOUS_TASK:
-                    cls._task_index = max(0, cls._task_index - 1)
-                    if cls._task_index == 0:
+                    task_index = max(0, task_index - 1)
+                    if task_index == 0:
                         output.general_message('This is the first task: Starting from the beginning.')
                     continue
 
                 case tasks.TaskResult.JUMP_TO_NEXT_TASK:
-                    cls._task_index += 1
+                    task_index += 1
                     continue
 
                 case tasks.TaskResult.EXIT_TASK:
@@ -70,7 +69,7 @@ class CLIDay:
                     break
 
                 case tasks.TaskResult.NOT_IMPLEMENTED | tasks.TaskResult.FINISHED:
-                    cls._task_index += 1
+                    task_index += 1
                     continue
 
                 case _:
