@@ -21,13 +21,6 @@ class Day(Unit):
     _week_number: int = 1
     _day_number: int = 1
 
-    # class methods -------------------------------------------------- #
-
-    @classmethod
-    def get_unit_type(cls) -> unit.UnitType:
-        """Get unit type"""
-        return unit.UnitType.DAY
-
     # content variables ---------------------------------------------- #
 
     _title: str | None = None
@@ -41,13 +34,20 @@ class Day(Unit):
 
     # overridden getters --------------------------------------------- #
 
-    def get_week_no(self) -> int:
+    @property
+    def week_number(self) -> int:
         """Get week number"""
         return self._week_number
 
-    def get_unit_no(self) -> int:
+    @property
+    def unit_number(self) -> int:
         """Get unit number"""
         return self._day_number
+
+    @property
+    def unit_type(self) -> unit.UnitType:
+        """Get unit type"""
+        return unit.UnitType.DAY
 
     # content getters ------------------------------------------------ #
 

@@ -28,19 +28,18 @@ class Unit(abc.ABC):
 
 # abstract content getters ------------------------------------------- #
 
-    @abc.abstractmethod
-    def get_week_no(self) -> int:
+    @property
+    def week_number(self) -> int:
         """Get week number"""
         raise NotImplementedError
 
-    @abc.abstractmethod
-    def get_unit_no(self) -> int:
+    @property
+    def unit_number(self) -> int:
         """Get unit number"""
         raise NotImplementedError
 
-    @classmethod
-    @abc.abstractmethod
-    def get_unit_type(cls) -> UnitType:
+    @property
+    def unit_type(self) -> UnitType:
         """Get unit type"""
         raise NotImplementedError
 

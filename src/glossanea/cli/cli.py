@@ -160,8 +160,8 @@ class CLI:
     def cmd_next(cls) -> None:
         """Command: next"""
 
-        week_number: int = cls._unit.get_week_no()
-        unit_number: int = cls._unit.get_unit_no()
+        week_number: int = cls._unit.week_number
+        unit_number: int = cls._unit.unit_number
 
         try:
             prev_unit: Unit = cls._unit
@@ -171,10 +171,10 @@ class CLI:
             raise IndexError from exc
 
         # TODO: temporary skip of weekly review until implemented ˇˇˇˇ #
-        week_number: int = cls._unit.get_week_no()
-        unit_number: int = cls._unit.get_unit_no()
+        week_number: int = cls._unit.week_number
+        unit_number: int = cls._unit.unit_number
 
-        if cls._unit.get_unit_type() == unit.UnitType.WEEKLY_REVIEW:
+        if cls._unit.unit_type == unit.UnitType.WEEKLY_REVIEW:
             try:
                 prev_unit: Unit = cls._unit
                 cls._unit = Cycle.get_next_unit(week_number, unit_number)
@@ -228,7 +228,7 @@ class CLI:
             except ValueError as exc:
                 raise ValueError from exc
 
-            if cls._unit.get_unit_type() == unit.UnitType.DAY:
+            if cls._unit.unit_type == unit.UnitType.DAY:
                 break
 
         del prev_unit
@@ -254,8 +254,8 @@ class CLI:
     def build_command_prompt(cls):
         """Build command prompt"""
 
-        week: int = cls._unit.get_week_no()
-        day: int | str = cls._unit.get_unit_no()
+        week: int = cls._unit.week_number
+        day: int | str = cls._unit.unit_number
 
         if day == unit.WEEKLY_REVIEW_INDEX:
             day = 'WR'
