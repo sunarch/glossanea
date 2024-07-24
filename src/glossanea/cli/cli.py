@@ -58,14 +58,15 @@ class CLI:
         cls._unit = Cycle.get_day_by_number(1, 1)
 
         # Introduction #
-        cls.display_introduction()
+        display_introduction()
 
         # Main Program Loop #
 
         while not cls._done:
 
             try:
-                command_text, arguments = user_input.get_command(cls.build_command_prompt())
+                command_text, arguments = user_input.get_command(build_command_prompt(cls._unit.week_number,
+                                                                                      cls._unit.unit_number))
             except ValueError as ve:
                 output.warning(str(ve))
                 continue
@@ -232,29 +233,28 @@ class CLI:
 
         cls.cmd_start()
 
-    # general displays ----------------------------------------------- #
 
-    @classmethod
-    def display_introduction(cls):
-        """Display introduction"""
+# general displays ----------------------------------------------- #
 
-        path: str = data_file_path('introduction.txt')
-        output.empty_line(1)
-        with open(path, 'r', encoding='UTF-8') as fh_intro:
-            for line in fh_intro.readlines():
-                output.center(line.rstrip())
-        output.empty_line(1)
+def display_introduction():
+    """Display introduction"""
 
-    # other ---------------------------------------------------------- #
+    path: str = data_file_path('introduction.txt')
+    output.empty_line(1)
+    with open(path, 'r', encoding='UTF-8') as fh_intro:
+        for line in fh_intro.readlines():
+            output.center(line.rstrip())
+    output.empty_line(1)
 
-    @classmethod
-    def build_command_prompt(cls):
-        """Build command prompt"""
 
-        week: int = cls._unit.week_number
-        day: int | str = cls._unit.unit_number
+# other -------------------------------------------------------------- #
 
-        if day == unit.WEEKLY_REVIEW_INDEX:
-            day = 'WR'
+def build_command_prompt(week_number: int, unit_number: int):
+    """Build command prompt"""
 
-        return f'Glossanea {week}/{day} $ '
+    if unit_number == unit.WEEKLY_REVIEW_INDEX:
+        unit_number_display: str = 'WR'
+    else:
+        unit_number_display: str = f'{unit_number}'
+
+    return f'Glossanea {week_number}/{unit_number_display} $ '
