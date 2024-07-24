@@ -5,9 +5,13 @@
 """Unit"""
 
 # imports: library
-import abc
 import enum
 import os.path
+from typing import Any
+
+# imports: project
+from glossanea.files.data import load_data_file, REQUIRED_VERSION
+
 
 MIN_WEEK_NUMBER: int = 1
 MAX_WEEK_NUMBER: int = 12
@@ -23,25 +27,118 @@ class UnitType(enum.Enum):
     WEEKLY_REVIEW = enum.auto()
 
 
-class Unit(abc.ABC):
+KEY_DATA_VERSION: str = 'version'
+
+KEY_TITLE: str = 'title'
+KEY_INTRO_TEXT: str = 'intro_text'
+
+KEY_NEW_WORDS: str = 'new_words'
+KEY_NEW_WORDS_EXTENSION: str = 'new_words_extension'
+KEY_SAMPLE_SENTENCES: str = 'sample_sentences'
+KEY_DEFINITIONS: str = 'definitions'
+KEY_MATCHING: str = 'matching'
+KEY_OTHER_NEW_WORDS: str = 'other_new_words'
+
+
+class Unit:
     """Unit"""
 
-# abstract content getters ------------------------------------------- #
+    # general getters ------------------------------------------------ #
 
     @property
     def week_number(self) -> int:
         """Get week number"""
-        raise NotImplementedError
+        return self._week_number
 
     @property
     def unit_number(self) -> int:
         """Get unit number"""
-        raise NotImplementedError
+        return self._unit_number
 
     @property
     def unit_type(self) -> UnitType:
         """Get unit type"""
-        raise NotImplementedError
+        return self._unit_type
+
+    # content getters ------------------------------------------------ #
+
+    @property
+    def data_keys(self) -> list[str]:
+        """Iterate through the keys in the data file"""
+
+        return list(self._data.keys())
+
+    @property
+    def data_version(self) -> str:
+        """Get data version"""
+        return self._data[KEY_DATA_VERSION]
+
+    @property
+    def title(self) -> str:
+        """Get title"""
+        return self._data[KEY_TITLE]
+
+    @property
+    def new_words(self) -> list[dict[str, str]]:
+        """Get new words"""
+        return self._data[KEY_NEW_WORDS]
+
+    @property
+    def new_words_extension(self) -> list[str]:
+        """Get new words extension"""
+        return self._data[KEY_NEW_WORDS_EXTENSION]
+
+    @property
+    def intro_text(self) -> list[str]:
+        """Get intro text"""
+        return self._data[KEY_INTRO_TEXT]
+
+    @property
+    def sample_sentences(self) -> dict[str, Any]:
+        """Get sample sentences"""
+        return self._data[KEY_SAMPLE_SENTENCES]
+
+    @property
+    def definitions(self) -> dict[str, Any]:
+        """Get definitions"""
+        return self._data[KEY_DEFINITIONS]
+
+    @property
+    def matching(self) -> dict[str, Any]:
+        """Get matching"""
+        return self._data[KEY_MATCHING]
+
+    @property
+    def other_new_words(self) -> dict[str, str]:
+        """Get other new words"""
+        return self._data[KEY_OTHER_NEW_WORDS]
+
+    # init and data load --------------------------------------------- #
+
+    def __init__(self, week_number: int, unit_number: int) -> None:
+
+        try:
+            validate_week_number(week_number)
+            validate_unit_number(unit_number)
+        except ValueError as exc:
+            raise ValueError from exc
+
+        self._week_number = week_number
+        self._unit_number = unit_number
+
+        if unit_number == WEEKLY_REVIEW_INDEX:
+            self._unit_type = UnitType.WEEKLY_REVIEW
+            unit_number_display: str = 'WR'
+            file_path: str = build_path_weekly_review(self._week_number)
+        else:
+            self._unit_type = UnitType.DAY
+            unit_number_display: str = f'{unit_number}'
+            file_path: str = build_path_day(self._week_number, self._unit_number)
+
+        self._data: dict[str, Any] = load_data_file(file_path)
+
+        if self.data_version != REQUIRED_VERSION:
+            raise ValueError(f'Incorrect data file version: {self._week_number}/{unit_number_display}')
 
 
 # validators --------------------------------------------------------- #
@@ -58,13 +155,16 @@ def validate_week_number(week_number: int) -> bool:
     return True
 
 
-def validate_day_number(day_number: int) -> bool:
+def validate_unit_number(unit_number: int) -> bool:
     """Validate a day number"""
 
-    if not isinstance(day_number, int):
+    if not isinstance(unit_number, int):
         raise ValueError('Given day number value is not an integer!')
 
-    if day_number < MIN_DAY_NUMBER or day_number > MAX_DAY_NUMBER:
+    if unit_number == WEEKLY_REVIEW_INDEX:
+        return True
+
+    if unit_number < MIN_DAY_NUMBER or unit_number > MAX_DAY_NUMBER:
         raise ValueError('Wrong day number!')
 
     return True

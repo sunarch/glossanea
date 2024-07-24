@@ -13,8 +13,7 @@ from typing import Any
 from glossanea.files.config import data_dir_path
 
 
-REQUIRED_VERSION_DAY: str = 'v2_day'
-REQUIRED_VERSION_WEEKLY_REVIEW: str = 'v2_weekly_review'
+REQUIRED_VERSION: int = 2
 
 
 def data_file_path(file_subpath: str) -> str:

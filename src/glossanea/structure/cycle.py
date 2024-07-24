@@ -10,8 +10,6 @@ import random
 # imports: project
 from glossanea.structure import unit
 from glossanea.structure.unit import Unit
-from glossanea.structure.day import Day
-from glossanea.structure.weekly_review import WeeklyReview
 
 
 class Cycle:
@@ -23,26 +21,16 @@ class Cycle:
     def get_next_unit(cls, week_number: int, unit_number: int) -> Unit:
         """Create an instance of the next unit"""
 
-        unit_object = None
-
         next_week_no: int = week_number
         next_unit_no: int = (unit_number + 1) % unit.UNITS_PER_WEEK
 
         if unit_number == unit.WEEKLY_REVIEW_INDEX:
-            try:
-                next_week_no = week_number + 1
-                unit.validate_week_number(next_week_no)
-                unit_object = Day(next_week_no, next_unit_no)
-            except ValueError as exc:
-                raise IndexError('End of units reached!') from exc
-        else:
+            next_week_no = week_number + 1
 
-            if next_unit_no == unit.WEEKLY_REVIEW_INDEX:
-                unit_object = WeeklyReview(next_week_no)
-            else:
-                unit_object = Day(next_week_no, next_unit_no)
+        if next_week_no > unit.MAX_WEEK_NUMBER:
+            raise IndexError('End of units reached!')
 
-        return unit_object
+        return Unit(next_week_no, next_unit_no)
 
     # random unit ---------------------------------------------------- #
 
@@ -64,30 +52,26 @@ class Cycle:
         else:
             raise ValueError('Incorrect unit type.')
 
-        # pylint: disable=no-else-return
-        if unit_number == unit.WEEKLY_REVIEW_INDEX:
-            return WeeklyReview(week_number)
-        else:
-            return Day(week_number, unit_number)
+        return Unit(week_number, unit_number)
 
     # day getters ---------------------------------------------------- #
 
     @classmethod
-    def get_first_day_by_week(cls, week_number: int) -> Day:
+    def get_first_day_by_week(cls, week_number: int) -> Unit:
         """Create an instance of the first day in a specific week"""
 
-        return Day(week_number, unit.MIN_DAY_NUMBER)
+        return Unit(week_number, unit.MIN_DAY_NUMBER)
 
     @classmethod
-    def get_day_by_number(cls, week_number: int, day_number: int) -> Day:
+    def get_day_by_number(cls, week_number: int, day_number: int) -> Unit:
         """Create an instance of a specific day"""
 
-        return Day(week_number, day_number)
+        return Unit(week_number, day_number)
 
     # weekly review getters ------------------------------------------ #
 
     @classmethod
-    def get_weekly_review_by_week(cls, week_number: int) -> WeeklyReview:
+    def get_weekly_review_by_week(cls, week_number: int) -> Unit:
         """Create an instance of the weekly review in a specific week"""
 
-        return WeeklyReview(week_number)
+        return Unit(week_number, unit.WEEKLY_REVIEW_INDEX)

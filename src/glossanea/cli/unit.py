@@ -2,17 +2,16 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-"""Day"""
+"""CLI Unit"""
 
 # imports: project
 from glossanea.cli import output
-from glossanea.structure import day as unit
-from glossanea.structure.day import Day
+from glossanea.structure import unit
 from glossanea import tasks
 
 
-def run(day: Day) -> None:
-    """Run Day"""
+def run(day: unit.Unit) -> None:
+    """Run Unit"""
 
     task_list: list[str] = day.data_keys
     task_index: int = 0
@@ -24,19 +23,19 @@ def run(day: Day) -> None:
         if task_index >= len(task_list):
             break
 
-        task_result: tasks.TaskResult = tasks.TaskResult.NOT_IMPLEMENTED
-
         match task_list[task_index]:
             case unit.KEY_DATA_VERSION:
                 task_result = tasks.TaskResult.HIDDEN
+
             case unit.KEY_TITLE:
                 task_result = tasks.title(day.title)
+            case unit.KEY_INTRO_TEXT:
+                task_result = tasks.intro_text(day.intro_text)
+
             case unit.KEY_NEW_WORDS:
                 task_result = tasks.new_words(day.new_words)
             case unit.KEY_NEW_WORDS_EXTENSION:
                 task_result = tasks.TaskResult.HIDDEN
-            case unit.KEY_INTRO_TEXT:
-                task_result = tasks.intro_text(day.intro_text)
             case unit.KEY_SAMPLE_SENTENCES:
                 task_result = tasks.sample_sentences(day.sample_sentences,
                                                      day.new_words_extension,
