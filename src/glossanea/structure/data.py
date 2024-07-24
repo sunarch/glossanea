@@ -10,7 +10,7 @@ import os.path
 from typing import Any
 
 # imports: project
-from glossanea.files.config import data_dir_path
+from glossanea.structure import config
 
 
 REQUIRED_VERSION: int = 2
@@ -22,7 +22,7 @@ def data_file_path(file_subpath: str) -> str:
     if not isinstance(file_subpath, str):
         raise ValueError('The given data file path is not a string!')
 
-    return os.path.join(data_dir_path(), file_subpath)
+    return os.path.join(config.data_dir_path(), file_subpath)
 
 
 def load_data_file(file_subpath: str) -> dict[str, Any]:

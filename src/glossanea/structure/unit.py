@@ -10,7 +10,7 @@ import os.path
 from typing import Any
 
 # imports: project
-from glossanea.files.data import load_data_file, REQUIRED_VERSION
+from glossanea.structure import data
 
 
 MIN_WEEK_NUMBER: int = 1
@@ -135,9 +135,9 @@ class Unit:
             unit_number_display: str = f'{unit_number}'
             file_path: str = build_path_day(self._week_number, self._unit_number)
 
-        self._data: dict[str, Any] = load_data_file(file_path)
+        self._data: dict[str, Any] = data.load_data_file(file_path)
 
-        if self.data_version != REQUIRED_VERSION:
+        if self.data_version != data.REQUIRED_VERSION:
             raise ValueError(f'Incorrect data file version: {self._week_number}/{unit_number_display}')
 
 

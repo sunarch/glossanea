@@ -5,9 +5,9 @@
 """CLI Unit"""
 
 # imports: project
+from glossanea import tasks
 from glossanea.cli import output
 from glossanea.structure import unit
-from glossanea import tasks
 
 
 def run(day: unit.Unit) -> None:

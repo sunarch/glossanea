@@ -9,12 +9,12 @@ import enum
 import random
 
 # imports: project
-from glossanea.structure import unit
-from glossanea.structure.unit import Unit
-from glossanea.files.data import data_file_path
+from glossanea.cli import cli_unit
 from glossanea.cli import output
 from glossanea.cli import user_input
-from glossanea.cli.unit import run as run_unit
+from glossanea.structure import data
+from glossanea.structure import unit
+from glossanea.structure.unit import Unit
 
 
 class Command(enum.Enum):
@@ -82,7 +82,7 @@ def mainloop() -> None:
                 case Command.EXIT:
                     break
                 case Command.START:
-                    run_unit(unit_obj)
+                    cli_unit.run(unit_obj)
                 case Command.HELP:
                     cmd_help()
                 case Command.NEXT:
@@ -90,7 +90,7 @@ def mainloop() -> None:
                     # TODO: temporary skip of weekly review until implemented
                     while unit_obj.unit_type == unit.UnitType.WEEKLY_REVIEW:
                         unit_obj = get_next_unit(unit_obj)
-                    run_unit(unit_obj)
+                    cli_unit.run(unit_obj)
                 # UI commands with variable arguments #
                 case Command.RANDOM:
                     unit_obj = get_random_unit(''.join(arguments))
@@ -225,7 +225,7 @@ def get_random_unit(unit_type: str) -> Unit:
 def display_introduction():
     """Display introduction"""
 
-    path: str = data_file_path('introduction.txt')
+    path: str = data.data_file_path('introduction.txt')
     output.empty_line(1)
     with open(path, 'r', encoding='UTF-8') as fh_intro:
         for line in fh_intro.readlines():

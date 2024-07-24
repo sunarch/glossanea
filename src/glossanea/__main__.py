@@ -14,7 +14,7 @@ import libmonty_logging.message as logging_message
 # imports: project
 from glossanea import version
 from glossanea.cli import cli
-from glossanea.files import config
+from glossanea.structure import config
 
 
 def main() -> None:
