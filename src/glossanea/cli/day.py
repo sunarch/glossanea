@@ -19,31 +19,23 @@ class CLIDay:
     # General variables #
     _unit_finished: bool = False
     _task_index: int = 0
-    _day: Day | None = None
 
     @classmethod
-    def start(cls, day) -> None:
-        """Start"""
-
-        cls._day = day
-        cls.mainloop()
-
-    @classmethod
-    def mainloop(cls) -> None:
-        """Main loop"""
+    def start(cls, day: Day) -> None:
+        """Start / main loop"""
 
         task_list: list[tuple[Callable, list[Any]]] = [
-            (tasks.title, [cls._day.get_title()]),
-            (tasks.new_words, [cls._day.get_new_words()]),
-            (tasks.intro_text, [cls._day.get_intro_text()]),
-            (tasks.sample_sentences, [cls._day.get_sample_sentences(),
-                                      cls._day.get_new_words_extension(),
-                                      cls._day.get_new_words()]),
-            (tasks.definitions, [cls._day.get_definitions(),
-                                 cls._day.get_new_words()]),
-            (tasks.matching, [cls._day.get_matching(),
-                              cls._day.get_new_words()]),
-            (tasks.other_new_words, [cls._day.get_other_new_words()]),
+            (tasks.title, [day.get_title()]),
+            (tasks.new_words, [day.get_new_words()]),
+            (tasks.intro_text, [day.get_intro_text()]),
+            (tasks.sample_sentences, [day.get_sample_sentences(),
+                                      day.get_new_words_extension(),
+                                      day.get_new_words()]),
+            (tasks.definitions, [day.get_definitions(),
+                                 day.get_new_words()]),
+            (tasks.matching, [day.get_matching(),
+                              day.get_new_words()]),
+            (tasks.other_new_words, [day.get_other_new_words()]),
         ]
 
         cls._task_index = 0

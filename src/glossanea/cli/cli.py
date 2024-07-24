@@ -53,14 +53,9 @@ class CLI:
 
     @classmethod
     def start(cls) -> None:
-        """Start"""
+        """Start / main loop"""
 
         cls._unit = Cycle.get_day_by_number(1, 1)
-        cls.mainloop()
-
-    @classmethod
-    def mainloop(cls) -> None:
-        """Main loop"""
 
         # Introduction #
         cls.display_introduction()
