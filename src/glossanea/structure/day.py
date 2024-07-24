@@ -12,6 +12,16 @@ from glossanea.structure import unit
 from glossanea.structure.unit import Unit
 from glossanea.files.data import load_data_file, REQUIRED_VERSION_DAY
 
+KEY_DATA_VERSION: str = 'version'
+KEY_TITLE: str = 'title'
+KEY_NEW_WORDS: str = 'new_words'
+KEY_NEW_WORDS_EXTENSION: str = 'new_words_extension'
+KEY_INTRO_TEXT: str = 'intro_text'
+KEY_SAMPLE_SENTENCES: str = 'sample_sentences'
+KEY_DEFINITIONS: str = 'definitions'
+KEY_MATCHING: str = 'matching'
+KEY_OTHER_NEW_WORDS: str = 'other_new_words'
+
 
 class Day(Unit):
     """Day"""
@@ -20,17 +30,6 @@ class Day(Unit):
 
     _week_number: int = 1
     _day_number: int = 1
-
-    # content variables ---------------------------------------------- #
-
-    _title: str | None = None
-    _new_words: list[dict[str, str]] | None = None
-    _new_words_extension: list[str] | None = None
-    _intro_text: list[str] | None = None
-    _sample_sentences: dict[str, Any] | None = None
-    _definitions: dict[str, Any] | None = None
-    _matching: dict[str, Any] | None = None
-    _other_new_words: dict[str, str]| None  = None
 
     # overridden getters --------------------------------------------- #
 
@@ -51,37 +50,50 @@ class Day(Unit):
 
     # content getters ------------------------------------------------ #
 
-    def get_title(self) -> str:
+    @property
+    def data_version(self) -> str:
+        """Get data version"""
+        return self._data[KEY_DATA_VERSION]
+
+    @property
+    def title(self) -> str:
         """Get title"""
-        return self._title
+        return self._data[KEY_TITLE]
 
-    def get_new_words(self) -> list[dict[str, str]]:
+    @property
+    def new_words(self) -> list[dict[str, str]]:
         """Get new words"""
-        return self._new_words
+        return self._data[KEY_NEW_WORDS]
 
-    def get_new_words_extension(self) -> list[str]:
+    @property
+    def new_words_extension(self) -> list[str]:
         """Get new words extension"""
-        return self._new_words_extension
+        return self._data[KEY_NEW_WORDS_EXTENSION]
 
-    def get_intro_text(self) -> list[str]:
+    @property
+    def intro_text(self) -> list[str]:
         """Get intro text"""
-        return self._intro_text
+        return self._data[KEY_INTRO_TEXT]
 
-    def get_sample_sentences(self) -> dict[str, Any]:
+    @property
+    def sample_sentences(self) -> dict[str, Any]:
         """Get sample sentences"""
-        return self._sample_sentences
+        return self._data[KEY_SAMPLE_SENTENCES]
 
-    def get_definitions(self) -> dict[str, Any]:
+    @property
+    def definitions(self) -> dict[str, Any]:
         """Get definitions"""
-        return self._definitions
+        return self._data[KEY_DEFINITIONS]
 
-    def get_matching(self) -> dict[str, Any]:
+    @property
+    def matching(self) -> dict[str, Any]:
         """Get matching"""
-        return self._matching
+        return self._data[KEY_MATCHING]
 
-    def get_other_new_words(self) -> dict[str, str]:
+    @property
+    def other_new_words(self) -> dict[str, str]:
         """Get other new words"""
-        return self._other_new_words
+        return self._data[KEY_OTHER_NEW_WORDS]
 
     # init and data load --------------------------------------------- #
 
@@ -96,26 +108,9 @@ class Day(Unit):
         self._week_number = week_number
         self._day_number = day_number
 
-        self._load()
-
-    def _load(self) -> None:
-        """Load"""
-
         file_path: str = unit.build_path_day(self._week_number, self._day_number)
 
-        data: dict[str, Any] = load_data_file(file_path)
+        self._data: dict[str, Any] = load_data_file(file_path)
 
-        if data['version'] != REQUIRED_VERSION_DAY:
+        if self.data_version != REQUIRED_VERSION_DAY:
             raise ValueError(f'Incorrect data file version: {self._week_number}/{self._day_number}')
-
-        self._title = data['title']
-        self._new_words = data['new_words']
-        self._new_words_extension = data['new_words_extension']
-        self._intro_text = data['intro_text']
-        self._sample_sentences = data['sample_sentences']
-        self._definitions = data['definitions']
-        self._matching = data['matching']
-        self._other_new_words = data['other_new_words']
-
-    def __del__(self) -> None:
-        pass

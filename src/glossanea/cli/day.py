@@ -17,17 +17,17 @@ def run(day: Day) -> None:
     """Run Day"""
 
     task_list: list[tuple[Callable, list[Any]]] = [
-        (tasks.title, [day.get_title()]),
-        (tasks.new_words, [day.get_new_words()]),
-        (tasks.intro_text, [day.get_intro_text()]),
-        (tasks.sample_sentences, [day.get_sample_sentences(),
-                                  day.get_new_words_extension(),
-                                  day.get_new_words()]),
-        (tasks.definitions, [day.get_definitions(),
-                             day.get_new_words()]),
-        (tasks.matching, [day.get_matching(),
-                          day.get_new_words()]),
-        (tasks.other_new_words, [day.get_other_new_words()]),
+        (tasks.title, [day.title]),
+        (tasks.new_words, [day.new_words]),
+        (tasks.intro_text, [day.intro_text]),
+        (tasks.sample_sentences, [day.sample_sentences,
+                                  day.new_words_extension,
+                                  day.new_words]),
+        (tasks.definitions, [day.definitions,
+                             day.new_words]),
+        (tasks.matching, [day.matching,
+                          day.new_words]),
+        (tasks.other_new_words, [day.other_new_words]),
     ]
 
     task_index: int = 0
