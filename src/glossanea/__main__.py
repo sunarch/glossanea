@@ -20,7 +20,7 @@ from glossanea.structure import config
 def main() -> None:
     """Main"""
 
-    libmonty_logging.apply_default_console_and_file(
+    libmonty_logging.apply_default_file_only(
         version.PROGRAM_NAME,
         version.__version__
     )
