@@ -13,7 +13,7 @@ import libmonty_logging.message as logging_message
 
 # imports: project
 from glossanea import version
-from glossanea.cli.cli import CLI
+from glossanea.cli import cli
 from glossanea.files import config
 
 
@@ -43,7 +43,7 @@ def main() -> None:
     config.check_data_dir_path()
 
     # start User Interface
-    CLI.start()
+    cli.mainloop()
 
 
 if __name__ == '__main__':

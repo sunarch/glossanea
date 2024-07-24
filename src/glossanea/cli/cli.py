@@ -44,86 +44,80 @@ COMMAND_TEXTS: dict[str, Command] = {
 }
 
 
-class CLI:
-    """CLI"""
+def mainloop() -> None:
+    """CLI main loop"""
 
-    @staticmethod
-    def start() -> None:
-        """Start / main loop"""
+    unit_obj: Unit = Unit(unit.MIN_WEEK_NUMBER, unit.MIN_DAY_NUMBER)
 
-        unit_obj: Unit = Unit(unit.MIN_WEEK_NUMBER, unit.MIN_DAY_NUMBER)
+    # Introduction #
+    display_introduction()
 
-        # Introduction #
-        display_introduction()
+    # Main Program Loop #
 
-        # Main Program Loop #
+    while True:
 
-        while True:
+        try:
+            command_text, arguments = user_input.get_command(build_command_prompt(unit_obj.week_number,
+                                                                                  unit_obj.unit_number))
+        except ValueError as ve:
+            output.warning(str(ve))
+            continue
 
-            try:
-                command_text, arguments = user_input.get_command(build_command_prompt(unit_obj.week_number,
-                                                                                      unit_obj.unit_number))
-            except ValueError as ve:
-                output.warning(str(ve))
-                continue
+        command: Command = Command.EMPTY
+        if command_text in COMMAND_TEXTS:
+            command = COMMAND_TEXTS[command_text]
+        else:
+            for key, value in COMMAND_TEXTS.items():
+                try:
+                    if key.index(command_text) == 0:
+                        command = value
+                except ValueError:
+                    pass
 
-            command: Command = Command.EMPTY
-            if command_text in COMMAND_TEXTS:
-                command = COMMAND_TEXTS[command_text]
-            else:
-                for key, value in COMMAND_TEXTS.items():
-                    try:
-                        if key.index(command_text) == 0:
-                            command = value
-                    except ValueError:
-                        pass
+        # UI function invocations #
+        try:
 
-            # UI function invocations #
-            try:
-
-                match command:
-                    # UI commands with zero arguments #
-                    case Command.EXIT:
-                        break
-                    case Command.START:
-                        run_unit(unit_obj)
-                    case Command.HELP:
-                        cmd_help()
-                    case Command.NEXT:
+            match command:
+                # UI commands with zero arguments #
+                case Command.EXIT:
+                    break
+                case Command.START:
+                    run_unit(unit_obj)
+                case Command.HELP:
+                    cmd_help()
+                case Command.NEXT:
+                    unit_obj = get_next_unit(unit_obj)
+                    # TODO: temporary skip of weekly review until implemented
+                    while unit_obj.unit_type == unit.UnitType.WEEKLY_REVIEW:
                         unit_obj = get_next_unit(unit_obj)
-                        # TODO: temporary skip of weekly review until implemented
-                        while unit_obj.unit_type == unit.UnitType.WEEKLY_REVIEW:
-                            unit_obj = get_next_unit(unit_obj)
-                        run_unit(unit_obj)
-                    # UI commands with variable arguments #
-                    case Command.RANDOM:
+                    run_unit(unit_obj)
+                # UI commands with variable arguments #
+                case Command.RANDOM:
+                    unit_obj = get_random_unit(''.join(arguments))
+                    # TODO: temporary skip of weekly review until implemented
+                    while unit_obj.unit_type == unit.UnitType.WEEKLY_REVIEW:
                         unit_obj = get_random_unit(''.join(arguments))
-                        # TODO: temporary skip of weekly review until implemented
-                        while unit_obj.unit_type == unit.UnitType.WEEKLY_REVIEW:
-                            unit_obj = get_random_unit(''.join(arguments))
-                    # UI commands with one or more arguments #
-                    case Command.GOTO:
-                        unit_obj = get_specific_unit(unit_obj, arguments)
-                    # other inputs #
-                    case _:
-                        raise KeyError('Invalid command!')
+                # UI commands with one or more arguments #
+                case Command.GOTO:
+                    unit_obj = get_specific_unit(unit_obj, arguments)
+                # other inputs #
+                case _:
+                    raise KeyError('Invalid command!')
 
-            except KeyError as exc:
-                output.warning(str(exc))
-                continue
+        except KeyError as exc:
+            output.warning(str(exc))
+            continue
 
-            except ValueError as exc:
-                output.warning(str(exc))
-                continue
+        except ValueError as exc:
+            output.warning(str(exc))
+            continue
 
-            except IndexError as exc:
-                output.warning(str(exc))
-                continue
+        except IndexError as exc:
+            output.warning(str(exc))
+            continue
 
-        # else:  # executes after while condition becomes false #
-        #     pass
-
-        # end of the Main Program Loop #
+    # else:  # executes after while condition becomes false #
+    #     pass
 
 
 # User Interface functions ------------------------------------------- #
