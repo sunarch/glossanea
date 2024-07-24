@@ -10,10 +10,12 @@ import enum
 # imports: project
 from glossanea.structure.cycle import Cycle
 from glossanea.structure.unit import Unit
+from glossanea.structure.day import Day
+from glossanea.structure.weekly_review import WeeklyReview
 from glossanea.files.data import data_file_path
 from glossanea.cli import output
 from glossanea.cli import user_input
-from glossanea.cli.day import CLIDay
+from glossanea.cli import day
 # from glossanea.cli.weekly_review import CLIWeeklyReview
 
 
@@ -49,7 +51,7 @@ class CLI:
 
     # General variables #
     _done: bool = False
-    _unit: Unit | None = None
+    _unit: None | Unit | Day | WeeklyReview = None
 
     @classmethod
     def start(cls) -> None:
@@ -151,7 +153,7 @@ class CLI:
     def cmd_start(cls) -> None:
         """Command: start"""
 
-        CLIDay.start(cls._unit)
+        day.run(cls._unit)
 
     @classmethod
     def cmd_next(cls) -> None:

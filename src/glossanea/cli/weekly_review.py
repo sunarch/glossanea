@@ -5,11 +5,13 @@
 """Weekly Review"""
 
 # imports: project
+from glossanea.structure.weekly_review import WeeklyReview
 # from glossanea.cli import output
 # from glossanea.cli.user_input import CLIUserInput
 
 
-class CLIWeeklyReview:
-    """CLI Weekly Review"""
+# pylint: disable=unused-argument
+def run(unit: WeeklyReview) -> None:
+    """Run Weekly Review"""
     # pylint: disable=unnecessary-pass
     pass
