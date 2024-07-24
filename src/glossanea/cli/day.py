@@ -16,9 +16,6 @@ from glossanea import tasks
 class CLIDay:
     """CLI Day"""
 
-    # General variables #
-    _unit_finished: bool = False
-
     @classmethod
     def start(cls, day: Day) -> None:
         """Start / main loop"""
@@ -38,14 +35,12 @@ class CLIDay:
         ]
 
         task_index: int = 0
-        cls._unit_finished = False
-        while not cls._unit_finished:
+        while True:
 
             if task_index < 0:
                 raise IndexError(f'Step index out of bounds: {task_index}')
 
             if task_index >= len(task_list):
-                cls._unit_finished = True
                 break
 
             task_function: Callable = task_list[task_index][0]
@@ -65,7 +60,6 @@ class CLIDay:
                     continue
 
                 case tasks.TaskResult.EXIT_TASK:
-                    cls._unit_finished = True
                     break
 
                 case tasks.TaskResult.NOT_IMPLEMENTED | tasks.TaskResult.FINISHED:
