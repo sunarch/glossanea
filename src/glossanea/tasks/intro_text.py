@@ -1,0 +1,24 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+"""Other new words"""
+
+# imports: project
+from glossanea.cli import output
+from glossanea.cli.user_input import CLIUserInput
+from glossanea.tasks._common import TaskResult
+
+INTRO_TEXT_WIDTH: int = 60
+
+
+def task(parts: list[str]) -> TaskResult:
+    """Display intro text"""
+
+    output.empty_line(2)
+    output.framed(parts, INTRO_TEXT_WIDTH)
+
+    output.empty_line(1)
+    CLIUserInput.wait_for_enter()
+
+    return TaskResult.FINISHED
