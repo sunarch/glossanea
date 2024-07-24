@@ -5,7 +5,6 @@
 """Unit"""
 
 # imports: library
-import enum
 import os.path
 from typing import Any
 
@@ -19,13 +18,6 @@ UNITS_PER_WEEK: int = 7
 MIN_DAY_NUMBER: int = 1
 MAX_DAY_NUMBER: int = 6
 WEEKLY_REVIEW_INDEX: int = 0
-
-
-class UnitType(enum.Enum):
-    """Enum of unit types"""
-    DAY = enum.auto()
-    WEEKLY_REVIEW = enum.auto()
-
 
 KEY_DATA_VERSION: str = 'version'
 
@@ -54,11 +46,6 @@ class Unit:
     def unit_number(self) -> int:
         """Get unit number"""
         return self._unit_number
-
-    @property
-    def unit_type(self) -> UnitType:
-        """Get unit type"""
-        return self._unit_type
 
     # content getters ------------------------------------------------ #
 
@@ -127,11 +114,9 @@ class Unit:
         self._unit_number = unit_number
 
         if unit_number == WEEKLY_REVIEW_INDEX:
-            self._unit_type = UnitType.WEEKLY_REVIEW
             unit_number_display: str = 'WR'
             file_path: str = build_path_weekly_review(self._week_number)
         else:
-            self._unit_type = UnitType.DAY
             unit_number_display: str = f'{unit_number}'
             file_path: str = build_path_day(self._week_number, self._unit_number)
 
