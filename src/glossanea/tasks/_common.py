@@ -59,7 +59,7 @@ COMMAND_TEXTS: dict[str, Command] = {
 
 
 def help_cmd_in_task() -> None:
-    """Help cmd in task"""
+    """Help with commands in task"""
 
     collection: list[list[str]] = [
         [Command.WORDS.value, 'Display New Words section again.'],

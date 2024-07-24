@@ -6,9 +6,9 @@
 
 # imports: library
 import enum
+import random
 
 # imports: project
-from glossanea.structure.cycle import Cycle
 from glossanea.structure import unit
 from glossanea.structure.unit import Unit
 from glossanea.files.data import data_file_path
@@ -54,7 +54,7 @@ class CLI:
     def start(cls) -> None:
         """Start / main loop"""
 
-        cls._unit = Cycle.get_day_by_number(1, 1)
+        cls._unit = Unit(unit.MIN_WEEK_NUMBER, unit.MIN_DAY_NUMBER)
 
         # Introduction #
         display_introduction()
@@ -91,15 +91,22 @@ class CLI:
                     case Command.START:
                         run_unit(cls._unit)
                     case Command.HELP:
-                        cls.cmd_help()
+                        cmd_help()
                     case Command.NEXT:
-                        cls.cmd_next()
+                        cls._unit = get_next_unit(cls._unit)
+                        # TODO: temporary skip of weekly review until implemented
+                        while cls._unit.unit_type == unit.UnitType.WEEKLY_REVIEW:
+                            cls._unit = get_next_unit(cls._unit)
+                        run_unit(cls._unit)
                     # UI commands with variable arguments #
                     case Command.RANDOM:
-                        cls.cmd_random(arguments)
+                        cls._unit = get_random_unit(''.join(arguments))
+                        # TODO: temporary skip of weekly review until implemented
+                        while cls._unit.unit_type == unit.UnitType.WEEKLY_REVIEW:
+                            cls._unit = get_random_unit(''.join(arguments))
                     # UI commands with one or more arguments #
                     case Command.GOTO:
-                        cls.cmd_goto(arguments)
+                        cls._unit = get_specific_unit(cls._unit, arguments)
                     # other inputs #
                     case _:
                         raise KeyError('Invalid command!')
@@ -121,104 +128,105 @@ class CLI:
 
         # end of the Main Program Loop #
 
-    # User Interface functions --------------------------------------- #
 
-    @classmethod
-    def cmd_help(cls) -> None:
-        """Command: help"""
+# User Interface functions ------------------------------------------- #
 
-        collection: list[list[str]] = [
-            [Command.START.value, 'Start currently selected unit.'],
-            [Command.EXIT.value, 'Exit the program.'],
-            [Command.NEXT.value, 'Go to an start next unit.'],
-            [f'{Command.GOTO.value} WEEK', 'Change to the unit of the first day in WEEK.'],
-            [f'{Command.GOTO.value} WEEK UNIT', 'Change to UNIT in WEEK.'],
-            [Command.RANDOM.value, 'Go to a random unit.'],
-            [Command.HELP.value, 'Display this help text.']
-        ]
+def cmd_help() -> None:
+    """Help with commands"""
 
-        output.empty_line(1)
-        output.center('Glossanea help')
-        output.value_pair_list(collection, formatting=output.Formatting.WIDE)
+    collection: list[list[str]] = [
+        [Command.START.value, 'Start currently selected unit.'],
+        [Command.EXIT.value, 'Exit the program.'],
+        [Command.NEXT.value, 'Go to an start next unit.'],
+        [f'{Command.GOTO.value} WEEK', 'Change to the unit of the first day in WEEK.'],
+        [f'{Command.GOTO.value} WEEK UNIT', 'Change to UNIT in WEEK.'],
+        [Command.RANDOM.value, 'Go to a random unit.'],
+        [Command.HELP.value, 'Display this help text.']
+    ]
 
-    @classmethod
-    def cmd_next(cls) -> None:
-        """Command: next"""
+    output.empty_line(1)
+    output.center('Glossanea help')
+    output.value_pair_list(collection, formatting=output.Formatting.WIDE)
 
-        week_number: int = cls._unit.week_number
-        unit_number: int = cls._unit.unit_number
 
+def get_specific_unit(current_unit: Unit, arguments):
+    """Create an instance of a specific unit"""
+
+    if len(arguments) < 1:
+        raise ValueError('No arguments given!')
+
+    max_arguments: int = 2
+    if len(arguments) > max_arguments:
+        raise ValueError(f'Too many arguments: {len(arguments)} > {max_arguments}')
+
+    week_number: int = unit.MIN_WEEK_NUMBER
+    if len(arguments) >= 1:
         try:
-            prev_unit: Unit = cls._unit
-            cls._unit = Cycle.get_next_unit(week_number, unit_number)
-            del prev_unit
-        except IndexError as exc:
-            raise IndexError from exc
+            week_number = int(arguments[0])
+        except ValueError as exc:
+            raise ValueError from exc
+    _ = unit.validate_week_number(week_number)
 
-        # TODO: temporary skip of weekly review until implemented ˇˇˇˇ #
-        week_number: int = cls._unit.week_number
-        unit_number: int = cls._unit.unit_number
+    unit_number: int = unit.MIN_DAY_NUMBER
+    if len(arguments) == 2:
+        try:
+            unit_number = int(arguments[1])
+        except ValueError as exc:
+            if arguments[1].upper() == 'WR':
+                unit_number = unit.WEEKLY_REVIEW_INDEX
+            else:
+                raise ValueError(f'Not a valid number: {arguments[1]}') from exc
+    _ = unit.validate_unit_number(unit_number)
 
-        if cls._unit.unit_type == unit.UnitType.WEEKLY_REVIEW:
-            try:
-                prev_unit: Unit = cls._unit
-                cls._unit = Cycle.get_next_unit(week_number, unit_number)
-                del prev_unit
-            except IndexError as exc:
-                raise IndexError from exc
-        # END_TODO ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ #
+    # TODO: temporary skip of weekly review until implemented
+    if unit_number == unit.WEEKLY_REVIEW_INDEX:
+        output.simple('Weekly Reviews are not yet implemented!')
+        output.empty_line(1)
+        user_input.wait_for_enter()
+        return current_unit
 
-        run_unit(cls._unit)
+    return Unit(week_number, unit_number)
 
-    @classmethod
-    def cmd_goto(cls, arguments):
-        """Command: goto"""
 
-        if len(arguments) == 1:
-            try:
-                week_number: int = int(arguments[0])
-                prev_unit: Unit = cls._unit
-                cls._unit = Cycle.get_first_day_by_week(week_number)
-                del prev_unit
-            except ValueError as exc:
-                raise ValueError from exc
+def get_next_unit(current_unit: Unit) -> Unit:
+    """Create an instance of the next unit"""
 
-        elif len(arguments) == 2:
-            try:
-                week_number: int = int(arguments[0])
-                day_number: int = int(arguments[1])
-                prev_unit: Unit = cls._unit
-                cls._unit = Cycle.get_day_by_number(week_number, day_number)
-                del prev_unit
-            except ValueError as exc:
-                raise ValueError from exc
+    week_number: int = current_unit.week_number
+    unit_number: int = current_unit.unit_number
 
-        else:
-            raise ValueError('Wrong number of arguments!')
+    next_week_no: int = week_number
+    next_unit_no: int = (unit_number + 1) % unit.UNITS_PER_WEEK
 
-    @classmethod
-    def cmd_random(cls, arguments: list[str]):
-        """Command: random"""
+    if unit_number == unit.WEEKLY_REVIEW_INDEX:
+        next_week_no = week_number + 1
 
-        prev_unit: Unit = cls._unit
+    if next_week_no > unit.MAX_WEEK_NUMBER:
+        output.simple('End of units reached!')
+        output.empty_line(1)
+        user_input.wait_for_enter()
+        return Unit(unit.MIN_WEEK_NUMBER, unit.MIN_DAY_NUMBER)
 
-        while True:
-            # TODO: remove loop after Weekly Reviews are implemented
+    return Unit(next_week_no, next_unit_no)
 
-            try:
-                if len(arguments) == 0:
-                    cls._unit = Cycle.get_random_unit(None)
-                else:
-                    cls._unit = Cycle.get_random_unit(' '.join(arguments))
-            except ValueError as exc:
-                raise ValueError from exc
 
-            if cls._unit.unit_type == unit.UnitType.DAY:
-                break
+def get_random_unit(unit_type: str) -> Unit:
+    """Create an instance of a random unit"""
 
-        del prev_unit
+    week_number: int = random.randint(unit.MIN_WEEK_NUMBER, unit.MAX_WEEK_NUMBER)
 
-        run_unit(cls._unit)
+    match unit_type:
+        case '':
+            unit_number = random.randint(unit.MIN_DAY_NUMBER, unit.UNITS_PER_WEEK)
+            if unit_number == unit.UNITS_PER_WEEK:
+                unit_number = unit.WEEKLY_REVIEW_INDEX
+        case 'day':
+            unit_number = random.randint(unit.MIN_DAY_NUMBER, unit.MAX_DAY_NUMBER)
+        case 'WR':
+            unit_number = unit.WEEKLY_REVIEW_INDEX
+        case _:
+            raise ValueError('Incorrect unit type.')
+
+    return Unit(week_number, unit_number)
 
 
 # general displays ----------------------------------------------- #
