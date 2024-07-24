@@ -25,10 +25,19 @@ def data_file_path(file_subpath: str) -> str:
     return os.path.join(config.data_dir_path(), file_subpath)
 
 
-def load_data_file(file_subpath: str) -> dict[str, Any]:
+def load_json_file(file_subpath: str) -> dict[str, Any]:
     """Load a data file"""
 
     full_path: str = data_file_path(file_subpath)
 
-    with open(full_path, mode='r', encoding='UTF-8', newline=None) as data_file:
-        return json.load(data_file)
+    with open(full_path, mode='r', encoding='UTF-8', newline=None) as fh:
+        return json.load(fh)
+
+
+def load_text_file_lines(file_subpath: str) -> list[str]:
+    """Load a data file"""
+
+    full_path: str = data_file_path(file_subpath)
+
+    with open(full_path, 'r', encoding='UTF-8') as fh:
+        return fh.readlines()

@@ -220,16 +220,17 @@ def get_random_unit(unit_type: str) -> Unit:
     return Unit(week_number, unit_number)
 
 
-# general displays ----------------------------------------------- #
+# general displays --------------------------------------------------- #
 
 def display_introduction():
     """Display introduction"""
 
-    path: str = data.data_file_path('introduction.txt')
+    file_subpath: str = 'introduction.txt'
+    intro_lines: list[str] = data.load_text_file_lines(file_subpath)
+
     output.empty_line(1)
-    with open(path, 'r', encoding='UTF-8') as fh_intro:
-        for line in fh_intro.readlines():
-            output.center(line.rstrip())
+    for line in intro_lines:
+        output.center(line.rstrip())
     output.empty_line(1)
 
 

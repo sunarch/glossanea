@@ -135,7 +135,7 @@ class Unit:
             unit_number_display: str = f'{unit_number}'
             file_path: str = build_path_day(self._week_number, self._unit_number)
 
-        self._data: dict[str, Any] = data.load_data_file(file_path)
+        self._data: dict[str, Any] = data.load_json_file(file_path)
 
         if self.data_version != data.REQUIRED_VERSION:
             msg: str = f'Incorrect data file version: {self._week_number}/{unit_number_display}'
