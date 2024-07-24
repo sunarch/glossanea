@@ -9,6 +9,7 @@ from typing import Any
 
 # imports: project
 from glossanea.cli import output
+from glossanea.cli.output import Formatting
 from glossanea.tasks._common import TaskResult, answer_cycle
 
 
@@ -27,11 +28,11 @@ def task(data: dict[str, Any],
 
     output.empty_line(1)
     for definition in data['definitions']:
-        output.numbered_sentence(definition['id'], definition['text'], output.Formatting.INDENTED)
+        output.numbered_sentence(definition['id'], definition['text'], Formatting.INDENTED)
 
     def l_words() -> list[None]:
         """l_words"""
-        return [output.numbered_sentence(word['id'], word['text'], output.Formatting.INDENTED)
+        return [output.numbered_sentence(word['id'], word['text'], Formatting.INDENTED)
                 for word in data['words']]
 
     for definition in data['definitions']:
@@ -67,7 +68,11 @@ def task(data: dict[str, Any],
         output.empty_line(1)
         l_pr_question()
 
-        task_result: TaskResult = answer_cycle(prompt, l_pr_question, answers, l_pr_answer, data_for_new_words)
+        task_result: TaskResult = answer_cycle(prompt,
+                                               l_pr_question,
+                                               answers,
+                                               l_pr_answer,
+                                               data_for_new_words)
         match task_result:
             case TaskResult.SUBTASK_CORRECT_ANSWER | TaskResult.SUBTASK_SKIP_TO_NEXT:
                 continue

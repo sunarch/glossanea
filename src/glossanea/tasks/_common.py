@@ -11,6 +11,7 @@ from typing import Callable
 # imports: project
 from glossanea.cli import output
 from glossanea.cli import user_input
+from glossanea.cli.user_input import InputType
 from glossanea.tasks.new_words_common import new_words
 
 
@@ -89,7 +90,7 @@ def answer_cycle(prompt: str,
 
         match a_type:
 
-            case user_input.InputType.ANSWER:
+            case InputType.ANSWER:
 
                 if a_content not in answers:
                     output.warning('Incorrect, try again.')
@@ -102,7 +103,7 @@ def answer_cycle(prompt: str,
 
                 return TaskResult.SUBTASK_CORRECT_ANSWER
 
-            case user_input.InputType.COMMAND:
+            case InputType.COMMAND:
 
                 command: Command = Command.EMPTY
                 if a_content in COMMAND_TEXTS:

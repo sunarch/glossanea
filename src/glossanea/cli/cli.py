@@ -14,7 +14,7 @@ from glossanea.cli import output
 from glossanea.cli import user_input
 from glossanea.structure import data
 from glossanea.structure import unit
-from glossanea.structure.unit import Unit
+from glossanea.structure.unit import Unit, UnitType
 
 
 class Command(enum.Enum):
@@ -57,8 +57,8 @@ def mainloop() -> None:
     while True:
 
         try:
-            command_text, arguments = user_input.get_command(build_command_prompt(unit_obj.week_number,
-                                                                                  unit_obj.unit_number))
+            command_text, arguments = user_input.get_command(
+                build_command_prompt(unit_obj.week_number, unit_obj.unit_number))
         except ValueError as ve:
             output.warning(str(ve))
             continue
@@ -88,14 +88,14 @@ def mainloop() -> None:
                 case Command.NEXT:
                     unit_obj = get_next_unit(unit_obj)
                     # TODO: temporary skip of weekly review until implemented
-                    while unit_obj.unit_type == unit.UnitType.WEEKLY_REVIEW:
+                    while unit_obj.unit_type == UnitType.WEEKLY_REVIEW:
                         unit_obj = get_next_unit(unit_obj)
                     cli_unit.run(unit_obj)
                 # UI commands with variable arguments #
                 case Command.RANDOM:
                     unit_obj = get_random_unit(''.join(arguments))
                     # TODO: temporary skip of weekly review until implemented
-                    while unit_obj.unit_type == unit.UnitType.WEEKLY_REVIEW:
+                    while unit_obj.unit_type == UnitType.WEEKLY_REVIEW:
                         unit_obj = get_random_unit(''.join(arguments))
                 # UI commands with one or more arguments #
                 case Command.GOTO:

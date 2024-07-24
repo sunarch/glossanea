@@ -138,7 +138,8 @@ class Unit:
         self._data: dict[str, Any] = data.load_data_file(file_path)
 
         if self.data_version != data.REQUIRED_VERSION:
-            raise ValueError(f'Incorrect data file version: {self._week_number}/{unit_number_display}')
+            msg: str = f'Incorrect data file version: {self._week_number}/{unit_number_display}'
+            raise ValueError(msg)
 
 
 # validators --------------------------------------------------------- #

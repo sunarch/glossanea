@@ -6,11 +6,13 @@
 
 # imports: project
 from glossanea import tasks
+from glossanea.tasks import TaskResult
 from glossanea.cli import output
 from glossanea.structure import unit
+from glossanea.structure.unit import Unit
 
 
-def run(day: unit.Unit) -> None:
+def run(day: Unit) -> None:
     """Run Unit"""
 
     task_list: list[str] = day.data_keys
@@ -25,7 +27,7 @@ def run(day: unit.Unit) -> None:
 
         match task_list[task_index]:
             case unit.KEY_DATA_VERSION:
-                task_result = tasks.TaskResult.HIDDEN
+                task_result = TaskResult.HIDDEN
 
             case unit.KEY_TITLE:
                 task_result = tasks.title(day.title)
@@ -35,7 +37,7 @@ def run(day: unit.Unit) -> None:
             case unit.KEY_NEW_WORDS:
                 task_result = tasks.new_words(day.new_words)
             case unit.KEY_NEW_WORDS_EXTENSION:
-                task_result = tasks.TaskResult.HIDDEN
+                task_result = TaskResult.HIDDEN
             case unit.KEY_SAMPLE_SENTENCES:
                 task_result = tasks.sample_sentences(day.sample_sentences,
                                                      day.new_words_extension,
@@ -53,20 +55,20 @@ def run(day: unit.Unit) -> None:
 
         match task_result:
 
-            case tasks.TaskResult.BACK_TO_PREVIOUS_TASK:
+            case TaskResult.BACK_TO_PREVIOUS_TASK:
                 task_index = max(0, task_index - 1)
                 if task_index == 0:
                     output.general_message('This is the first task: Starting from the beginning.')
                 continue
 
-            case tasks.TaskResult.JUMP_TO_NEXT_TASK:
+            case TaskResult.JUMP_TO_NEXT_TASK:
                 task_index += 1
                 continue
 
-            case tasks.TaskResult.EXIT_TASK:
+            case TaskResult.EXIT_TASK:
                 break
 
-            case tasks.TaskResult.NOT_IMPLEMENTED | tasks.TaskResult.HIDDEN | tasks.TaskResult.FINISHED:
+            case TaskResult.NOT_IMPLEMENTED | TaskResult.HIDDEN | TaskResult.FINISHED:
                 task_index += 1
                 continue
 
