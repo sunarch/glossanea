@@ -7,7 +7,6 @@
 # imports: library
 import abc
 import os.path
-from typing import Generator
 
 
 class Unit(abc.ABC):
@@ -88,22 +87,3 @@ class Unit(abc.ABC):
         file_name: str = 'weekly_review.json'
 
         return os.path.join(file_dir, file_name)
-
-# generators --------------------------------------------------------- #
-
-    @classmethod
-    def generator_weeks(cls) -> Generator[int, None, None]:
-        """Generator weeks"""
-        yield from range(cls.MIN_WEEK_NUMBER, cls.MAX_WEEK_NUMBER + 1)
-
-    @classmethod
-    def generator_days(cls) -> Generator[int, None, None]:
-        """Generator days"""
-        yield from range(cls.MIN_DAY_NUMBER, cls.MAX_DAY_NUMBER + 1)
-
-    @classmethod
-    def generator_day_tuples(cls) -> Generator[tuple[int, int], None, None]:
-        """Generator day tuples"""
-        for week in cls.generator_weeks():
-            for day in cls.generator_days():
-                yield week, day
