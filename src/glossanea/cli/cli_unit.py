@@ -12,10 +12,10 @@ from glossanea.structure import unit
 from glossanea.structure.unit import Unit
 
 
-def run(day: Unit) -> None:
+def run(unit_obj: Unit) -> None:
     """Run Unit"""
 
-    task_list: list[str] = day.data_keys
+    task_list: list[str] = unit_obj.data_keys
     task_index: int = 0
     while True:
 
@@ -30,26 +30,26 @@ def run(day: Unit) -> None:
                 task_result = TaskResult.HIDDEN
 
             case unit.KEY_TITLE:
-                task_result = tasks.title(day.title)
+                task_result = tasks.title(unit_obj.title)
             case unit.KEY_INTRO_TEXT:
-                task_result = tasks.intro_text(day.intro_text)
+                task_result = tasks.intro_text(unit_obj.intro_text)
 
             case unit.KEY_NEW_WORDS:
-                task_result = tasks.new_words(day.new_words)
+                task_result = tasks.new_words(unit_obj.new_words)
             case unit.KEY_NEW_WORDS_EXTENSION:
                 task_result = TaskResult.HIDDEN
             case unit.KEY_SAMPLE_SENTENCES:
-                task_result = tasks.sample_sentences(day.sample_sentences,
-                                                     day.new_words_extension,
-                                                     day.new_words)
+                task_result = tasks.sample_sentences(unit_obj.sample_sentences,
+                                                     unit_obj.new_words_extension,
+                                                     unit_obj.new_words)
             case unit.KEY_DEFINITIONS:
-                task_result = tasks.definitions(day.definitions,
-                                                day.new_words)
+                task_result = tasks.definitions(unit_obj.definitions,
+                                                unit_obj.new_words)
             case unit.KEY_MATCHING:
-                task_result = tasks.matching(day.matching,
-                                             day.new_words)
+                task_result = tasks.matching(unit_obj.matching,
+                                             unit_obj.new_words)
             case unit.KEY_OTHER_NEW_WORDS:
-                task_result = tasks.other_new_words(day.other_new_words)
+                task_result = tasks.other_new_words(unit_obj.other_new_words)
             case _:
                 raise ValueError(f'Unrecognized task type: {task_list[task_index]}')
 
