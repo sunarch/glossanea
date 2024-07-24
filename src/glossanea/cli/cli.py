@@ -12,7 +12,7 @@ from glossanea.structure.cycle import Cycle
 from glossanea.structure.unit import Unit
 from glossanea.files.data import data_file_path
 from glossanea.cli import output
-from glossanea.cli.user_input import CLIUserInput
+from glossanea.cli import user_input
 from glossanea.cli.day import CLIDay
 # from glossanea.cli.weekly_review import CLIWeeklyReview
 
@@ -70,7 +70,7 @@ class CLI:
         while not cls._done:
 
             try:
-                command_text, arguments = CLIUserInput.get_command(cls.build_command_prompt())
+                command_text, arguments = user_input.get_command(cls.build_command_prompt())
             except ValueError as ve:
                 output.warning(str(ve))
                 continue

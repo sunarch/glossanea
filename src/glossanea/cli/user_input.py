@@ -4,55 +4,48 @@
 
 """User Input"""
 
+# imports: library
+import enum
 
-class CLIUserInput:
-    """CLI User Input"""
 
-    # constants
-    TYPE_COMMAND: str = 'command'
-    TYPE_ANSWER: str = 'answer'
+class InputType(enum.Enum):
+    """Enum of input types"""
+    COMMAND = enum.auto()
+    ANSWER = enum.auto()
 
-    @classmethod
-    def _get_new(cls, prompt: str) -> str:
-        """Get user input"""
 
-        user_input: str = input(prompt)
+def get_command(prompt: str) -> tuple[str, list[str]]:
+    """Get user input - top level command"""
 
-        return user_input
+    user_input: str = input(prompt)
 
-    @classmethod
-    def get_command(cls, prompt: str) -> tuple[str, list[str]]:
-        """Get user input - top level command"""
+    input_elements: list[str] = user_input.split()
 
-        user_input: str = cls._get_new(prompt)
+    if len(input_elements) < 1:
+        raise ValueError('No command given!')
 
-        input_elements: list[str] = user_input.split()
+    command: str = input_elements.pop(0)
 
-        if len(input_elements) < 1:
-            raise ValueError('No command given!')
+    return command, input_elements
 
-        command: str = input_elements.pop(0)
 
-        return command, input_elements
+def get_answer(prompt: str) -> tuple[InputType, str]:
+    """Get user input - answer"""
 
-    @classmethod
-    def get_answer(cls, prompt: str) -> tuple[str, str]:
-        """Get user input - answer"""
+    user_input: str = input(prompt)
 
-        user_input: str = cls._get_new(prompt)
+    command_test: list[str] = user_input.split('cmd ')
+    if len(command_test) == 2 and command_test[0] == '':
+        answer_type: InputType = InputType.COMMAND
+        content: str = command_test[1]
+    else:
+        answer_type: InputType = InputType.ANSWER
+        content: str = user_input
 
-        command_test: list[str] = user_input.split('cmd ')
-        if len(command_test) == 2 and command_test[0] == '':
-            answer_type: str = cls.TYPE_COMMAND
-            content: str = command_test[1]
-        else:
-            answer_type: str = cls.TYPE_ANSWER
-            content: str = user_input
+    return answer_type, content
 
-        return answer_type, content
 
-    @classmethod
-    def wait_for_enter(cls) -> None:
-        """Wait for the user to press ENTER"""
+def wait_for_enter() -> None:
+    """Wait for the user to press ENTER"""
 
-        _ = cls._get_new('Press ENTER to continue...')
+    _ = input('Press ENTER to continue...')

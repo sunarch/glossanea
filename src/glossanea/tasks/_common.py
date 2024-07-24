@@ -10,7 +10,7 @@ from typing import Callable
 
 # imports: project
 from glossanea.cli import output
-from glossanea.cli.user_input import CLIUserInput
+from glossanea.cli import user_input
 from glossanea.tasks.new_words_common import new_words
 
 
@@ -84,54 +84,56 @@ def answer_cycle(prompt: str,
 
     while True:
         output.empty_line(1)
-        a_type, a_content = CLIUserInput.get_answer(prompt)
+        a_type, a_content = user_input.get_answer(prompt)
 
-        if a_type not in {CLIUserInput.TYPE_ANSWER, CLIUserInput.TYPE_COMMAND}:
-            raise ValueError('Unknown answer type.')
+        match a_type:
 
-        if a_type == CLIUserInput.TYPE_ANSWER:
+            case user_input.InputType.ANSWER:
 
-            if a_content not in answers:
-                output.warning('Incorrect, try again.')
-                continue
-
-            output.empty_line(1)
-            l_pr_answer()
-            output.empty_line(1)
-            output.simple('Correct!')
-
-            return TaskResult.SUBTASK_CORRECT_ANSWER
-
-        if a_type == CLIUserInput.TYPE_COMMAND:
-
-            command: Command = Command.EMPTY
-            if a_content in COMMAND_TEXTS:
-                command = COMMAND_TEXTS[a_content]
-            else:
-                for key, value in COMMAND_TEXTS.items():
-                    try:
-                        if key.index(a_content) == 0:
-                            command = value
-                    except ValueError:
-                        pass
-
-            match command:
-                case Command.WORDS:
-                    new_words(data_for_new_words, False)
-                    output.empty_line(1)
-                    l_pr_question()
-                case Command.SOLUTION:
-                    print('HINT: ' + ' / '.join([f'"{answer}"' for answer in answers]))
+                if a_content not in answers:
+                    output.warning('Incorrect, try again.')
                     continue
-                case Command.NEXT:
-                    return TaskResult.SUBTASK_SKIP_TO_NEXT
-                case Command.JUMP:
-                    return TaskResult.JUMP_TO_NEXT_TASK
-                case Command.PREVIOUS:
-                    return TaskResult.BACK_TO_PREVIOUS_TASK
-                case Command.EXIT:
-                    return TaskResult.EXIT_TASK
-                case Command.HELP:
-                    help_cmd_in_task()
-                case _:
-                    output.warning(f'Invalid command: {a_content}')
+
+                output.empty_line(1)
+                l_pr_answer()
+                output.empty_line(1)
+                output.simple('Correct!')
+
+                return TaskResult.SUBTASK_CORRECT_ANSWER
+
+            case user_input.InputType.COMMAND:
+
+                command: Command = Command.EMPTY
+                if a_content in COMMAND_TEXTS:
+                    command = COMMAND_TEXTS[a_content]
+                else:
+                    for key, value in COMMAND_TEXTS.items():
+                        try:
+                            if key.index(a_content) == 0:
+                                command = value
+                        except ValueError:
+                            pass
+
+                match command:
+                    case Command.WORDS:
+                        new_words(data_for_new_words, False)
+                        output.empty_line(1)
+                        l_pr_question()
+                    case Command.SOLUTION:
+                        print('HINT: ' + ' / '.join([f'"{answer}"' for answer in answers]))
+                        continue
+                    case Command.NEXT:
+                        return TaskResult.SUBTASK_SKIP_TO_NEXT
+                    case Command.JUMP:
+                        return TaskResult.JUMP_TO_NEXT_TASK
+                    case Command.PREVIOUS:
+                        return TaskResult.BACK_TO_PREVIOUS_TASK
+                    case Command.EXIT:
+                        return TaskResult.EXIT_TASK
+                    case Command.HELP:
+                        help_cmd_in_task()
+                    case _:
+                        output.warning(f'Invalid command: {a_content}')
+
+            case _:
+                raise ValueError(f'Unknown answer type: {a_type}')

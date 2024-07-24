@@ -6,7 +6,7 @@
 
 # imports: project
 from glossanea.cli import output
-from glossanea.cli.user_input import CLIUserInput
+from glossanea.cli import user_input
 from glossanea.tasks._common import TaskResult
 
 
@@ -19,7 +19,7 @@ def task(data: dict[str, str]) -> TaskResult:
     output.simple(data['prompt'])
 
     output.empty_line(1)
-    _, _ = CLIUserInput.get_answer('')
+    _, _ = user_input.get_answer('')
 
     output.empty_line(1)
 

@@ -6,7 +6,7 @@
 
 # imports: project
 from glossanea.cli import output
-from glossanea.cli.user_input import CLIUserInput
+from glossanea.cli import user_input
 from glossanea.tasks._common import TaskResult
 
 
@@ -17,6 +17,6 @@ def task(text: str) -> TaskResult:
     output.center(text)
 
     output.empty_line(1)
-    CLIUserInput.wait_for_enter()
+    user_input.wait_for_enter()
 
     return TaskResult.FINISHED
