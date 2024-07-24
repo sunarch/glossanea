@@ -7,9 +7,9 @@
 from glossanea.tasks._common import TaskResult
 
 from glossanea.tasks.title import task as title
-from glossanea.tasks.new_words import task as new_words
 from glossanea.tasks.intro_text import task as intro_text
 
+from glossanea.tasks.new_words import task as new_words
 from glossanea.tasks.sample_sentences import task as sample_sentences
 from glossanea.tasks.definitions import task as definitions
 from glossanea.tasks.matching import task as matching
