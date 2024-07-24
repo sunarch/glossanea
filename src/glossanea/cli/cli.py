@@ -47,14 +47,11 @@ COMMAND_TEXTS: dict[str, Command] = {
 class CLI:
     """CLI"""
 
-    # General variables #
-    _unit: Unit | None = None
-
-    @classmethod
-    def start(cls) -> None:
+    @staticmethod
+    def start() -> None:
         """Start / main loop"""
 
-        cls._unit = Unit(unit.MIN_WEEK_NUMBER, unit.MIN_DAY_NUMBER)
+        unit_obj: Unit = Unit(unit.MIN_WEEK_NUMBER, unit.MIN_DAY_NUMBER)
 
         # Introduction #
         display_introduction()
@@ -64,8 +61,8 @@ class CLI:
         while True:
 
             try:
-                command_text, arguments = user_input.get_command(build_command_prompt(cls._unit.week_number,
-                                                                                      cls._unit.unit_number))
+                command_text, arguments = user_input.get_command(build_command_prompt(unit_obj.week_number,
+                                                                                      unit_obj.unit_number))
             except ValueError as ve:
                 output.warning(str(ve))
                 continue
@@ -89,24 +86,24 @@ class CLI:
                     case Command.EXIT:
                         break
                     case Command.START:
-                        run_unit(cls._unit)
+                        run_unit(unit_obj)
                     case Command.HELP:
                         cmd_help()
                     case Command.NEXT:
-                        cls._unit = get_next_unit(cls._unit)
+                        unit_obj = get_next_unit(unit_obj)
                         # TODO: temporary skip of weekly review until implemented
-                        while cls._unit.unit_type == unit.UnitType.WEEKLY_REVIEW:
-                            cls._unit = get_next_unit(cls._unit)
-                        run_unit(cls._unit)
+                        while unit_obj.unit_type == unit.UnitType.WEEKLY_REVIEW:
+                            unit_obj = get_next_unit(unit_obj)
+                        run_unit(unit_obj)
                     # UI commands with variable arguments #
                     case Command.RANDOM:
-                        cls._unit = get_random_unit(''.join(arguments))
+                        unit_obj = get_random_unit(''.join(arguments))
                         # TODO: temporary skip of weekly review until implemented
-                        while cls._unit.unit_type == unit.UnitType.WEEKLY_REVIEW:
-                            cls._unit = get_random_unit(''.join(arguments))
+                        while unit_obj.unit_type == unit.UnitType.WEEKLY_REVIEW:
+                            unit_obj = get_random_unit(''.join(arguments))
                     # UI commands with one or more arguments #
                     case Command.GOTO:
-                        cls._unit = get_specific_unit(cls._unit, arguments)
+                        unit_obj = get_specific_unit(unit_obj, arguments)
                     # other inputs #
                     case _:
                         raise KeyError('Invalid command!')
