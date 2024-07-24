@@ -10,7 +10,6 @@ from typing import Any, Callable
 
 # imports: project
 from glossanea.cli import output
-from glossanea.cli.output import CLIOutput
 from glossanea.cli.user_input import CLIUserInput
 from glossanea.structure.day import Day
 
@@ -84,13 +83,13 @@ class CLIDay:
             elif cls._next_action == cls.ACTION_NEW_WORDS:
                 cls._next_action = cls.ACTION_INTRO_TEXT
                 cls.new_words()
-                CLIOutput.empty_line(1)
+                output.empty_line(1)
                 CLIUserInput.wait_for_enter()
 
             elif cls._next_action == cls.ACTION_INTRO_TEXT:
                 cls._next_action = cls.ACTION_SAMPLE_SENTENCES
                 cls.intro_text()
-                CLIOutput.empty_line(1)
+                output.empty_line(1)
                 CLIUserInput.wait_for_enter()
 
             elif cls._next_action == cls.ACTION_SAMPLE_SENTENCES:
@@ -118,8 +117,8 @@ class CLIDay:
     def title(cls) -> None:
         """Display title"""
 
-        CLIOutput.empty_line(1)
-        CLIOutput.center(cls._day.get_title())
+        output.empty_line(1)
+        output.center(cls._day.get_title())
 
     @classmethod
     def new_words(cls, display_in_full=True) -> None:
@@ -133,11 +132,11 @@ class CLIDay:
             phonetic.append(unit['phonetic'])
 
         if display_in_full:
-            CLIOutput.section_title('NEW WORDS')
-            CLIOutput.empty_line(1)
+            output.section_title('NEW WORDS')
+            output.empty_line(1)
 
-        CLIOutput.empty_line(1)
-        CLIOutput.words_table(regular, phonetic)
+        output.empty_line(1)
+        output.words_table(regular, phonetic)
 
     @classmethod
     def intro_text(cls) -> None:
@@ -145,8 +144,8 @@ class CLIDay:
 
         parts: list[str] = cls._day.get_intro_text()
 
-        CLIOutput.empty_line(2)
-        CLIOutput.framed(parts, cls.INTRO_TEXT_WIDTH)
+        output.empty_line(2)
+        output.framed(parts, cls.INTRO_TEXT_WIDTH)
 
 # task answer cycle -------------------------------------------------- #
 
@@ -163,7 +162,7 @@ class CLIDay:
         """Answer cycle"""
 
         while True:
-            CLIOutput.empty_line(1)
+            output.empty_line(1)
             a_type, a_content = CLIUserInput.get_answer(prompt)
 
             if a_type not in {CLIUserInput.TYPE_ANSWER, CLIUserInput.TYPE_COMMAND}:
@@ -172,13 +171,13 @@ class CLIDay:
             if a_type == CLIUserInput.TYPE_ANSWER:
 
                 if a_content not in answers:
-                    CLIOutput.warning('Incorrect, try again.')
+                    output.warning('Incorrect, try again.')
                     continue
 
-                CLIOutput.empty_line(1)
+                output.empty_line(1)
                 l_pr_answer()
-                CLIOutput.empty_line(1)
-                CLIOutput.simple('Correct!')
+                output.empty_line(1)
+                output.simple('Correct!')
 
                 return True
 
@@ -197,7 +196,7 @@ class CLIDay:
 
                 if command == Command.WORDS:
                     cls.new_words(False)
-                    CLIOutput.empty_line(1)
+                    output.empty_line(1)
                     l_pr_question()
                 elif command == Command.SOLUTION:
                     print('HINT: ' + ' / '.join([f'"{answer}"' for answer in answers]))
@@ -217,7 +216,7 @@ class CLIDay:
                 elif command == Command.HELP:
                     cls.help_cmd_in_task()
                 else:
-                    CLIOutput.warning('Invalid command.')
+                    output.warning('Invalid command.')
 
 # tasks -------------------------------------------------------------- #
 
@@ -227,23 +226,23 @@ class CLIDay:
 
         data: dict[str, Any] = cls._day.get_sample_sentences()
 
-        CLIOutput.section_title('SAMPLE SENTENCES')
+        output.section_title('SAMPLE SENTENCES')
 
-        CLIOutput.empty_line(1)
-        CLIOutput.simple(data['prompt'])
+        output.empty_line(1)
+        output.simple(data['prompt'])
 
-        CLIOutput.empty_line(1)
+        output.empty_line(1)
 
         for sentence in data['sentences']:
-            CLIOutput.numbered_sentence(sentence['id'],
+            output.numbered_sentence(sentence['id'],
                                         sentence['beginning'] + output.BLANK + sentence['end'],
                                         output.Formatting.INDENTED)
 
         new_words_extension: list[str] = cls._day.get_new_words_extension()
 
-        CLIOutput.new_words_extension(new_words_extension)
+        output.new_words_extension(new_words_extension)
 
-        CLIOutput.empty_line(1)
+        output.empty_line(1)
 
         for sentence in data['sentences']:
 
@@ -251,8 +250,8 @@ class CLIDay:
 
             def l_pr_question() -> None:
                 """l_pr_question"""
-                return CLIOutput.numbered_sentence(sentence['id'],
-                                                   sentence['beginning'] + output.BLANK + sentence['end'])
+                return output.numbered_sentence(sentence['id'],
+                                                sentence['beginning'] + output.BLANK + sentence['end'])
 
             answers: list[str] = [sentence['answer']]
 
@@ -266,13 +265,13 @@ class CLIDay:
 
             def l_pr_answer() -> None:
                 """l_pr_answer"""
-                return CLIOutput.simple(full_answer)
+                return output.simple(full_answer)
 
             prev_action: str = cls.ACTION_SAMPLE_SENTENCES
 
             def l_prev_msg() -> None:
                 """l_prev_msg"""
-                return CLIOutput.general_message('This is the first task: Starting from the beginning.')
+                return output.general_message('This is the first task: Starting from the beginning.')
 
             def l_next_msg() -> None:
                 """l_next_msg"""
@@ -281,7 +280,7 @@ class CLIDay:
             # answer cycle
 
             cls.new_words(False)
-            CLIOutput.empty_line(1)
+            output.empty_line(1)
             l_pr_question()
 
             if not cls._answer_cycle(prompt, l_pr_question, answers, l_pr_answer, prev_action, l_prev_msg, l_next_msg):
@@ -298,18 +297,18 @@ class CLIDay:
 
         data: dict[str, Any] = cls._day.get_definitions()
 
-        CLIOutput.section_title('DEFINITIONS')
+        output.section_title('DEFINITIONS')
 
-        CLIOutput.empty_line(1)
-        CLIOutput.simple(data['prompt'])
+        output.empty_line(1)
+        output.simple(data['prompt'])
 
-        CLIOutput.empty_line(1)
+        output.empty_line(1)
         for definition in data['definitions']:
-            CLIOutput.numbered_sentence(definition['id'], definition['text'], output.Formatting.INDENTED)
+            output.numbered_sentence(definition['id'], definition['text'], output.Formatting.INDENTED)
 
         def l_words() -> list[None]:
             """l_words"""
-            return [CLIOutput.numbered_sentence(word['id'], word['text'], output.Formatting.INDENTED)
+            return [output.numbered_sentence(word['id'], word['text'], output.Formatting.INDENTED)
                     for word in data['words']]
 
         for definition in data['definitions']:
@@ -318,7 +317,7 @@ class CLIDay:
 
             def l_pr_question() -> None:
                 """l_pr_question"""
-                return CLIOutput.numbered_sentence(definition['id'], definition['text'])
+                return output.numbered_sentence(definition['id'], definition['text'])
 
             answers: list[str] = []
             answer_id: str = [
@@ -336,7 +335,7 @@ class CLIDay:
 
             def l_pr_answer() -> None:
                 """l_pr_answer"""
-                return CLIOutput.numbered_sentence(answer_id, answer_text)
+                return output.numbered_sentence(answer_id, answer_text)
 
             prev_action: str = cls.ACTION_SAMPLE_SENTENCES
 
@@ -350,9 +349,9 @@ class CLIDay:
 
             # answer cycle
 
-            CLIOutput.empty_line(2)
+            output.empty_line(2)
             l_words()
-            CLIOutput.empty_line(1)
+            output.empty_line(1)
             l_pr_question()
 
             if not cls._answer_cycle(prompt, l_pr_question, answers, l_pr_answer, prev_action, l_prev_msg, l_next_msg):
@@ -369,18 +368,18 @@ class CLIDay:
 
         data: dict[str, Any] = cls._day.get_matching()
 
-        CLIOutput.section_title(data['name'])
+        output.section_title(data['name'])
 
-        CLIOutput.empty_line(1)
-        CLIOutput.simple(data['prompt'])
+        output.empty_line(1)
+        output.simple(data['prompt'])
 
-        CLIOutput.empty_line(1)
+        output.empty_line(1)
         for sentence in data['sentences']:
-            CLIOutput.numbered_sentence(sentence['id'], sentence['text'], output.Formatting.INDENTED)
+            output.numbered_sentence(sentence['id'], sentence['text'], output.Formatting.INDENTED)
 
         def l_words() -> list[None]:
             """l_words"""
-            return [CLIOutput.numbered_sentence(word['id'], word['text'], output.Formatting.INDENTED)
+            return [output.numbered_sentence(word['id'], word['text'], output.Formatting.INDENTED)
                     for word in data['words']]
 
         for sentence in data['sentences']:
@@ -389,7 +388,7 @@ class CLIDay:
 
             def l_pr_question() -> None:
                 """l_pr_question"""
-                return CLIOutput.numbered_sentence(sentence['id'], sentence['text'])
+                return output.numbered_sentence(sentence['id'], sentence['text'])
 
             answers: list[str] = []
             answer_id: str = [
@@ -407,7 +406,7 @@ class CLIDay:
 
             def l_pr_answer() -> None:
                 """l_pr_answer"""
-                return CLIOutput.numbered_sentence(answer_id, answer_text)
+                return output.numbered_sentence(answer_id, answer_text)
 
             prev_action: str = cls.ACTION_SAMPLE_SENTENCES
 
@@ -421,9 +420,9 @@ class CLIDay:
 
             # answer cycle
 
-            CLIOutput.empty_line(2)
+            output.empty_line(2)
             l_words()
-            CLIOutput.empty_line(1)
+            output.empty_line(1)
             l_pr_question()
 
             if not cls._answer_cycle(prompt, l_pr_question, answers, l_pr_answer, prev_action, l_prev_msg, l_next_msg):
@@ -437,15 +436,15 @@ class CLIDay:
 
         data: dict[str, str] = cls._day.get_other_new_words()
 
-        CLIOutput.section_title('OTHER NEW WORDS:')
+        output.section_title('OTHER NEW WORDS:')
 
-        CLIOutput.empty_line(1)
-        CLIOutput.simple(data['prompt'])
+        output.empty_line(1)
+        output.simple(data['prompt'])
 
-        CLIOutput.empty_line(1)
+        output.empty_line(1)
         _, _ = CLIUserInput.get_answer('')
 
-        CLIOutput.empty_line(1)
+        output.empty_line(1)
 
 # helper ------------------------------------------------------------- #
 
@@ -462,6 +461,6 @@ class CLIDay:
             [Command.EXIT.value, 'Leave task an exit to top program level.']
         ]
 
-        CLIOutput.empty_line(1)
-        CLIOutput.simple('Within the task, the following commands are available:')
-        CLIOutput.value_pair_list(collection)
+        output.empty_line(1)
+        output.simple('Within the task, the following commands are available:')
+        output.value_pair_list(collection)

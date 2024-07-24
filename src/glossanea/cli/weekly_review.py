@@ -5,7 +5,7 @@
 """Weekly Review"""
 
 # imports: project
-# from glossanea.cli.output import CLIOutput
+# from glossanea.cli import output
 # from glossanea.cli.user_input import CLIUserInput
 
 

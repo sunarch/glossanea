@@ -12,7 +12,6 @@ from glossanea.structure.cycle import Cycle
 from glossanea.structure.unit import Unit
 from glossanea.files.data import data_file_path
 from glossanea.cli import output
-from glossanea.cli.output import CLIOutput
 from glossanea.cli.user_input import CLIUserInput
 from glossanea.cli.day import CLIDay
 # from glossanea.cli.weekly_review import CLIWeeklyReview
@@ -73,7 +72,7 @@ class CLI:
             try:
                 command_text, arguments = CLIUserInput.get_command(cls.build_command_prompt())
             except ValueError as ve:
-                CLIOutput.warning(str(ve))
+                output.warning(str(ve))
                 continue
 
             command: Command = Command.EMPTY
@@ -118,15 +117,15 @@ class CLI:
                     raise KeyError('Invalid command!')
 
             except KeyError as exc:
-                CLIOutput.warning(str(exc))
+                output.warning(str(exc))
                 continue
 
             except ValueError as exc:
-                CLIOutput.warning(str(exc))
+                output.warning(str(exc))
                 continue
 
             except IndexError as exc:
-                CLIOutput.warning(str(exc))
+                output.warning(str(exc))
                 continue
 
         # else:  # executes after while condition becomes false #
@@ -156,9 +155,9 @@ class CLI:
             [Command.HELP.value, 'Display this help text.']
         ]
 
-        CLIOutput.empty_line(1)
-        CLIOutput.center('Glossanea help')
-        CLIOutput.value_pair_list(collection, formatting=output.Formatting.WIDE)
+        output.empty_line(1)
+        output.center('Glossanea help')
+        output.value_pair_list(collection, formatting=output.Formatting.WIDE)
 
     @classmethod
     def cmd_start(cls) -> None:
@@ -252,11 +251,11 @@ class CLI:
         """Display introduction"""
 
         path: str = data_file_path('introduction.txt')
-        CLIOutput.empty_line(1)
+        output.empty_line(1)
         with open(path, 'r', encoding='UTF-8') as fh_intro:
             for line in fh_intro.readlines():
-                CLIOutput.center(line.rstrip())
-        CLIOutput.empty_line(1)
+                output.center(line.rstrip())
+        output.empty_line(1)
 
     # other ---------------------------------------------------------- #
 
