@@ -6,23 +6,25 @@
 
 # imports: library
 import abc
+import enum
 import os.path
+
+MIN_WEEK_NUMBER: int = 1
+MAX_WEEK_NUMBER: int = 12
+UNITS_PER_WEEK: int = 7
+MIN_DAY_NUMBER: int = 1
+MAX_DAY_NUMBER: int = 6
+WEEKLY_REVIEW_INDEX: int = 0
+
+
+class UnitType(enum.Enum):
+    """Enum of unit types"""
+    DAY = enum.auto()
+    WEEKLY_REVIEW = enum.auto()
 
 
 class Unit(abc.ABC):
     """Unit"""
-
-    # constants ------------------------------------------------------ #
-
-    TYPE_DAY: str = 'day'
-    TYPE_WEEKLY_REVIEW: str = 'weekly review'
-
-    MIN_WEEK_NUMBER: int = 1
-    MAX_WEEK_NUMBER: int = 12
-    UNITS_PER_WEEK = 7
-    MIN_DAY_NUMBER: int = 1
-    MAX_DAY_NUMBER: int = 6
-    WEEKLY_REVIEW_INDEX: int = 0
 
 # abstract content getters ------------------------------------------- #
 
@@ -38,52 +40,52 @@ class Unit(abc.ABC):
 
     @classmethod
     @abc.abstractmethod
-    def get_unit_type(cls) -> str:
+    def get_unit_type(cls) -> UnitType:
         """Get unit type"""
         raise NotImplementedError
 
+
 # validators --------------------------------------------------------- #
 
-    @classmethod
-    def validate_week_number(cls, week_number: int) -> bool:
-        """Validate a week number"""
+def validate_week_number(week_number: int) -> bool:
+    """Validate a week number"""
 
-        if not isinstance(week_number, int):
-            raise ValueError('Given week number value is not an integer!')
+    if not isinstance(week_number, int):
+        raise ValueError('Given week number value is not an integer!')
 
-        if week_number < cls.MIN_WEEK_NUMBER or week_number > cls.MAX_WEEK_NUMBER:
-            raise ValueError('Wrong week number!')
+    if week_number < MIN_WEEK_NUMBER or week_number > MAX_WEEK_NUMBER:
+        raise ValueError('Wrong week number!')
 
-        return True
+    return True
 
-    @classmethod
-    def validate_day_number(cls, day_number: int) -> bool:
-        """Validate a day number"""
 
-        if not isinstance(day_number, int):
-            raise ValueError('Given day number value is not an integer!')
+def validate_day_number(day_number: int) -> bool:
+    """Validate a day number"""
 
-        if day_number < cls.MIN_DAY_NUMBER or day_number > cls.MAX_DAY_NUMBER:
-            raise ValueError('Wrong day number!')
+    if not isinstance(day_number, int):
+        raise ValueError('Given day number value is not an integer!')
 
-        return True
+    if day_number < MIN_DAY_NUMBER or day_number > MAX_DAY_NUMBER:
+        raise ValueError('Wrong day number!')
+
+    return True
+
 
 # builders ----------------------------------------------------------- #
 
-    @staticmethod
-    def build_path_day(week_number: int, day_number: int) -> str:
-        """Build path day"""
+def build_path_day(week_number: int, day_number: int) -> str:
+    """Build path day"""
 
-        file_dir: str = f'week_{week_number:0>2}'
-        file_name: str = f'day_{day_number}.json'
+    file_dir: str = f'week_{week_number:0>2}'
+    file_name: str = f'day_{day_number}.json'
 
-        return os.path.join(file_dir, file_name)
+    return os.path.join(file_dir, file_name)
 
-    @staticmethod
-    def build_path_weekly_review(week_number: int) -> str:
-        """Build path weekly review"""
 
-        file_dir: str = f'week_{week_number:0>2}'
-        file_name: str = 'weekly_review.json'
+def build_path_weekly_review(week_number: int) -> str:
+    """Build path weekly review"""
 
-        return os.path.join(file_dir, file_name)
+    file_dir: str = f'week_{week_number:0>2}'
+    file_name: str = 'weekly_review.json'
+
+    return os.path.join(file_dir, file_name)

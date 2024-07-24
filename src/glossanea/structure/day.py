@@ -8,6 +8,7 @@
 from typing import Any
 
 # imports: project
+from glossanea.structure import unit
 from glossanea.structure.unit import Unit
 from glossanea.files.data import load_data_file, REQUIRED_VERSION_DAY
 
@@ -23,9 +24,9 @@ class Day(Unit):
     # class methods -------------------------------------------------- #
 
     @classmethod
-    def get_unit_type(cls) -> str:
+    def get_unit_type(cls) -> unit.UnitType:
         """Get unit type"""
-        return Unit.TYPE_DAY
+        return unit.UnitType.DAY
 
     # content variables ---------------------------------------------- #
 
@@ -87,8 +88,8 @@ class Day(Unit):
     def __init__(self, week_number: int, day_number: int) -> None:
 
         try:
-            Unit.validate_week_number(week_number)
-            Unit.validate_day_number(day_number)
+            unit.validate_week_number(week_number)
+            unit.validate_day_number(day_number)
         except ValueError as exc:
             raise ValueError from exc
 
@@ -100,7 +101,7 @@ class Day(Unit):
     def _load(self) -> None:
         """Load"""
 
-        file_path: str = Unit.build_path_day(self._week_number, self._day_number)
+        file_path: str = unit.build_path_day(self._week_number, self._day_number)
 
         data: dict[str, Any] = load_data_file(file_path)
 

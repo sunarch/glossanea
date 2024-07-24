@@ -8,6 +8,7 @@
 from typing import Any
 
 # imports: project
+from glossanea.structure import unit
 from glossanea.structure.unit import Unit
 from glossanea.files.data import load_data_file, REQUIRED_VERSION_WEEKLY_REVIEW
 
@@ -22,9 +23,9 @@ class WeeklyReview(Unit):
     # class methods -------------------------------------------------- #
 
     @classmethod
-    def get_unit_type(cls) -> str:
+    def get_unit_type(cls) -> unit.UnitType:
         """Get unit type"""
-        return Unit.TYPE_WEEKLY_REVIEW
+        return unit.UnitType.WEEKLY_REVIEW
 
     # content variables ---------------------------------------------- #
 
@@ -38,7 +39,7 @@ class WeeklyReview(Unit):
 
     def get_unit_no(self) -> int:
         """Get unit number"""
-        return Unit.WEEKLY_REVIEW_INDEX
+        return unit.WEEKLY_REVIEW_INDEX
 
     # content getters ------------------------------------------------ #
 
@@ -52,7 +53,7 @@ class WeeklyReview(Unit):
     def __init__(self, week_number: int) -> None:
 
         try:
-            Unit.validate_week_number(week_number)
+            unit.validate_week_number(week_number)
         except ValueError as exc:
             raise ValueError from exc
 
@@ -63,7 +64,7 @@ class WeeklyReview(Unit):
     def _load(self) -> None:
         """Load"""
 
-        file_path: str = Unit.build_path_weekly_review(self._week_number)
+        file_path: str = unit.build_path_weekly_review(self._week_number)
 
         self._data = load_data_file(file_path)
 

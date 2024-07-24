@@ -9,13 +9,14 @@ import enum
 
 # imports: project
 from glossanea.structure.cycle import Cycle
+from glossanea.structure import unit
 from glossanea.structure.unit import Unit
 from glossanea.structure.day import Day
 from glossanea.structure.weekly_review import WeeklyReview
 from glossanea.files.data import data_file_path
 from glossanea.cli import output
 from glossanea.cli import user_input
-from glossanea.cli import day
+from glossanea.cli.day import run as run_day
 # from glossanea.cli.weekly_review import CLIWeeklyReview
 
 
@@ -153,7 +154,7 @@ class CLI:
     def cmd_start(cls) -> None:
         """Command: start"""
 
-        day.run(cls._unit)
+        run_day(cls._unit)
 
     @classmethod
     def cmd_next(cls) -> None:
@@ -173,7 +174,7 @@ class CLI:
         week_number: int = cls._unit.get_week_no()
         unit_number: int = cls._unit.get_unit_no()
 
-        if cls._unit.get_unit_type() == Unit.TYPE_WEEKLY_REVIEW:
+        if cls._unit.get_unit_type() == unit.UnitType.WEEKLY_REVIEW:
             try:
                 prev_unit: Unit = cls._unit
                 cls._unit = Cycle.get_next_unit(week_number, unit_number)
@@ -227,7 +228,7 @@ class CLI:
             except ValueError as exc:
                 raise ValueError from exc
 
-            if cls._unit.get_unit_type() == Unit.TYPE_DAY:
+            if cls._unit.get_unit_type() == unit.UnitType.DAY:
                 break
 
         del prev_unit
@@ -256,7 +257,7 @@ class CLI:
         week: int = cls._unit.get_week_no()
         day: int | str = cls._unit.get_unit_no()
 
-        if day == Unit.WEEKLY_REVIEW_INDEX:
+        if day == unit.WEEKLY_REVIEW_INDEX:
             day = 'WR'
 
         return f'Glossanea {week}/{day} $ '
