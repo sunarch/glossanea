@@ -4,11 +4,9 @@
 
 """Day"""
 
-# imports: library
-from typing import Any, Callable
-
 # imports: project
 from glossanea.cli import output
+from glossanea.structure import day as unit
 from glossanea.structure.day import Day
 from glossanea import tasks
 
@@ -16,20 +14,7 @@ from glossanea import tasks
 def run(day: Day) -> None:
     """Run Day"""
 
-    task_list: list[tuple[Callable, list[Any]]] = [
-        (tasks.title, [day.title]),
-        (tasks.new_words, [day.new_words]),
-        (tasks.intro_text, [day.intro_text]),
-        (tasks.sample_sentences, [day.sample_sentences,
-                                  day.new_words_extension,
-                                  day.new_words]),
-        (tasks.definitions, [day.definitions,
-                             day.new_words]),
-        (tasks.matching, [day.matching,
-                          day.new_words]),
-        (tasks.other_new_words, [day.other_new_words]),
-    ]
-
+    task_list: list[str] = day.data_keys
     task_index: int = 0
     while True:
 
@@ -39,9 +24,33 @@ def run(day: Day) -> None:
         if task_index >= len(task_list):
             break
 
-        task_function: Callable = task_list[task_index][0]
-        task_arguments: list[Any] = task_list[task_index][1]
-        task_result: tasks.TaskResult = task_function(*task_arguments)
+        task_result: tasks.TaskResult = tasks.TaskResult.NOT_IMPLEMENTED
+
+        match task_list[task_index]:
+            case unit.KEY_DATA_VERSION:
+                task_result = tasks.TaskResult.HIDDEN
+            case unit.KEY_TITLE:
+                task_result = tasks.title(day.title)
+            case unit.KEY_NEW_WORDS:
+                task_result = tasks.new_words(day.new_words)
+            case unit.KEY_NEW_WORDS_EXTENSION:
+                task_result = tasks.TaskResult.HIDDEN
+            case unit.KEY_INTRO_TEXT:
+                task_result = tasks.intro_text(day.intro_text)
+            case unit.KEY_SAMPLE_SENTENCES:
+                task_result = tasks.sample_sentences(day.sample_sentences,
+                                                     day.new_words_extension,
+                                                     day.new_words)
+            case unit.KEY_DEFINITIONS:
+                task_result = tasks.definitions(day.definitions,
+                                                day.new_words)
+            case unit.KEY_MATCHING:
+                task_result = tasks.matching(day.matching,
+                                             day.new_words)
+            case unit.KEY_OTHER_NEW_WORDS:
+                task_result = tasks.other_new_words(day.other_new_words)
+            case _:
+                raise ValueError(f'Unrecognized task type: {task_list[task_index]}')
 
         match task_result:
 
@@ -58,7 +67,7 @@ def run(day: Day) -> None:
             case tasks.TaskResult.EXIT_TASK:
                 break
 
-            case tasks.TaskResult.NOT_IMPLEMENTED | tasks.TaskResult.FINISHED:
+            case tasks.TaskResult.NOT_IMPLEMENTED | tasks.TaskResult.HIDDEN | tasks.TaskResult.FINISHED:
                 task_index += 1
                 continue
 

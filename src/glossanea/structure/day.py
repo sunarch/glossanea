@@ -48,6 +48,14 @@ class Day(Unit):
         """Get unit type"""
         return unit.UnitType.DAY
 
+    # general getters ------------------------------------------------ #
+
+    @property
+    def data_keys(self) -> list[str]:
+        """Iterate through the keys in the data file"""
+
+        return list(self._data.keys())
+
     # content getters ------------------------------------------------ #
 
     @property
