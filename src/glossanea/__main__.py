@@ -42,7 +42,6 @@ def main() -> None:
 
     config.check_data_dir_path()
 
-    # start User Interface
     cli.mainloop()
 
 

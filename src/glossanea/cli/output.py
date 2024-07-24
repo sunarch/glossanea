@@ -33,7 +33,7 @@ class Spacing(enum.Enum):
     APART = enum.auto()
 
 
-# template creation ---------------------------------------------- #
+# template creation -------------------------------------------------- #
 
 def _template(filler: str = ' ', align: Align = Align.LEFT, width: int = -1) -> str:
     """Template"""
@@ -122,7 +122,7 @@ def _init_line(line_start_first: str, line_start_all: str) -> str:
     return line_build
 
 
-# displays ------------------------------------------------------- #
+# displays ----------------------------------------------------------- #
 
 def section_title(title: str) -> None:
     """Section title"""
@@ -285,7 +285,7 @@ def value_pair_list(collection: list[list[str]],
         print(template.format(pair[0], pair[1]))
 
 
-# special displays ----------------------------------------------- #
+# special displays --------------------------------------------------- #
 
 def empty_line(count: int = 1) -> None:
     """Empty line"""
@@ -299,7 +299,7 @@ def filled_line(character: str, count: int = 1) -> None:
         print(_template(character, Align.CENTER, DISPLAY_WIDTH).format(''))
 
 
-# message displays ----------------------------------------------- #
+# message displays --------------------------------------------------- #
 
 def warning(text: str) -> None:
     """Warning"""

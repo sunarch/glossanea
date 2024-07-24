@@ -49,10 +49,7 @@ def mainloop() -> None:
 
     unit_obj: Unit = Unit(unit.MIN_WEEK_NUMBER, unit.MIN_DAY_NUMBER)
 
-    # Introduction #
     display_introduction()
-
-    # Main Program Loop #
 
     while True:
 
@@ -74,7 +71,6 @@ def mainloop() -> None:
                 except ValueError:
                     pass
 
-        # UI function invocations #
         try:
 
             match command:
