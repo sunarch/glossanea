@@ -48,7 +48,6 @@ class CLI:
     """CLI"""
 
     # General variables #
-    _done: bool = False
     _unit: Unit | None = None
 
     @classmethod
@@ -62,7 +61,7 @@ class CLI:
 
         # Main Program Loop #
 
-        while not cls._done:
+        while True:
 
             try:
                 command_text, arguments = user_input.get_command(build_command_prompt(cls._unit.week_number,
@@ -87,14 +86,14 @@ class CLI:
 
                 match command:
                     # UI commands with zero arguments #
+                    case Command.EXIT:
+                        break
                     case Command.HELP:
                         cls.cmd_help()
                     case Command.START:
                         cls.cmd_start()
                     case Command.NEXT:
                         cls.cmd_next()
-                    case Command.EXIT:
-                        cls.cmd_exit()
                     # UI commands with variable arguments #
                     case Command.RANDOM:
                         cls.cmd_random(arguments)
@@ -123,12 +122,6 @@ class CLI:
         # end of the Main Program Loop #
 
     # User Interface functions --------------------------------------- #
-
-    @classmethod
-    def cmd_exit(cls) -> None:
-        """Command: exit"""
-
-        cls._done = True
 
     @classmethod
     def cmd_help(cls) -> None:
