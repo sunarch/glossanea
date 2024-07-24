@@ -38,29 +38,16 @@ class Spacing(enum.Enum):
 def _template(filler: str = ' ', align: Align = Align.LEFT, width: int = -1) -> str:
     """Template"""
 
-    if width == -1:
-        width = DISPLAY_WIDTH
-
-    filler_replace: dict[str, str] = {
-        '{': '\{',
-        '}': '\}',
-    }
-
-    template: str = ':'
-
-    if filler in filler_replace:
-        filler = filler_replace[filler]
-
-    template += filler
-    template += align.value
-
     if not isinstance(width, int):
         raise ValueError('Given width is not an integer')
-
+    if width == -1:
+        width = DISPLAY_WIDTH
     if not width > 0:
         raise ValueError('Illegal width parameter')
 
-    template += str(width)
+    filler_escaping: str = '\\' if filler in {'{', '}'} else ''
+
+    template: str = f':{filler_escaping}{filler}{align.value}{width}'
 
     return '{' + template + '}'
 
@@ -138,8 +125,6 @@ def section_title(title: str) -> None:
 def words_table(list_regular: list[str], list_phonetic: list[str]) -> None:
     """Words table"""
 
-    template: str = ''
-
     if len(list_regular) != len(list_phonetic):
         raise ValueError('Word lists are not equal length')
 
@@ -152,10 +137,12 @@ def words_table(list_regular: list[str], list_phonetic: list[str]) -> None:
         if (len(word) + 2) > unit_width:
             unit_width = len(word)
 
+    template: str = ''
     for _ in range(1, len(list_regular) + 1):
         template += '| '
         template += _template(' ', Align.LEFT, unit_width)
         template += ' '
+    template += '|'
 
     print(template.format(*list_regular))
     print(template.format(*list_phonetic))
@@ -259,19 +246,21 @@ def value_pair_list(collection: list[list[str]],
                     ) -> None:
     """Value pair list"""
 
+    template: str = '  '
+
     if formatting == Formatting.REGULAR:
         longest_key = 1
 
         for pair in collection:
             longest_key = max(longest_key, len(pair[0]))
 
-        template: str = '  ' + _template(' ', Align.LEFT, longest_key) + ' : {}'
+        template += _template(' ', Align.LEFT, longest_key) + ' : {}'
 
     elif formatting == Formatting.WIDE:
         for pair in collection:
             pair[0] = pair[0] + ' '
 
-        template: str = '  {0:.<46} : {1: <49}'
+        template += '{0:.<46} : {1: <49}'
 
     else:
         raise ValueError('Illegal format parameter')
