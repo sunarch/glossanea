@@ -48,17 +48,9 @@ class CLIDay:
     # constants
     INTRO_TEXT_WIDTH: int = 60
 
-    ACTION_EXIT: str = 'exit'
-    ACTION_TITLE: str = 'title'
-    ACTION_NEW_WORDS: str = 'new words'
-    ACTION_INTRO_TEXT: str = 'intro text'
-    ACTION_SAMPLE_SENTENCES: str = 'sample sentences'
-    ACTION_DEFINITIONS: str = 'definitions'
-    ACTION_MATCHING: str = 'matching'
-    ACTION_OTHER_NEW_WORDS: str = 'other new words'
-
     # General variables #
-    _next_action: str | None = None
+    _unit_finished: bool = False
+    _task_index: int = 0
     _day: Day | None = None
 
     @classmethod
@@ -72,44 +64,42 @@ class CLIDay:
     def mainloop(cls) -> None:
         """Main loop"""
 
-        cls._next_action = 'title'
+        # Step: Title
+        cls.title()
+        output.empty_line(1)
+        CLIUserInput.wait_for_enter()
 
-        while cls._next_action != cls.ACTION_EXIT:
+        # Step: New Words
+        cls.new_words()
+        output.empty_line(1)
+        CLIUserInput.wait_for_enter()
 
-            if cls._next_action == cls.ACTION_TITLE:
-                cls._next_action = cls.ACTION_NEW_WORDS
-                cls.title()
+        # Step: Intro Text
+        cls.intro_text()
+        output.empty_line(1)
+        CLIUserInput.wait_for_enter()
 
-            elif cls._next_action == cls.ACTION_NEW_WORDS:
-                cls._next_action = cls.ACTION_INTRO_TEXT
-                cls.new_words()
-                output.empty_line(1)
-                CLIUserInput.wait_for_enter()
+        # Tasks
+        tasks: list[Callable] = [
+            cls.sample_sentences,
+            cls.definitions,
+            cls.matching,
+            cls.other_new_words,
+        ]
 
-            elif cls._next_action == cls.ACTION_INTRO_TEXT:
-                cls._next_action = cls.ACTION_SAMPLE_SENTENCES
-                cls.intro_text()
-                output.empty_line(1)
-                CLIUserInput.wait_for_enter()
+        cls._unit_finished = False
+        while not cls._unit_finished:
 
-            elif cls._next_action == cls.ACTION_SAMPLE_SENTENCES:
-                cls._next_action = cls.ACTION_DEFINITIONS
-                cls.sample_sentences()
+            if cls._task_index < 0:
+                raise IndexError(f'Step index out of bounds: {cls._task_index}')
 
-            elif cls._next_action == cls.ACTION_DEFINITIONS:
-                cls._next_action = cls.ACTION_MATCHING
-                cls.definitions()
+            if cls._task_index >= len(tasks):
+                cls._unit_finished = True
+                break
 
-            elif cls._next_action == cls.ACTION_MATCHING:
-                cls._next_action = cls.ACTION_OTHER_NEW_WORDS
-                cls.matching()
+            tasks[cls._task_index]()
 
-            elif cls._next_action == cls.ACTION_OTHER_NEW_WORDS:
-                cls._next_action = cls.ACTION_EXIT
-                cls.other_new_words()
-
-            else:
-                raise KeyError('Unknown action request.')
+            cls._task_index += 1
 
 # day displays ------------------------------------------------------- #
 
@@ -155,8 +145,6 @@ class CLIDay:
                       l_pr_question: Callable[[], None],
                       answers: list[str],
                       l_pr_answer: Callable[[], None],
-                      prev_action: str,
-                      l_prev_msg: Callable[[], None],
                       l_next_msg: Callable[[], None],
                       ):
         """Answer cycle"""
@@ -207,11 +195,12 @@ class CLIDay:
                     l_next_msg()
                     return False
                 elif command == Command.PREVIOUS:
-                    l_prev_msg()
-                    cls._next_action = prev_action
+                    cls._task_index = max(-1, cls._task_index - 2)
+                    if cls._task_index == -1:
+                        output.general_message('This is the first task: Starting from the beginning.')
                     return False
                 elif command == Command.EXIT:
-                    cls._next_action = cls.ACTION_EXIT
+                    cls._unit_finished = True
                     return False
                 elif command == Command.HELP:
                     cls.help_cmd_in_task()
@@ -235,8 +224,8 @@ class CLIDay:
 
         for sentence in data['sentences']:
             output.numbered_sentence(sentence['id'],
-                                        sentence['beginning'] + output.BLANK + sentence['end'],
-                                        output.Formatting.INDENTED)
+                                     sentence['beginning'] + output.BLANK + sentence['end'],
+                                     output.Formatting.INDENTED)
 
         new_words_extension: list[str] = cls._day.get_new_words_extension()
 
@@ -267,12 +256,6 @@ class CLIDay:
                 """l_pr_answer"""
                 return output.simple(full_answer)
 
-            prev_action: str = cls.ACTION_SAMPLE_SENTENCES
-
-            def l_prev_msg() -> None:
-                """l_prev_msg"""
-                return output.general_message('This is the first task: Starting from the beginning.')
-
             def l_next_msg() -> None:
                 """l_next_msg"""
                 return None
@@ -283,7 +266,7 @@ class CLIDay:
             output.empty_line(1)
             l_pr_question()
 
-            if not cls._answer_cycle(prompt, l_pr_question, answers, l_pr_answer, prev_action, l_prev_msg, l_next_msg):
+            if not cls._answer_cycle(prompt, l_pr_question, answers, l_pr_answer, l_next_msg):
                 return
 
             # return after answer cycle returns
@@ -337,12 +320,6 @@ class CLIDay:
                 """l_pr_answer"""
                 return output.numbered_sentence(answer_id, answer_text)
 
-            prev_action: str = cls.ACTION_SAMPLE_SENTENCES
-
-            def l_prev_msg() -> None:
-                """l_prev_msg"""
-                return None
-
             def l_next_msg() -> None:
                 """l_next_msg"""
                 return None
@@ -354,7 +331,7 @@ class CLIDay:
             output.empty_line(1)
             l_pr_question()
 
-            if not cls._answer_cycle(prompt, l_pr_question, answers, l_pr_answer, prev_action, l_prev_msg, l_next_msg):
+            if not cls._answer_cycle(prompt, l_pr_question, answers, l_pr_answer, l_next_msg):
                 return
 
             # return after answer cycle returns
@@ -408,12 +385,6 @@ class CLIDay:
                 """l_pr_answer"""
                 return output.numbered_sentence(answer_id, answer_text)
 
-            prev_action: str = cls.ACTION_SAMPLE_SENTENCES
-
-            def l_prev_msg() -> None:
-                """l_prev_msg"""
-                return None
-
             def l_next_msg() -> None:
                 """l_next_msg"""
                 return None
@@ -425,7 +396,7 @@ class CLIDay:
             output.empty_line(1)
             l_pr_question()
 
-            if not cls._answer_cycle(prompt, l_pr_question, answers, l_pr_answer, prev_action, l_prev_msg, l_next_msg):
+            if not cls._answer_cycle(prompt, l_pr_question, answers, l_pr_answer, l_next_msg):
                 return
 
             # return after answer cycle returns
