@@ -61,27 +61,25 @@ class CLIDay:
             task_arguments: list[Any] = task_list[cls._task_index][1]
             task_result: tasks.TaskResult = task_function(*task_arguments)
 
-            # pylint: disable=no-else-continue
-            if task_result == tasks.TaskResult.BACK_TO_PREVIOUS_TASK:
-                cls._task_index = max(0, cls._task_index - 1)
-                if cls._task_index == 0:
-                    output.general_message('This is the first task: Starting from the beginning.')
-                continue
+            match task_result:
 
-            elif task_result == tasks.TaskResult.JUMP_TO_NEXT_TASK:
-                cls._task_index += 1
-                continue
+                case tasks.TaskResult.BACK_TO_PREVIOUS_TASK:
+                    cls._task_index = max(0, cls._task_index - 1)
+                    if cls._task_index == 0:
+                        output.general_message('This is the first task: Starting from the beginning.')
+                    continue
 
-            elif task_result == tasks.TaskResult.EXIT_TASK:
-                cls._unit_finished = True
-                break
+                case tasks.TaskResult.JUMP_TO_NEXT_TASK:
+                    cls._task_index += 1
+                    continue
 
-            elif task_result in {
-                tasks.TaskResult.NOT_IMPLEMENTED,
-                tasks.TaskResult.FINISHED,
-            }:
-                cls._task_index += 1
-                continue
+                case tasks.TaskResult.EXIT_TASK:
+                    cls._unit_finished = True
+                    break
 
-            else:
-                raise ValueError(f'Unhandled task result: {task_result}')
+                case tasks.TaskResult.NOT_IMPLEMENTED | tasks.TaskResult.FINISHED:
+                    cls._task_index += 1
+                    continue
+
+                case _:
+                    raise ValueError(f'Unhandled task result: {task_result}')

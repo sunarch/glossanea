@@ -68,13 +68,10 @@ def task(data: dict[str, Any],
         l_pr_question()
 
         task_result: TaskResult = answer_cycle(prompt, l_pr_question, answers, l_pr_answer, data_for_new_words)
-
-        if task_result in {
-            TaskResult.SUBTASK_CORRECT_ANSWER,
-            TaskResult.SUBTASK_SKIP_TO_NEXT,
-        }:
-            continue
-
-        return task_result
+        match task_result:
+            case TaskResult.SUBTASK_CORRECT_ANSWER | TaskResult.SUBTASK_SKIP_TO_NEXT:
+                continue
+            case _:
+                return task_result
 
     return TaskResult.FINISHED

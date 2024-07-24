@@ -88,33 +88,26 @@ class CLI:
 
             # UI function invocations #
             try:
-                # UI commands with zero arguments #
 
-                if command == Command.HELP:
-                    cls.cmd_help()
-
-                elif command == Command.START:
-                    cls.cmd_start()
-
-                elif command == Command.NEXT:
-                    cls.cmd_next()
-
-                elif command == Command.EXIT:
-                    cls.cmd_exit()
-
-                # UI commands with variable arguments #
-
-                elif command == Command.RANDOM:
-                    cls.cmd_random(arguments)
-
-                # UI commands with one or more arguments #
-
-                elif command == Command.GOTO:
-                    cls.cmd_goto(arguments)
-
-                # other inputs #
-                else:
-                    raise KeyError('Invalid command!')
+                match command:
+                    # UI commands with zero arguments #
+                    case Command.HELP:
+                        cls.cmd_help()
+                    case Command.START:
+                        cls.cmd_start()
+                    case Command.NEXT:
+                        cls.cmd_next()
+                    case Command.EXIT:
+                        cls.cmd_exit()
+                    # UI commands with variable arguments #
+                    case Command.RANDOM:
+                        cls.cmd_random(arguments)
+                    # UI commands with one or more arguments #
+                    case Command.GOTO:
+                        cls.cmd_goto(arguments)
+                    # other inputs #
+                    case _:
+                        raise KeyError('Invalid command!')
 
             except KeyError as exc:
                 output.warning(str(exc))

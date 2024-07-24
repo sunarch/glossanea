@@ -115,22 +115,23 @@ def answer_cycle(prompt: str,
                     except ValueError:
                         pass
 
-            if command == Command.WORDS:
-                new_words(data_for_new_words, False)
-                output.empty_line(1)
-                l_pr_question()
-            elif command == Command.SOLUTION:
-                print('HINT: ' + ' / '.join([f'"{answer}"' for answer in answers]))
-                continue
-            elif command == Command.NEXT:
-                return TaskResult.SUBTASK_SKIP_TO_NEXT
-            elif command == Command.JUMP:
-                return TaskResult.JUMP_TO_NEXT_TASK
-            elif command == Command.PREVIOUS:
-                return TaskResult.BACK_TO_PREVIOUS_TASK
-            elif command == Command.EXIT:
-                return TaskResult.EXIT_TASK
-            elif command == Command.HELP:
-                help_cmd_in_task()
-            else:
-                output.warning(f'Invalid command: {a_content}')
+            match command:
+                case Command.WORDS:
+                    new_words(data_for_new_words, False)
+                    output.empty_line(1)
+                    l_pr_question()
+                case Command.SOLUTION:
+                    print('HINT: ' + ' / '.join([f'"{answer}"' for answer in answers]))
+                    continue
+                case Command.NEXT:
+                    return TaskResult.SUBTASK_SKIP_TO_NEXT
+                case Command.JUMP:
+                    return TaskResult.JUMP_TO_NEXT_TASK
+                case Command.PREVIOUS:
+                    return TaskResult.BACK_TO_PREVIOUS_TASK
+                case Command.EXIT:
+                    return TaskResult.EXIT_TASK
+                case Command.HELP:
+                    help_cmd_in_task()
+                case _:
+                    output.warning(f'Invalid command: {a_content}')
