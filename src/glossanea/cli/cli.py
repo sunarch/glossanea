@@ -88,10 +88,10 @@ class CLI:
                     # UI commands with zero arguments #
                     case Command.EXIT:
                         break
+                    case Command.START:
+                        run_unit(cls._unit)
                     case Command.HELP:
                         cls.cmd_help()
-                    case Command.START:
-                        cls.cmd_start()
                     case Command.NEXT:
                         cls.cmd_next()
                     # UI commands with variable arguments #
@@ -142,12 +142,6 @@ class CLI:
         output.value_pair_list(collection, formatting=output.Formatting.WIDE)
 
     @classmethod
-    def cmd_start(cls) -> None:
-        """Command: start"""
-
-        run_unit(cls._unit)
-
-    @classmethod
     def cmd_next(cls) -> None:
         """Command: next"""
 
@@ -174,7 +168,7 @@ class CLI:
                 raise IndexError from exc
         # END_TODO ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ #
 
-        cls.cmd_start()
+        run_unit(cls._unit)
 
     @classmethod
     def cmd_goto(cls, arguments):
@@ -224,7 +218,7 @@ class CLI:
 
         del prev_unit
 
-        cls.cmd_start()
+        run_unit(cls._unit)
 
 
 # general displays ----------------------------------------------- #
