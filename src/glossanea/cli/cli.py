@@ -73,7 +73,6 @@ def mainloop() -> None:
                     pass
 
         try:
-
             match command:
                 # UI commands with zero arguments #
                 case Command.EXIT:
@@ -137,7 +136,7 @@ def cmd_help() -> None:
     output.value_pair_list(collection, formatting=output.Formatting.WIDE)
 
 
-def get_specific_unit(current_unit: Unit, arguments):
+def get_specific_unit(current_unit: Unit, arguments) -> Unit:
     """Create an instance of a specific unit"""
 
     if len(arguments) < 1:
@@ -216,7 +215,7 @@ def get_random_unit(unit_type: str) -> Unit:
 
 # general displays --------------------------------------------------- #
 
-def display_introduction():
+def display_introduction() -> None:
     """Display introduction"""
 
     file_subpath: str = 'introduction.txt'
@@ -230,7 +229,7 @@ def display_introduction():
 
 # other -------------------------------------------------------------- #
 
-def build_command_prompt(week_number: int, unit_number_display: str):
+def build_command_prompt(week_number: int, unit_number_display: str) -> str:
     """Build command prompt"""
 
     return f'{version.PROGRAM_NAME.capitalize()} {week_number}/{unit_number_display} $ '
