@@ -9,6 +9,7 @@ import enum
 import random
 
 # imports: project
+from glossanea import version
 from glossanea.cli import cli_unit
 from glossanea.cli import output
 from glossanea.cli import user_input
@@ -232,4 +233,4 @@ def display_introduction():
 def build_command_prompt(week_number: int, unit_number_display: str):
     """Build command prompt"""
 
-    return f'Glossanea {week_number}/{unit_number_display} $ '
+    return f'{version.PROGRAM_NAME.capitalize()} {week_number}/{unit_number_display} $ '
