@@ -65,15 +65,17 @@ COMMAND_TEXTS: dict[str, Command] = {
     'words': Command.WORDS,
 }
 
+COMMAND_PREFIXES: list[str] = ['cmd ', '/']
+
 
 def get_answer(prompt: str) -> tuple[InputType, str]:
     """Get user input - answer"""
 
     input_text: str = input(prompt)
-    command_prefix: str = 'cmd '
 
-    if input_text.startswith(command_prefix):
-        return InputType.COMMAND, input_text.lstrip(command_prefix)
+    for command_prefix in COMMAND_PREFIXES:
+        if input_text.startswith(command_prefix):
+            return InputType.COMMAND, input_text.lstrip(command_prefix)
 
     return InputType.ANSWER, input_text
 
