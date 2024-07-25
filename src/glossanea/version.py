@@ -7,3 +7,5 @@
 PROGRAM_NAME: str = 'glossanea'
 
 __version__: str = '0.1.0'
+
+REQUIRED_DATA_VERSION: int = 2

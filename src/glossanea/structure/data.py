@@ -13,9 +13,6 @@ from typing import Any
 from glossanea.structure import config
 
 
-REQUIRED_VERSION: int = 2
-
-
 def data_file_path(file_subpath: str) -> str:
     """Add data folder prefix to data file path"""
 

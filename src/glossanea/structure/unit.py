@@ -9,6 +9,7 @@ import os.path
 from typing import Any
 
 # imports: project
+from glossanea.version import REQUIRED_DATA_VERSION
 from glossanea.structure import data
 
 
@@ -217,10 +218,10 @@ class Unit:
             msg += f'{self._week_number}/{self.unit_number_display}'
             raise ValueError(msg)
 
-        if self.data_version != data.REQUIRED_VERSION:
+        if self.data_version != REQUIRED_DATA_VERSION:
             msg: str = 'Incorrect data file version: '
             msg += f'{self._week_number}/{self.unit_number_display}'
-            msg += f'(FOUND: {self.data_version} - REQUIRED: {data.REQUIRED_VERSION})'
+            msg += f'(FOUND: {self.data_version} - REQUIRED: {REQUIRED_DATA_VERSION})'
             raise ValueError(msg)
 
 
