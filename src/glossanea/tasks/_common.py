@@ -12,7 +12,7 @@ from typing import Callable
 from glossanea.cli import output
 from glossanea.cli import user_input
 from glossanea.cli.user_input import InputType
-from glossanea.tasks.new_words_common import new_words
+from glossanea.tasks.t_1_new_words_common import new_words
 
 
 class TaskResult(enum.Enum):

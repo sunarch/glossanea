@@ -8,7 +8,7 @@
 from glossanea.cli import output
 from glossanea.cli import user_input
 from glossanea.tasks._common import TaskResult
-from glossanea.tasks.new_words_common import new_words
+from glossanea.tasks.t_1_new_words_common import new_words
 
 
 def task(data: list[dict[str, str]]) -> TaskResult:

@@ -29,11 +29,13 @@ def run(unit_obj: Unit) -> None:
             case unit.KEY_DATA_VERSION:
                 task_result = TaskResult.HIDDEN
 
+            # Common
             case unit.KEY_TITLE:
                 task_result = tasks.title(unit_obj.title)
             case unit.KEY_INTRO_TEXT:
                 task_result = tasks.intro_text(unit_obj.intro_text)
 
+            # Day only
             case unit.KEY_NEW_WORDS:
                 task_result = tasks.new_words(unit_obj.new_words)
             case unit.KEY_NEW_WORDS_EXTENSION:
@@ -50,6 +52,29 @@ def run(unit_obj: Unit) -> None:
                                              unit_obj.new_words)
             case unit.KEY_OTHER_NEW_WORDS:
                 task_result = tasks.other_new_words(unit_obj.other_new_words)
+
+            # Weekly Review only
+            case unit.KEY_WR_BEFORE_THE_TEST:
+                task_result = tasks.wr_before_the_test(unit_obj.wr_before_the_test)
+            case unit.KEY_WR_DEFINITIONS:
+                task_result = tasks.wr_definitions(unit_obj.wr_definitions)
+            case unit.KEY_WR_WORD_COMBINATIONS:
+                task_result = tasks.wr_word_combinations(unit_obj.wr_word_combinations)
+            case unit.KEY_WR_SKELETONS:
+                task_result = tasks.wr_skeletons(unit_obj.wr_skeletons)
+            case unit.KEY_WR_SUBSTITUTION:
+                task_result = tasks.wr_substitution(unit_obj.wr_substitution)
+            case unit.KEY_WR_TRANSLATION:
+                task_result = tasks.wr_translation(unit_obj.wr_translation)
+            case unit.KEY_WR_SIT_BACK_AND_RELAX:
+                task_result = tasks.wr_sit_back_and_relax(unit_obj.wr_sit_back_and_relax)
+            case unit.KEY_WR_WORD_FORMATION:
+                task_result = tasks.wr_word_formation(unit_obj.wr_word_formation)
+            case unit.KEY_WR_USAGE:
+                task_result = tasks.wr_usage(unit_obj.wr_usage)
+            case unit.KEY_WR_EXTRA_CARDS:
+                task_result = tasks.wr_extra_cards(unit_obj.wr_extra_cards)
+
             case _:
                 raise ValueError(f'Unrecognized task type: {task_list[task_index]}')
 

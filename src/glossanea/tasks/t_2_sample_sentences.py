@@ -10,7 +10,7 @@ from typing import Any
 # imports: project
 from glossanea.cli import output
 from glossanea.tasks._common import TaskResult, answer_cycle
-from glossanea.tasks.new_words_common import new_words
+from glossanea.tasks.t_1_new_words_common import new_words
 
 TITLE: str = 'sample sentences'.upper()
 
