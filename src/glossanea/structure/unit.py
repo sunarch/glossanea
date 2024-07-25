@@ -19,11 +19,14 @@ MIN_DAY_NUMBER: int = 1
 MAX_DAY_NUMBER: int = 6
 WEEKLY_REVIEW_INDEX: int = 0
 
+# Meta
 KEY_DATA_VERSION: str = 'version'
 
+# Common
 KEY_TITLE: str = 'title'
 KEY_INTRO_TEXT: str = 'intro_text'
 
+# Day only
 KEY_NEW_WORDS: str = 'new_words'
 KEY_NEW_WORDS_EXTENSION: str = 'new_words_extension'
 KEY_SAMPLE_SENTENCES: str = 'sample_sentences'
@@ -31,18 +34,20 @@ KEY_DEFINITIONS: str = 'definitions'
 KEY_MATCHING: str = 'matching'
 KEY_OTHER_NEW_WORDS: str = 'other_new_words'
 
+# Weekly Review only
 KEY_WR_BEFORE_THE_TEST: str = 'wr_before_the_test'
 KEY_WR_DEFINITIONS: str = 'wr_definitions'
-KEY_WR_WORD_COMBINATIONS: str = 'wr_make_typical_word_combinations'
+KEY_WR_WORD_COMBINATIONS: str = 'wr_word_combinations'
 KEY_WR_SKELETONS: str = 'wr_skeletons'
 KEY_WR_SUBSTITUTION: str = 'wr_substitution'
 KEY_WR_TRANSLATION: str = 'wr_translation'
-KEY_WR_SIT_BACK_AND_RELAX: str = 'wr_now_sit_back_and_relax'
+KEY_WR_SIT_BACK_AND_RELAX: str = 'wr_sit_back_and_relax'
 KEY_WR_WORD_FORMATION: str = 'wr_word_formation'
 KEY_WR_USAGE: str = 'wr_usage'
-KEY_WR_EXTRA_CARDS: str = 'wr_fill_in_the_extra_cards'
+KEY_WR_EXTRA_CARDS: str = 'wr_extra_cards'
 
 
+# pylint: disable=too-many-public-methods
 class Unit:
     """Unit"""
 
@@ -61,111 +66,117 @@ class Unit:
     # content getters ------------------------------------------------ #
 
     @property
-    def data_keys(self) -> list[str]:
-        """Iterate through the keys in the data file"""
+    def task_names(self) -> list[str]:
+        """Return a list of keys in the data file which describe tasks"""
 
-        return list(self._data.keys())
+        key_list: list[str] = list(self._data.keys())
+        key_list.remove(KEY_DATA_VERSION)
+        key_list.remove(KEY_NEW_WORDS_EXTENSION)
+
+        return key_list
+
+    # Meta ----------------------------------------------------------- #
 
     @property
-    def data_version(self) -> str:
+    def data_version(self) -> int:
         """Get data version"""
-        return self._data[KEY_DATA_VERSION]
+        return self._data.get(KEY_DATA_VERSION)
 
     # Common --------------------------------------------------------- #
 
     @property
     def title(self) -> str:
         """Get title"""
-        return self._data[KEY_TITLE]
+        return self._data.get(KEY_TITLE)
 
     @property
     def intro_text(self) -> list[str]:
         """Get intro text"""
-        return self._data[KEY_INTRO_TEXT]
+        return self._data.get(KEY_INTRO_TEXT)
 
     # Day only ------------------------------------------------------- #
 
     @property
     def new_words(self) -> list[dict[str, str]]:
         """Get new words"""
-        return self._data[KEY_NEW_WORDS]
+        return self._data.get(KEY_NEW_WORDS)
 
     @property
     def new_words_extension(self) -> list[str]:
         """Get new words extension"""
-        return self._data[KEY_NEW_WORDS_EXTENSION]
+        return self._data.get(KEY_NEW_WORDS_EXTENSION)
 
     @property
     def sample_sentences(self) -> dict[str, Any]:
         """Get sample sentences"""
-        return self._data[KEY_SAMPLE_SENTENCES]
+        return self._data.get(KEY_SAMPLE_SENTENCES)
 
     @property
     def definitions(self) -> dict[str, Any]:
         """Get definitions"""
-        return self._data[KEY_DEFINITIONS]
+        return self._data.get(KEY_DEFINITIONS)
 
     @property
     def matching(self) -> dict[str, Any]:
         """Get matching"""
-        return self._data[KEY_MATCHING]
+        return self._data.get(KEY_MATCHING)
 
     @property
     def other_new_words(self) -> dict[str, str]:
         """Get other new words"""
-        return self._data[KEY_OTHER_NEW_WORDS]
+        return self._data.get(KEY_OTHER_NEW_WORDS)
 
     # Weekly Review only --------------------------------------------- #
 
     @property
     def wr_before_the_test(self) -> dict[str, Any]:
         """Get before the test"""
-        return self._data[KEY_WR_BEFORE_THE_TEST]
+        return self._data.get(KEY_WR_BEFORE_THE_TEST)
 
     @property
     def wr_definitions(self) -> dict[str, Any]:
         """Get WR definitions"""
-        return self._data[KEY_WR_DEFINITIONS]
+        return self._data.get(KEY_WR_DEFINITIONS)
 
     @property
     def wr_word_combinations(self) -> dict[str, Any]:
         """Get WR word combinations"""
-        return self._data[KEY_WR_WORD_COMBINATIONS]
+        return self._data.get(KEY_WR_WORD_COMBINATIONS)
 
     @property
     def wr_skeletons(self) -> dict[str, Any]:
         """Get WR skeletons"""
-        return self._data[KEY_WR_SKELETONS]
+        return self._data.get(KEY_WR_SKELETONS)
 
     @property
     def wr_substitution(self) -> dict[str, Any]:
         """Get WR substitution"""
-        return self._data[KEY_WR_SUBSTITUTION]
+        return self._data.get(KEY_WR_SUBSTITUTION)
 
     @property
     def wr_translation(self) -> dict[str, Any]:
         """Get WR translation"""
-        return self._data[KEY_WR_TRANSLATION]
+        return self._data.get(KEY_WR_TRANSLATION)
 
     @property
     def wr_sit_back_and_relax(self) -> dict[str, Any]:
         """Get WR sit back and relax"""
-        return self._data[KEY_WR_SIT_BACK_AND_RELAX]
+        return self._data.get(KEY_WR_SIT_BACK_AND_RELAX)
 
     @property
     def wr_word_formation(self) -> dict[str, Any]:
         """Get WR word formation"""
-        return self._data[KEY_WR_WORD_FORMATION]
+        return self._data.get(KEY_WR_WORD_FORMATION)
 
     @property
     def wr_usage(self) -> dict[str, list[str]]:
         """Get WR usage"""
-        return self._data[KEY_WR_USAGE]
+        return self._data.get(KEY_WR_USAGE)
 
     @property
     def wr_extra_cards(self) -> list[str]:
         """Get  WR extra cards"""
-        return self._data[KEY_WR_EXTRA_CARDS]
+        return self._data.get(KEY_WR_EXTRA_CARDS)
 
     # init and data load --------------------------------------------- #
 
@@ -180,17 +191,24 @@ class Unit:
         self._week_number = week_number
         self._unit_number = unit_number
 
-        if unit_number == WEEKLY_REVIEW_INDEX:
+        if self.unit_number == WEEKLY_REVIEW_INDEX:
             unit_number_display: str = 'WR'
             file_path: str = build_path_weekly_review(self._week_number)
         else:
-            unit_number_display: str = f'{unit_number}'
+            unit_number_display: str = f'{self._unit_number}'
             file_path: str = build_path_day(self._week_number, self._unit_number)
 
         self._data: dict[str, Any] = data.load_json_file(file_path)
 
+        if KEY_DATA_VERSION not in self._data:
+            msg: str = 'Data version key not found in data file: '
+            msg += f'{self._week_number}/{unit_number_display}'
+            raise ValueError(msg)
+
         if self.data_version != data.REQUIRED_VERSION:
-            msg: str = f'Incorrect data file version: {self._week_number}/{unit_number_display}'
+            msg: str = 'Incorrect data file version: '
+            msg += f'{self._week_number}/{unit_number_display}'
+            msg += f'(FOUND: {self.data_version} - REQUIRED: {data.REQUIRED_VERSION})'
             raise ValueError(msg)
 
 

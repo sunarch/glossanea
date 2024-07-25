@@ -15,7 +15,7 @@ from glossanea.tasks._common import TaskResult
 TITLE: str = 'before the test'.upper()
 
 
-def task(data: dict[str, Any]) -> TaskResult:
+def task(data: dict[str, Any], *_args, **_kwargs) -> TaskResult:
     """Display before the test section"""
 
     # skip until data files are complete

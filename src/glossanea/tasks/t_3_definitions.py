@@ -17,6 +17,8 @@ TITLE: str = 'definitions'.upper()
 
 def task(data: dict[str, Any],
          data_for_new_words: list[dict[str, str]],
+         *_args,
+         **_kwargs,
          ) -> TaskResult:
     """Display 'definitions' task"""
 

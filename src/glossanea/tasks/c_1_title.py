@@ -10,7 +10,7 @@ from glossanea.cli import user_input
 from glossanea.tasks._common import TaskResult
 
 
-def task(text: str) -> TaskResult:
+def task(text: str, *_args, **_kwargs) -> TaskResult:
     """Display title"""
 
     output.empty_line(1)

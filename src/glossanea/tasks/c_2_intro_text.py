@@ -12,7 +12,7 @@ from glossanea.tasks._common import TaskResult
 INTRO_TEXT_WIDTH: int = 60
 
 
-def task(parts: list[str]) -> TaskResult:
+def task(parts: list[str], *_args, **_kwargs) -> TaskResult:
     """Display intro text"""
 
     output.empty_line(2)

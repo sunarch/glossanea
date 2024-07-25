@@ -11,7 +11,7 @@ from glossanea.tasks._common import TaskResult
 from glossanea.tasks.t_1_new_words_common import new_words
 
 
-def task(data: list[dict[str, str]]) -> TaskResult:
+def task(data: list[dict[str, str]], *_args, **_kwargs) -> TaskResult:
     """Display intro text"""
 
     new_words(data)

@@ -15,7 +15,7 @@ from glossanea.tasks._common import TaskResult
 TITLE: str = 'now sit back and relax'.upper()
 
 
-def task(data: dict[str, Any]) -> TaskResult:
+def task(data: dict[str, Any], *_args, **_kwargs) -> TaskResult:
     """Display now sit back and relax section"""
 
     # skip until data files are complete

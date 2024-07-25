@@ -12,7 +12,7 @@ from glossanea.tasks._common import TaskResult
 TITLE: str = 'usage'.upper()
 
 
-def task(data: dict[str, list[str]]) -> TaskResult:
+def task(data: dict[str, list[str]], *_args, **_kwargs) -> TaskResult:
     """Display usage section"""
 
     # skip until data files are complete

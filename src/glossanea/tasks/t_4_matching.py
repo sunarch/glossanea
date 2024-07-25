@@ -14,6 +14,8 @@ from glossanea.tasks._common import TaskResult, answer_cycle
 
 def task(data: dict[str, Any],
          data_for_new_words: list[dict[str, str]],
+         *_args,
+         **_kwargs,
          ) -> TaskResult:
     """Display 'matching' task"""
 

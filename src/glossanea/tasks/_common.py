@@ -19,7 +19,6 @@ class TaskResult(enum.Enum):
     """Enum of task result options"""
 
     NOT_IMPLEMENTED = enum.auto()
-    HIDDEN = enum.auto()
 
     BACK_TO_PREVIOUS_TASK = enum.auto()
     JUMP_TO_NEXT_TASK = enum.auto()

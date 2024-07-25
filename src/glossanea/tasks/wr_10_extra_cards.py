@@ -12,7 +12,7 @@ from glossanea.tasks._common import TaskResult
 TITLE: str = 'fill in the extra cards'.upper()
 
 
-def task(data: list[str]) -> TaskResult:
+def task(data: list[str], *_args, **_kwargs) -> TaskResult:
     """Display fill in the extra cards section"""
 
     # skip until data files are complete

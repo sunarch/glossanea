@@ -16,8 +16,10 @@ TITLE: str = 'sample sentences'.upper()
 
 
 def task(data: dict[str, Any],
-         new_words_extension: list[str],
          data_for_new_words: list[dict[str, str]],
+         new_words_extension: list[str],
+         *_args,
+         **_kwargs,
          ) -> TaskResult:
     """Display 'sample sentences' task"""
 

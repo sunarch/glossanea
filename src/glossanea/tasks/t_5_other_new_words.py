@@ -12,7 +12,7 @@ from glossanea.tasks._common import TaskResult
 TITLE: str = 'other new words'.upper()
 
 
-def task(data: dict[str, str]) -> TaskResult:
+def task(data: dict[str, str], *_args, **_kwargs) -> TaskResult:
     """Display other new words section"""
 
     output.section_title(f'{TITLE}:')
