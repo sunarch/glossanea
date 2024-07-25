@@ -20,7 +20,7 @@ def task(data: dict[str, Any],
     # skip until data files are complete
     return TaskResult.NOT_IMPLEMENTED
 
-    output.section_title(data['name'])
+    output.section_title(data['name'].upper())
 
     output.empty_line(1)
     output.simple(data['prompt'])

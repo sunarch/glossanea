@@ -9,11 +9,13 @@ from glossanea.cli import output
 from glossanea.cli import user_input
 from glossanea.tasks._common import TaskResult
 
+TITLE: str = 'other new words'.upper()
+
 
 def task(data: dict[str, str]) -> TaskResult:
     """Display other new words section"""
 
-    output.section_title('OTHER NEW WORDS:')
+    output.section_title(f'{TITLE}:')
 
     output.empty_line(1)
     output.simple(data['prompt'])

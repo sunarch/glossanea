@@ -7,7 +7,7 @@
 # imports: project
 from glossanea.cli import output
 
-INTRO_TEXT_WIDTH: int = 60
+TITLE: str = 'new words'.upper()
 
 
 def new_words(data: list[dict[str, str]], display_in_full=True) -> None:
@@ -21,7 +21,7 @@ def new_words(data: list[dict[str, str]], display_in_full=True) -> None:
         phonetic.append(unit['phonetic'])
 
     if display_in_full:
-        output.section_title('NEW WORDS')
+        output.section_title(TITLE)
         output.empty_line(1)
 
     output.empty_line(1)

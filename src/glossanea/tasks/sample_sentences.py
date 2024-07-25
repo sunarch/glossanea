@@ -12,6 +12,8 @@ from glossanea.cli import output
 from glossanea.tasks._common import TaskResult, answer_cycle
 from glossanea.tasks.new_words_common import new_words
 
+TITLE: str = 'sample sentences'.upper()
+
 
 def task(data: dict[str, Any],
          new_words_extension: list[str],
@@ -19,7 +21,7 @@ def task(data: dict[str, Any],
          ) -> TaskResult:
     """Display 'sample sentences' task"""
 
-    output.section_title('SAMPLE SENTENCES')
+    output.section_title(TITLE)
 
     output.empty_line(1)
     output.simple(data['prompt'])

@@ -12,6 +12,8 @@ from glossanea.cli import output
 from glossanea.cli.output import Formatting
 from glossanea.tasks._common import TaskResult, answer_cycle
 
+TITLE: str = 'definitions'.upper()
+
 
 def task(data: dict[str, Any],
          data_for_new_words: list[dict[str, str]],
@@ -21,7 +23,7 @@ def task(data: dict[str, Any],
     # skip until data files are complete
     return TaskResult.NOT_IMPLEMENTED
 
-    output.section_title('DEFINITIONS')
+    output.section_title(TITLE)
 
     output.empty_line(1)
     output.simple(data['prompt'])
