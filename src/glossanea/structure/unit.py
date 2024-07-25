@@ -63,6 +63,15 @@ class Unit:
         """Get unit number"""
         return self._unit_number
 
+    @property
+    def unit_number_display(self) -> str:
+        """Get display of unit number"""
+
+        if self._unit_number == WEEKLY_REVIEW_INDEX:
+            return 'WR'
+
+        return f'{self._unit_number}'
+
     # content getters ------------------------------------------------ #
 
     @property
@@ -192,22 +201,20 @@ class Unit:
         self._unit_number = unit_number
 
         if self.unit_number == WEEKLY_REVIEW_INDEX:
-            unit_number_display: str = 'WR'
             file_path: str = build_path_weekly_review(self._week_number)
         else:
-            unit_number_display: str = f'{self._unit_number}'
             file_path: str = build_path_day(self._week_number, self._unit_number)
 
         self._data: dict[str, Any] = data.load_json_file(file_path)
 
         if KEY_DATA_VERSION not in self._data:
             msg: str = 'Data version key not found in data file: '
-            msg += f'{self._week_number}/{unit_number_display}'
+            msg += f'{self._week_number}/{self.unit_number_display}'
             raise ValueError(msg)
 
         if self.data_version != data.REQUIRED_VERSION:
             msg: str = 'Incorrect data file version: '
-            msg += f'{self._week_number}/{unit_number_display}'
+            msg += f'{self._week_number}/{self.unit_number_display}'
             msg += f'(FOUND: {self.data_version} - REQUIRED: {data.REQUIRED_VERSION})'
             raise ValueError(msg)
 
