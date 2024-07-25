@@ -5,7 +5,6 @@
 """Other new words"""
 
 # imports: project
-from glossanea.cli import output
 from glossanea.cli import user_input
 from glossanea.tasks._common import TaskResult
 from glossanea.tasks.t_1_new_words_common import new_words
@@ -16,7 +15,6 @@ def task(data: list[dict[str, str]], *_args, **_kwargs) -> TaskResult:
 
     new_words(data)
 
-    output.empty_line(1)
     user_input.wait_for_enter()
 
     return TaskResult.FINISHED

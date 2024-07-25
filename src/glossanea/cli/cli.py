@@ -181,7 +181,6 @@ def get_specific_unit(current_unit: Unit, arguments) -> Unit:
     # TODO: temporary skip of weekly review until implemented
     if unit_number == unit.WEEKLY_REVIEW_INDEX:
         output.simple('Weekly Reviews are not yet implemented!')
-        output.empty_line(1)
         user_input.wait_for_enter()
         return current_unit
 
@@ -199,7 +198,6 @@ def get_next_unit(current_unit: Unit) -> Unit:
 
     if next_week_no > unit.MAX_WEEK_NUMBER:
         output.simple('End of units reached!')
-        output.empty_line(1)
         user_input.wait_for_enter()
         return Unit(unit.MIN_WEEK_NUMBER, unit.MIN_DAY_NUMBER)
 

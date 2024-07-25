@@ -142,7 +142,6 @@ def process_answer(input_text: str,
     output.simple('Correct!')
     output.empty_line(1)
     l_pr_answer()
-    output.empty_line(1)
     user_input.wait_for_enter()
 
     return TaskResult.SUBTASK_CORRECT_ANSWER

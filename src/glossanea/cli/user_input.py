@@ -8,4 +8,5 @@
 def wait_for_enter() -> None:
     """Wait for the user to press ENTER"""
 
+    print()  # empty line
     _ = input('Press ENTER to continue...')

@@ -16,7 +16,6 @@ def task(text: str, *_args, **_kwargs) -> TaskResult:
     output.empty_line(1)
     output.center(text)
 
-    output.empty_line(1)
     user_input.wait_for_enter()
 
     return TaskResult.FINISHED

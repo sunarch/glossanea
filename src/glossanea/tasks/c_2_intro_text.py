@@ -18,7 +18,6 @@ def task(parts: list[str], *_args, **_kwargs) -> TaskResult:
     output.empty_line(2)
     output.framed(parts, INTRO_TEXT_WIDTH)
 
-    output.empty_line(1)
     user_input.wait_for_enter()
 
     return TaskResult.FINISHED
