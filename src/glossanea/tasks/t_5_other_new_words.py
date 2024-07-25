@@ -6,7 +6,6 @@
 
 # imports: project
 from glossanea.cli import output
-from glossanea.cli import user_input
 from glossanea.tasks._common import TaskResult
 
 TITLE: str = 'other new words'.upper()
@@ -21,7 +20,7 @@ def task(data: dict[str, str], *_args, **_kwargs) -> TaskResult:
     output.simple(data['prompt'])
 
     output.empty_line(1)
-    _, _ = user_input.get_answer('')
+    _ = input()
 
     output.empty_line(1)
 

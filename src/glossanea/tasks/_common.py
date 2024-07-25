@@ -10,8 +10,6 @@ from typing import Callable
 
 # imports: project
 from glossanea.cli import output
-from glossanea.cli import user_input
-from glossanea.cli.user_input import InputType
 from glossanea.tasks.t_1_new_words_common import new_words
 
 
@@ -28,6 +26,12 @@ class TaskResult(enum.Enum):
     SUBTASK_CORRECT_ANSWER = enum.auto()
 
     FINISHED = enum.auto()
+
+
+class InputType(enum.Enum):
+    """Enum of input types"""
+    COMMAND = enum.auto()
+    ANSWER = enum.auto()
 
 
 class Command(enum.Enum):
@@ -58,6 +62,22 @@ COMMAND_TEXTS: dict[str, Command] = {
 }
 
 
+def get_answer(prompt: str) -> tuple[InputType, str]:
+    """Get user input - answer"""
+
+    user_input: str = input(prompt)
+
+    command_test: list[str] = user_input.split('cmd ')
+    if len(command_test) == 2 and command_test[0] == '':
+        answer_type: InputType = InputType.COMMAND
+        content: str = command_test[1]
+    else:
+        answer_type: InputType = InputType.ANSWER
+        content: str = user_input
+
+    return answer_type, content
+
+
 def help_cmd_in_task() -> None:
     """Help with commands in task"""
 
@@ -85,7 +105,7 @@ def answer_cycle(prompt: str,
 
     while True:
         output.empty_line(1)
-        a_type, a_content = user_input.get_answer(prompt)
+        a_type, a_content = get_answer(prompt)
 
         match a_type:
 

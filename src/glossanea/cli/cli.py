@@ -45,6 +45,19 @@ COMMAND_TEXTS: dict[str, Command] = {
 }
 
 
+def get_command(prompt: str) -> tuple[str, list[str]]:
+    """Get user input - top level command"""
+
+    input_elements: list[str] = input(prompt).split()
+
+    if len(input_elements) < 1:
+        raise ValueError('No command given!')
+
+    command: str = input_elements.pop(0)
+
+    return command, input_elements
+
+
 def mainloop() -> None:
     """CLI main loop"""
 
@@ -55,7 +68,7 @@ def mainloop() -> None:
     while True:
 
         try:
-            command_text, arguments = user_input.get_command(
+            command_text, arguments = get_command(
                 build_command_prompt(unit_obj.week_number, unit_obj.unit_number_display))
         except ValueError as ve:
             output.warning(str(ve))
