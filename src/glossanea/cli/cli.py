@@ -55,7 +55,7 @@ def mainloop() -> None:
 
         try:
             command_text, arguments = user_input.get_command(
-                build_command_prompt(unit_obj.week_number, unit_obj.unit_number))
+                build_command_prompt(unit_obj.week_number, unit_obj.unit_number_display))
         except ValueError as ve:
             output.warning(str(ve))
             continue
@@ -84,14 +84,14 @@ def mainloop() -> None:
                 case Command.NEXT:
                     unit_obj = get_next_unit(unit_obj)
                     # TODO: temporary skip of weekly review until implemented
-                    while unit_obj.unit_number == unit.WEEKLY_REVIEW_INDEX:
+                    while unit_obj.is_weekly_review:
                         unit_obj = get_next_unit(unit_obj)
                     cli_unit.run(unit_obj)
                 # UI commands with variable arguments #
                 case Command.RANDOM:
                     unit_obj = get_random_unit(''.join(arguments))
                     # TODO: temporary skip of weekly review until implemented
-                    while unit_obj.unit_number == unit.WEEKLY_REVIEW_INDEX:
+                    while unit_obj.is_weekly_review:
                         unit_obj = get_random_unit(''.join(arguments))
                 # UI commands with one or more arguments #
                 case Command.GOTO:
@@ -178,14 +178,11 @@ def get_specific_unit(current_unit: Unit, arguments):
 def get_next_unit(current_unit: Unit) -> Unit:
     """Create an instance of the next unit"""
 
-    week_number: int = current_unit.week_number
-    unit_number: int = current_unit.unit_number
+    next_week_no: int = current_unit.week_number
+    if current_unit.is_weekly_review:
+        next_week_no += 1
 
-    next_week_no: int = week_number
-    next_unit_no: int = (unit_number + 1) % unit.UNITS_PER_WEEK
-
-    if unit_number == unit.WEEKLY_REVIEW_INDEX:
-        next_week_no = week_number + 1
+    next_unit_no: int = (current_unit.unit_number + 1) % unit.UNITS_PER_WEEK
 
     if next_week_no > unit.MAX_WEEK_NUMBER:
         output.simple('End of units reached!')
@@ -232,12 +229,7 @@ def display_introduction():
 
 # other -------------------------------------------------------------- #
 
-def build_command_prompt(week_number: int, unit_number: int):
+def build_command_prompt(week_number: int, unit_number_display: str):
     """Build command prompt"""
-
-    if unit_number == unit.WEEKLY_REVIEW_INDEX:
-        unit_number_display: str = 'WR'
-    else:
-        unit_number_display: str = f'{unit_number}'
 
     return f'Glossanea {week_number}/{unit_number_display} $ '

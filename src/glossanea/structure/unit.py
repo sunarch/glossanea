@@ -67,10 +67,15 @@ class Unit:
     def unit_number_display(self) -> str:
         """Get display of unit number"""
 
-        if self._unit_number == WEEKLY_REVIEW_INDEX:
+        if self.is_weekly_review:
             return 'WR'
 
         return f'{self._unit_number}'
+
+    @property
+    def is_weekly_review(self) -> bool:
+        """Get whether unit is a Weekly Review"""
+        return self._unit_number == WEEKLY_REVIEW_INDEX
 
     # content getters ------------------------------------------------ #
 
