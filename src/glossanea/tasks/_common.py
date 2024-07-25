@@ -10,6 +10,7 @@ from typing import Callable
 
 # imports: project
 from glossanea.cli import output
+from glossanea.cli import user_input
 from glossanea.tasks.t_1_new_words_common import new_words
 
 
@@ -65,15 +66,15 @@ COMMAND_TEXTS: dict[str, Command] = {
 def get_answer(prompt: str) -> tuple[InputType, str]:
     """Get user input - answer"""
 
-    user_input: str = input(prompt)
+    input_text: str = input(prompt)
 
-    command_test: list[str] = user_input.split('cmd ')
+    command_test: list[str] = input_text.split('cmd ')
     if len(command_test) == 2 and command_test[0] == '':
         answer_type: InputType = InputType.COMMAND
         content: str = command_test[1]
     else:
         answer_type: InputType = InputType.ANSWER
-        content: str = user_input
+        content: str = input_text
 
     return answer_type, content
 
@@ -119,6 +120,8 @@ def answer_cycle(prompt: str,
                 l_pr_answer()
                 output.empty_line(1)
                 output.simple('Correct!')
+                output.empty_line(1)
+                user_input.wait_for_enter()
 
                 return TaskResult.SUBTASK_CORRECT_ANSWER
 
