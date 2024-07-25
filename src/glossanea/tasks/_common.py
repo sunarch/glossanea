@@ -70,16 +70,12 @@ def get_answer(prompt: str) -> tuple[InputType, str]:
     """Get user input - answer"""
 
     input_text: str = input(prompt)
+    command_prefix: str = 'cmd '
 
-    command_test: list[str] = input_text.split('cmd ')
-    if len(command_test) == 2 and command_test[0] == '':
-        answer_type: InputType = InputType.COMMAND
-        content: str = command_test[1]
-    else:
-        answer_type: InputType = InputType.ANSWER
-        content: str = input_text
+    if input_text.startswith(command_prefix):
+        return InputType.COMMAND, input_text.lstrip(command_prefix)
 
-    return answer_type, content
+    return InputType.ANSWER, input_text
 
 
 def help_cmd_in_task() -> None:
