@@ -6,6 +6,7 @@
 
 # imports: library
 import enum
+import logging
 from typing import Callable
 
 # imports: project
@@ -25,6 +26,8 @@ class TaskResult(enum.Enum):
 
     SUBTASK_SKIP_TO_NEXT = enum.auto()
     SUBTASK_CORRECT_ANSWER = enum.auto()
+    SUBTASK_WRONG_ANSWER = enum.auto()
+    SUBTASK_RETRY = enum.auto()
 
     FINISHED = enum.auto()
 
@@ -109,55 +112,82 @@ def answer_cycle(prompt: str,
         a_type, a_content = get_answer(prompt)
 
         match a_type:
-
             case InputType.ANSWER:
-
-                if a_content not in answers:
-                    output.warning('Incorrect, try again.')
-                    continue
-
-                output.empty_line(1)
-                l_pr_answer()
-                output.empty_line(1)
-                output.simple('Correct!')
-                output.empty_line(1)
-                user_input.wait_for_enter()
-
-                return TaskResult.SUBTASK_CORRECT_ANSWER
-
+                task_result = process_answer(a_content, answers, l_pr_answer)
             case InputType.COMMAND:
-
-                command: Command = Command.EMPTY
-                if a_content in COMMAND_TEXTS:
-                    command = COMMAND_TEXTS[a_content]
-                else:
-                    for key, value in COMMAND_TEXTS.items():
-                        try:
-                            if key.index(a_content) == 0:
-                                command = value
-                        except ValueError:
-                            pass
-
-                match command:
-                    case Command.WORDS:
-                        new_words(data_for_new_words, False)
-                        output.empty_line(1)
-                        l_pr_question()
-                    case Command.SOLUTION:
-                        print('HINT: ' + ' / '.join([f'"{answer}"' for answer in answers]))
-                        continue
-                    case Command.NEXT:
-                        return TaskResult.SUBTASK_SKIP_TO_NEXT
-                    case Command.JUMP:
-                        return TaskResult.JUMP_TO_NEXT_TASK
-                    case Command.PREVIOUS:
-                        return TaskResult.BACK_TO_PREVIOUS_TASK
-                    case Command.EXIT:
-                        return TaskResult.EXIT_TASK
-                    case Command.HELP:
-                        help_cmd_in_task()
-                    case _:
-                        output.warning(f'Invalid command: {a_content}')
-
+                task_result = process_command(a_content, answers, data_for_new_words, l_pr_question)
             case _:
-                raise ValueError(f'Unknown answer type: {a_type}')
+                error_msg: str = f'Unknown answer type: {a_type}'
+                logging.error(error_msg)
+                output.error(error_msg)
+                task_result = TaskResult.SUBTASK_RETRY
+
+        match task_result:
+            case TaskResult.SUBTASK_RETRY | TaskResult.SUBTASK_WRONG_ANSWER:
+                continue
+            case _:
+                return task_result
+
+
+def process_answer(input_text: str,
+                   answers: list[str],
+                   l_pr_answer: Callable[[], None],
+                   ) -> TaskResult:
+    """Process an answer"""
+
+    if input_text not in answers:
+        output.warning('Incorrect, try again.')
+        return TaskResult.SUBTASK_WRONG_ANSWER
+
+    output.empty_line(1)
+    l_pr_answer()
+    output.empty_line(1)
+    output.simple('Correct!')
+    output.empty_line(1)
+    user_input.wait_for_enter()
+
+    return TaskResult.SUBTASK_CORRECT_ANSWER
+
+
+# pylint: disable=too-many-return-statements
+def process_command(input_text: str,
+                    answers: list[str],
+                    data_for_new_words: list[dict[str, str]],
+                    l_pr_question: Callable[[], None],
+                    ) -> TaskResult:
+    """Process a command"""
+
+    command: Command = Command.EMPTY
+    if input_text in COMMAND_TEXTS:
+        command = COMMAND_TEXTS[input_text]
+    else:
+        for key, value in COMMAND_TEXTS.items():
+            try:
+                if key.index(input_text) == 0:
+                    command = value
+            except ValueError:
+                pass
+
+    match command:
+        case Command.WORDS:
+            new_words(data_for_new_words, False)
+            output.empty_line(1)
+            l_pr_question()
+            return TaskResult.SUBTASK_RETRY
+        case Command.SOLUTION:
+            print('HINT: ' + ' / '.join([f'"{answer}"' for answer in answers]))
+            return TaskResult.SUBTASK_RETRY
+        case Command.NEXT:
+            return TaskResult.SUBTASK_SKIP_TO_NEXT
+        case Command.JUMP:
+            return TaskResult.JUMP_TO_NEXT_TASK
+        case Command.PREVIOUS:
+            return TaskResult.BACK_TO_PREVIOUS_TASK
+        case Command.EXIT:
+            return TaskResult.EXIT_TASK
+        case Command.HELP:
+            help_cmd_in_task()
+            return TaskResult.SUBTASK_RETRY
+        case _:
+            output.warning(f'Invalid command: {input_text}')
+            return TaskResult.SUBTASK_RETRY
