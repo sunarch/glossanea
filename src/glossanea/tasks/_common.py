@@ -139,10 +139,9 @@ def process_answer(input_text: str,
         output.warning('Incorrect, try again.')
         return TaskResult.SUBTASK_WRONG_ANSWER
 
+    output.simple('Correct!')
     output.empty_line(1)
     l_pr_answer()
-    output.empty_line(1)
-    output.simple('Correct!')
     output.empty_line(1)
     user_input.wait_for_enter()
 
