@@ -4,9 +4,12 @@
 
 """User Input"""
 
+# imports: project
+from glossanea.cli import output
+
 
 def wait_for_enter() -> None:
     """Wait for the user to press ENTER"""
 
-    print()  # empty line
+    output.empty_line()
     _ = input('Press ENTER to continue...')

@@ -14,5 +14,5 @@ def new_words(data: list[dict[str, str]]) -> None:
     regular: list[str] = [item['regular'] for item in data]
     phonetic: list[str] = [item['phonetic'] for item in data]
 
-    output.empty_line(1)
+    output.empty_line()
     output.words_table(regular, phonetic)

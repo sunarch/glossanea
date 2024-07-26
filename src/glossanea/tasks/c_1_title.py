@@ -13,7 +13,7 @@ from glossanea.tasks._common import TaskResult
 def task(text: str, *_args, **_kwargs) -> TaskResult:
     """Display title"""
 
-    output.empty_line(1)
+    output.empty_line()
     output.center(text)
 
     user_input.wait_for_enter()

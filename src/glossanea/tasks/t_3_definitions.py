@@ -27,10 +27,10 @@ def task(data: dict[str, Any],
 
     output.section_title(TITLE)
 
-    output.empty_line(1)
+    output.empty_line()
     output.simple(data['prompt'])
 
-    output.empty_line(1)
+    output.empty_line()
     for definition in data['definitions']:
         output.numbered_sentence(definition['id'], definition['text'], Formatting.INDENTED)
 
@@ -67,9 +67,9 @@ def task(data: dict[str, Any],
 
         # answer cycle
 
-        output.empty_line(1)
+        output.empty_line()
         l_words()
-        output.empty_line(1)
+        output.empty_line()
         l_pr_question()
 
         task_result: TaskResult = answer_cycle(prompt,

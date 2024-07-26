@@ -117,7 +117,7 @@ def section_title(title: str) -> None:
 
     title: str = title.upper()
 
-    empty_line(1)
+    empty_line()
     center(''.ljust(len(title) + 10, '='))
     center('===  ' + title + '  ===')
     center(''.ljust(len(title) + 10, '='))
@@ -160,7 +160,7 @@ def new_words_extension(data: list[str]):
     if len(data) == 0:
         return
 
-    empty_line(1)
+    empty_line()
 
     print_list: list[str] = _block_lines(data.pop(0), DISPLAY_WIDTH, '□ ', '')
 
@@ -223,7 +223,7 @@ def numbered_sentence(number: int,
 def general_message(message: str) -> None:
     """General message"""
 
-    empty_line(1)
+    empty_line()
     filled_line('#')
     center(message, '#')
     filled_line('#')
@@ -272,20 +272,19 @@ def value_pair_list(collection: list[list[str]],
         raise ValueError('Illegal format parameter')
 
     if spacing == Spacing.CLOSE:
-        empty_line(1)
+        empty_line()
 
     for pair in collection:
         if spacing == Spacing.APART:
-            empty_line(1)
+            empty_line()
         print(template.format(pair[0], pair[1]))
 
 
 # special displays --------------------------------------------------- #
 
-def empty_line(count: int = 1) -> None:
+def empty_line() -> None:
     """Empty line"""
-    for _ in range(1, count + 1):
-        print('')
+    print()
 
 
 def filled_line(character: str, count: int = 1) -> None:

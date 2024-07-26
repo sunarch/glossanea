@@ -92,7 +92,7 @@ def help_cmd_in_task() -> None:
         [Command.EXIT.value, 'Leave task an exit to top program level.']
     ]
 
-    output.empty_line(1)
+    output.empty_line()
     output.simple('Within the task, the following commands are available:')
     output.value_pair_list(collection)
 
@@ -106,7 +106,7 @@ def answer_cycle(prompt: str,
     """Answer cycle"""
 
     while True:
-        output.empty_line(1)
+        output.empty_line()
         a_type, a_content = get_answer(prompt)
 
         match a_type:
@@ -138,7 +138,7 @@ def process_answer(input_text: str,
         return TaskResult.SUBTASK_WRONG_ANSWER
 
     output.simple('Correct!')
-    output.empty_line(1)
+    output.empty_line()
     l_pr_answer()
     user_input.wait_for_enter()
 
@@ -167,11 +167,11 @@ def process_command(input_text: str,
     match command:
         case Command.WORDS:
             new_words(data_for_new_words)
-            output.empty_line(1)
+            output.empty_line()
             l_pr_question()
             return TaskResult.SUBTASK_RETRY
         case Command.SOLUTION:
-            print('HINT: ' + ' / '.join([f'"{answer}"' for answer in answers]))
+            output.simple('HINT: ' + ' / '.join([f'"{answer}"' for answer in answers]))
             return TaskResult.SUBTASK_RETRY
         case Command.NEXT:
             return TaskResult.SUBTASK_SKIP_TO_NEXT

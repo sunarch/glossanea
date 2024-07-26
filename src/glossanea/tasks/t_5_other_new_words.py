@@ -16,12 +16,12 @@ def task(data: dict[str, str], *_args, **_kwargs) -> TaskResult:
 
     output.section_title(f'{TITLE}:')
 
-    output.empty_line(1)
+    output.empty_line()
     output.simple(data['prompt'])
 
-    output.empty_line(1)
+    output.empty_line()
     _ = input()
 
-    output.empty_line(1)
+    output.empty_line()
 
     return TaskResult.FINISHED

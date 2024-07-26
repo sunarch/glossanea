@@ -144,7 +144,7 @@ def cmd_help() -> None:
         [Command.HELP.value, 'Display this help text.']
     ]
 
-    output.empty_line(1)
+    output.empty_line()
     output.center('Glossanea help')
     output.value_pair_list(collection, formatting=output.Formatting.WIDE)
 
@@ -232,10 +232,10 @@ def display_introduction() -> None:
     file_subpath: str = 'introduction.txt'
     intro_lines: list[str] = data.load_text_file_lines(file_subpath)
 
-    output.empty_line(1)
+    output.empty_line()
     for line in intro_lines:
         output.center(line.rstrip())
-    output.empty_line(1)
+    output.empty_line()
 
 
 # other -------------------------------------------------------------- #

@@ -24,10 +24,10 @@ def task(data: dict[str, Any],
 
     output.section_title(data['name'].upper())
 
-    output.empty_line(1)
+    output.empty_line()
     output.simple(data['prompt'])
 
-    output.empty_line(1)
+    output.empty_line()
     for sentence in data['sentences']:
         output.numbered_sentence(sentence['id'], sentence['text'], output.Formatting.INDENTED)
 
@@ -64,9 +64,9 @@ def task(data: dict[str, Any],
 
         # answer cycle
 
-        output.empty_line(1)
+        output.empty_line()
         l_words()
-        output.empty_line(1)
+        output.empty_line()
         l_pr_question()
 
         task_result: TaskResult = answer_cycle(prompt,

@@ -25,10 +25,10 @@ def task(data: dict[str, Any],
 
     output.section_title(TITLE)
 
-    output.empty_line(1)
+    output.empty_line()
     output.simple(data['prompt'])
 
-    output.empty_line(1)
+    output.empty_line()
 
     for sentence in data['sentences']:
         output.numbered_sentence(sentence['id'],
@@ -37,7 +37,7 @@ def task(data: dict[str, Any],
 
     output.new_words_extension(new_words_extension)
 
-    output.empty_line(1)
+    output.empty_line()
 
     for sentence in data['sentences']:
 
@@ -65,7 +65,7 @@ def task(data: dict[str, Any],
         # answer cycle
 
         new_words(data_for_new_words)
-        output.empty_line(1)
+        output.empty_line()
         l_pr_question()
 
         task_result: TaskResult = answer_cycle(prompt,
