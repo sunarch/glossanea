@@ -166,7 +166,7 @@ def process_command(input_text: str,
 
     match command:
         case Command.WORDS:
-            new_words(data_for_new_words, False)
+            new_words(data_for_new_words)
             output.empty_line(1)
             l_pr_question()
             return TaskResult.SUBTASK_RETRY

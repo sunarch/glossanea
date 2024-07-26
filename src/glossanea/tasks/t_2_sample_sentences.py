@@ -64,7 +64,7 @@ def task(data: dict[str, Any],
 
         # answer cycle
 
-        new_words(data_for_new_words, False)
+        new_words(data_for_new_words)
         output.empty_line(1)
         l_pr_question()
 

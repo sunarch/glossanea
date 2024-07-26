@@ -5,13 +5,18 @@
 """Other new words"""
 
 # imports: project
+from glossanea.cli import output
 from glossanea.cli import user_input
 from glossanea.tasks._common import TaskResult
 from glossanea.tasks.t_1_new_words_common import new_words
 
+TITLE: str = 'new words'.upper()
+
 
 def task(data: list[dict[str, str]], *_args, **_kwargs) -> TaskResult:
     """Display intro text"""
+
+    output.section_title(TITLE)
 
     new_words(data)
 
