@@ -85,8 +85,14 @@ class Unit:
         """Return a list of keys in the data file which describe tasks"""
 
         key_list: list[str] = list(self._data.keys())
-        key_list.remove(KEY_DATA_VERSION)
-        key_list.remove(KEY_NEW_WORDS_EXTENSION)
+        try:
+            key_list.remove(KEY_DATA_VERSION)
+        except ValueError:
+            pass
+        try:
+            key_list.remove(KEY_NEW_WORDS_EXTENSION)
+        except ValueError:
+            pass
 
         return key_list
 
