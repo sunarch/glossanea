@@ -6,6 +6,7 @@
 
 # imports: library
 import enum
+from functools import reduce
 
 NO_BREAK_SPACE: str = '\u00a0'
 
@@ -122,36 +123,35 @@ def section_title(title: str) -> None:
     center(''.ljust(len(title) + 10, '='))
 
 
-def words_table(list_regular: list[str], list_phonetic: list[str]) -> None:
+def words_table(*word_lists: list[str]) -> None:
     """Words table"""
 
-    if len(list_regular) != len(list_phonetic):
-        raise ValueError('Word lists are not equal length')
+    word_count: int = len(word_lists[0])
 
-    unit_width: int = int(DISPLAY_WIDTH / len(list_regular)) - 3
+    if not reduce(lambda x, y: x == y, iter(map(len, word_lists))):
+        raise ValueError('Word lists are not equal length!')
 
-    for word in list_regular:
-        unit_width = max(unit_width, len(word))
+    max_word_length: int = 1
+    for word_list in word_lists:
+        for word in word_list:
+            max_word_length = max(max_word_length, len(word))
 
-    for word in list_phonetic:
-        if (len(word) + 2) > unit_width:
-            unit_width = len(word)
-
-    template: str = ''
-    for _ in range(1, len(list_regular) + 1):
-        template += '| '
-        template += _template(' ', Align.LEFT, unit_width)
-        template += ' '
-    template += '|'
+    full_width: int = (max_word_length + 3) * word_count + 1
+    left_padding: str = ' ' * max(0, int((DISPLAY_WIDTH - full_width) / 2))
 
     def horizontal_line(width: int) -> None:
         """Top and bottom table line"""
-        print(' ', '-' * (width - 1), sep='')
+        print(left_padding, end='')
+        print(' ', '-' * (width - 2), sep='')
 
-    horizontal_line(DISPLAY_WIDTH)
-    print(template.format(*list_regular))
-    print(template.format(*list_phonetic))
-    horizontal_line(DISPLAY_WIDTH)
+    horizontal_line(full_width)
+    for word_list in word_lists:
+        print(left_padding, end='')
+        for word in word_list:
+            print('|', end=' ')
+            print(_template(' ', Align.LEFT, max_word_length).format(word), end=' ')
+        print('|')
+    horizontal_line(full_width)
 
 
 def new_words_extension(data: list[str]):
