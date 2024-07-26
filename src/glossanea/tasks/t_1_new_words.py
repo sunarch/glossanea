@@ -8,7 +8,7 @@
 from glossanea.cli import output
 from glossanea.cli import user_input
 from glossanea.tasks._common import TaskResult
-from glossanea.tasks.t_1_new_words_common import new_words
+from glossanea.tasks.t_1_new_words_common import new_words_full
 
 TITLE: str = 'new words'.upper()
 
@@ -18,7 +18,7 @@ def task(data: list[dict[str, str]], *_args, **_kwargs) -> TaskResult:
 
     output.section_title(TITLE)
 
-    new_words(data)
+    new_words_full(data)
 
     user_input.wait_for_enter()
 

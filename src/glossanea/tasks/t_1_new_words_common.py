@@ -8,7 +8,7 @@
 from glossanea.cli import output
 
 
-def new_words(data: list[dict[str, str]]) -> None:
+def new_words_full(data: list[dict[str, str]]) -> None:
     """Display new words section"""
 
     regular: list[str] = [item['regular'] for item in data]
@@ -16,3 +16,12 @@ def new_words(data: list[dict[str, str]]) -> None:
 
     output.empty_line()
     output.words_table(regular, phonetic)
+
+
+def new_words(data: list[dict[str, str]]) -> None:
+    """Display new words section"""
+
+    regular: list[str] = [item['regular'] for item in data]
+
+    output.empty_line()
+    output.words_table(regular)
