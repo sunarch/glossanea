@@ -64,7 +64,7 @@ def task(data: dict[str, Any],
 
         # answer cycle
 
-        output.empty_line(2)
+        output.empty_line(1)
         l_words()
         output.empty_line(1)
         l_pr_question()

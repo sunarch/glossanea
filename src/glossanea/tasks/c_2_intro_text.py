@@ -15,7 +15,7 @@ INTRO_TEXT_WIDTH: int = 60
 def task(parts: list[str], *_args, **_kwargs) -> TaskResult:
     """Display intro text"""
 
-    output.empty_line(2)
+    output.empty_line(1)
     output.framed(parts, INTRO_TEXT_WIDTH)
 
     user_input.wait_for_enter()

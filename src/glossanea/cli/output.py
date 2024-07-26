@@ -117,7 +117,7 @@ def section_title(title: str) -> None:
 
     title: str = title.upper()
 
-    empty_line(2)
+    empty_line(1)
     center(''.ljust(len(title) + 10, '='))
     center('===  ' + title + '  ===')
     center(''.ljust(len(title) + 10, '='))
