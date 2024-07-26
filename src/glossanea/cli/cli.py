@@ -48,6 +48,7 @@ COMMAND_TEXTS: dict[str, Command] = {
 def get_command(prompt: str) -> tuple[str, list[str]]:
     """Get user input - top level command"""
 
+    output.empty_line()
     input_elements: list[str] = input(prompt).split()
 
     if len(input_elements) < 1:
@@ -235,7 +236,6 @@ def display_introduction() -> None:
     output.empty_line()
     for line in intro_lines:
         output.center(line.rstrip())
-    output.empty_line()
 
 
 # other -------------------------------------------------------------- #
