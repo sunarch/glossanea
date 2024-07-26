@@ -45,16 +45,37 @@ COMMAND_TEXTS: dict[str, Command] = {
 }
 
 
-def get_command(prompt: str) -> tuple[str, list[str]]:
+def command_prompt(week_number: int, unit_number_display: str) -> str:
+    """Build command prompt"""
+
+    prompt: str = f'{version.PROGRAM_NAME.capitalize()} {week_number}/{unit_number_display} $ '
+
+    while True:
+        output.empty_line()
+        input_text: str = input(prompt).strip()
+
+        if len(input_text) < 1:
+            output.warning('No command given!')
+
+        return input_text
+
+
+def parse_command(input_text: str) -> tuple[Command, list[str]]:
     """Get user input - top level command"""
 
-    output.empty_line()
-    input_elements: list[str] = input(prompt).split()
+    input_elements: list[str] = input_text.split()
+    command_text: str = input_elements.pop(0)
 
-    if len(input_elements) < 1:
-        raise ValueError('No command given!')
-
-    command: str = input_elements.pop(0)
+    command: Command = Command.EMPTY
+    if command_text in COMMAND_TEXTS:
+        command = COMMAND_TEXTS[command_text]
+    else:
+        for key, value in COMMAND_TEXTS.items():
+            try:
+                if key.index(command_text) == 0:
+                    command = value
+            except ValueError:
+                pass
 
     return command, input_elements
 
@@ -68,23 +89,8 @@ def mainloop() -> None:
 
     while True:
 
-        try:
-            command_text, arguments = get_command(
-                build_command_prompt(unit_obj.week_number, unit_obj.unit_number_display))
-        except ValueError as ve:
-            output.warning(str(ve))
-            continue
-
-        command: Command = Command.EMPTY
-        if command_text in COMMAND_TEXTS:
-            command = COMMAND_TEXTS[command_text]
-        else:
-            for key, value in COMMAND_TEXTS.items():
-                try:
-                    if key.index(command_text) == 0:
-                        command = value
-                except ValueError:
-                    pass
+        input_text: str = command_prompt(unit_obj.week_number, unit_obj.unit_number_display)
+        command, arguments = parse_command(input_text)
 
         try:
             match command:
@@ -236,11 +242,3 @@ def display_introduction() -> None:
     output.empty_line()
     for line in intro_lines:
         output.center(line.rstrip())
-
-
-# other -------------------------------------------------------------- #
-
-def build_command_prompt(week_number: int, unit_number_display: str) -> str:
-    """Build command prompt"""
-
-    return f'{version.PROGRAM_NAME.capitalize()} {week_number}/{unit_number_display} $ '
