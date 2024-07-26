@@ -45,41 +45,6 @@ COMMAND_TEXTS: dict[str, Command] = {
 }
 
 
-def command_prompt(week_number: int, unit_number_display: str) -> str:
-    """Build command prompt"""
-
-    prompt: str = f'{version.PROGRAM_NAME.capitalize()} {week_number}/{unit_number_display} $ '
-
-    while True:
-        output.empty_line()
-        input_text: str = input(prompt).strip()
-
-        if len(input_text) < 1:
-            output.warning('No command given!')
-
-        return input_text
-
-
-def parse_command(input_text: str) -> tuple[Command, list[str]]:
-    """Get user input - top level command"""
-
-    input_elements: list[str] = input_text.split()
-    command_text: str = input_elements.pop(0)
-
-    command: Command = Command.EMPTY
-    if command_text in COMMAND_TEXTS:
-        command = COMMAND_TEXTS[command_text]
-    else:
-        for key, value in COMMAND_TEXTS.items():
-            try:
-                if key.index(command_text) == 0:
-                    command = value
-            except ValueError:
-                pass
-
-    return command, input_elements
-
-
 def mainloop() -> None:
     """CLI main loop"""
 
@@ -100,7 +65,7 @@ def mainloop() -> None:
                 case Command.START:
                     cli_unit.run(unit_obj)
                 case Command.HELP:
-                    cmd_help()
+                    display_command_help()
                 case Command.NEXT:
                     unit_obj = get_next_unit(unit_obj)
                     # TODO: temporary skip of weekly review until implemented
@@ -136,9 +101,57 @@ def mainloop() -> None:
     #     pass
 
 
-# User Interface functions ------------------------------------------- #
+# input functions ---------------------------------------------------- #
 
-def cmd_help() -> None:
+def command_prompt(week_number: int, unit_number_display: str) -> str:
+    """Build command prompt"""
+
+    prompt: str = f'{version.PROGRAM_NAME.capitalize()} {week_number}/{unit_number_display} $ '
+
+    while True:
+        output.empty_line()
+        input_text: str = input(prompt).strip()
+
+        if len(input_text) < 1:
+            output.warning('No command given!')
+
+        return input_text
+
+
+def parse_command(input_text: str) -> tuple[Command, list[str]]:
+    """Get user input - top level command"""
+
+    input_elements: list[str] = input_text.split()
+    command_text: str = input_elements.pop(0)
+
+    command: Command = Command.EMPTY
+    if command_text in COMMAND_TEXTS:
+        command = COMMAND_TEXTS[command_text]
+    else:
+        for key, value in COMMAND_TEXTS.items():
+            try:
+                if key.index(command_text) == 0:
+                    command = value
+            except ValueError:
+                pass
+
+    return command, input_elements
+
+
+# display functions -------------------------------------------------- #
+
+def display_introduction() -> None:
+    """Display introduction"""
+
+    file_subpath: str = 'introduction.txt'
+    intro_lines: list[str] = data.load_text_file_lines(file_subpath)
+
+    output.empty_line()
+    for line in intro_lines:
+        output.center(line.rstrip())
+
+
+def display_command_help() -> None:
     """Help with commands"""
 
     collection: list[list[str]] = [
@@ -155,6 +168,8 @@ def cmd_help() -> None:
     output.center('Glossanea help')
     output.value_pair_list(collection, formatting=output.Formatting.WIDE)
 
+
+# unit choice functions ---------------------------------------------- #
 
 def get_specific_unit(current_unit: Unit, arguments) -> Unit:
     """Create an instance of a specific unit"""
@@ -229,16 +244,3 @@ def get_random_unit(unit_type: str) -> Unit:
             raise ValueError('Incorrect unit type.')
 
     return Unit(week_number, unit_number)
-
-
-# general displays --------------------------------------------------- #
-
-def display_introduction() -> None:
-    """Display introduction"""
-
-    file_subpath: str = 'introduction.txt'
-    intro_lines: list[str] = data.load_text_file_lines(file_subpath)
-
-    output.empty_line()
-    for line in intro_lines:
-        output.center(line.rstrip())
