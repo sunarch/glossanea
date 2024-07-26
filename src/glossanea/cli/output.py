@@ -144,8 +144,14 @@ def words_table(list_regular: list[str], list_phonetic: list[str]) -> None:
         template += ' '
     template += '|'
 
+    def horizontal_line(width: int) -> None:
+        """Top and bottom table line"""
+        print(' ', '-' * (width - 1), sep='')
+
+    horizontal_line(DISPLAY_WIDTH)
     print(template.format(*list_regular))
     print(template.format(*list_phonetic))
+    horizontal_line(DISPLAY_WIDTH)
 
 
 def new_words_extension(data: list[str]):
