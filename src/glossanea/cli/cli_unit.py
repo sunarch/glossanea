@@ -31,9 +31,9 @@ def run(unit_obj: Unit) -> None:
             raise ValueError(f'Unrecognized task type: {task_list[task_index]}')
 
         if not hasattr(unit_obj, task_list[task_index]):
-            raise ValueError(f'Unrecognized task type: {task_list[task_index]}')
+            raise ValueError(f'No data property for task type: {task_list[task_index]}')
 
-        task_fn: Callable = getattr(tasks, task_list[task_index])
+        task_fn: Callable = getattr(tasks, task_list[task_index]).task
         task_data: Any = getattr(unit_obj, task_list[task_index])
 
         task_result = task_fn(task_data, unit_obj.new_words, unit_obj.new_words_extension)

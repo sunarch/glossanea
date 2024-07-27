@@ -7,24 +7,24 @@
 from glossanea.tasks._common import TaskResult
 
 # Common
-from glossanea.tasks.c_1_title import task as title
-from glossanea.tasks.c_2_intro_text import task as intro_text
+import glossanea.tasks.c_1_title as title
+import glossanea.tasks.c_2_intro_text as intro_text
 
 # Day only
-from glossanea.tasks.t_1_new_words import task as new_words
-from glossanea.tasks.t_2_sample_sentences import task as sample_sentences
-from glossanea.tasks.t_3_definitions import task as definitions
-from glossanea.tasks.t_4_matching import task as matching
-from glossanea.tasks.t_5_other_new_words import task as other_new_words
+import glossanea.tasks.t_1_new_words as new_words
+import glossanea.tasks.t_2_sample_sentences as sample_sentences
+import glossanea.tasks.t_3_definitions as definitions
+import glossanea.tasks.t_4_matching as matching
+import glossanea.tasks.t_5_other_new_words as other_new_words
 
 # Weekly Review only
-from glossanea.tasks.wr_01_before_the_test import task as wr_before_the_test
-from glossanea.tasks.wr_02_definitions import task as wr_definitions
-from glossanea.tasks.wr_03_word_combinations import task as wr_word_combinations
-from glossanea.tasks.wr_04_skeletons import task as wr_skeletons
-from glossanea.tasks.wr_05_substitution import task as wr_substitution
-from glossanea.tasks.wr_06_translation import task as wr_translation
-from glossanea.tasks.wr_07_sit_back_and_relax import task as wr_sit_back_and_relax
-from glossanea.tasks.wr_08_word_formation import task as wr_word_formation
-from glossanea.tasks.wr_09_usage import task as wr_usage
-from glossanea.tasks.wr_10_extra_cards import task as wr_extra_cards
+import glossanea.tasks.wr_01_before_the_test as wr_before_the_test
+import glossanea.tasks.wr_02_definitions as wr_definitions
+import glossanea.tasks.wr_03_word_combinations as wr_word_combinations
+import glossanea.tasks.wr_04_skeletons as wr_skeletons
+import glossanea.tasks.wr_05_substitution as wr_substitution
+import glossanea.tasks.wr_06_translation as wr_translation
+import glossanea.tasks.wr_07_sit_back_and_relax as wr_sit_back_and_relax
+import glossanea.tasks.wr_08_word_formation as wr_word_formation
+import glossanea.tasks.wr_09_usage as wr_usage
+import glossanea.tasks.wr_10_extra_cards as wr_extra_cards
