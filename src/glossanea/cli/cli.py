@@ -20,7 +20,10 @@ from glossanea.structure.unit import Unit
 
 class Command(enum.Enum):
     """Commands with default help values"""
+
     EMPTY = 'EMPTY'
+    INVALID = 'INVALID'
+
     HELP = 'help'
     EXIT = 'quit'
 
@@ -54,12 +57,14 @@ def mainloop() -> None:
 
     while True:
 
-        input_text: str = command_prompt(unit_obj.week_number, unit_obj.unit_number_display)
-        command, arguments = parse_command(input_text)
+        command, arguments = get_command(unit_obj.week_number, unit_obj.unit_number_display)
 
         try:
             match command:
                 # UI commands with zero arguments #
+                case Command.EMPTY:
+                    output.warning('No command given!')
+                    continue
                 case Command.EXIT:
                     break
                 case Command.START:
@@ -82,8 +87,9 @@ def mainloop() -> None:
                 case Command.GOTO:
                     unit_obj = get_specific_unit(unit_obj, arguments)
                 # other inputs #
-                case _:
-                    raise KeyError('Invalid command!')
+                case Command.INVALID | _:
+                    output.warning('Invalid command!')
+                    continue
 
         except KeyError as exc:
             output.warning(str(exc))
@@ -103,29 +109,21 @@ def mainloop() -> None:
 
 # input functions ---------------------------------------------------- #
 
-def command_prompt(week_number: int, unit_number_display: str) -> str:
-    """Build command prompt"""
+def get_command(week_number: int, unit_number_display: str) -> tuple[Command, list[str]]:
+    """Get user input - top level command"""
 
     prompt: str = f'{version.PROGRAM_NAME.capitalize()} {week_number}/{unit_number_display} $ '
 
-    while True:
-        output.empty_line()
-        input_text: str = input(prompt).strip()
+    output.empty_line()
+    input_text: str = input(prompt).strip()
 
-        if len(input_text) < 1:
-            output.warning('No command given!')
-            continue
-
-        return input_text
-
-
-def parse_command(input_text: str) -> tuple[Command, list[str]]:
-    """Get user input - top level command"""
+    if len(input_text) < 1:
+        return Command.EMPTY, []
 
     input_elements: list[str] = input_text.split()
     command_text: str = input_elements.pop(0)
 
-    command: Command = Command.EMPTY
+    command: Command = Command.INVALID
     if command_text in COMMAND_TEXTS:
         command = COMMAND_TEXTS[command_text]
     else:
