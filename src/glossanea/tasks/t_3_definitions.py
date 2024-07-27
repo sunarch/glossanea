@@ -12,6 +12,7 @@ from glossanea.cli import output
 from glossanea.cli.output import Formatting
 from glossanea.tasks._common import TaskResult, answer_cycle
 
+DATA_KEY: str = 'definitions'
 TITLE: str = 'definitions'.upper()
 
 

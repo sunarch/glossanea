@@ -12,6 +12,7 @@ from glossanea.cli import output
 from glossanea.tasks._common import TaskResult, answer_cycle
 from glossanea.tasks.t_1_new_words_common import new_words
 
+DATA_KEY: str = 'sample_sentences'
 TITLE: str = 'sample sentences'.upper()
 
 

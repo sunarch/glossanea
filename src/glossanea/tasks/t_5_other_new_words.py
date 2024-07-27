@@ -8,6 +8,7 @@
 from glossanea.cli import output
 from glossanea.tasks._common import TaskResult
 
+DATA_KEY: str = 'other_new_words'
 TITLE: str = 'other new words'.upper()
 
 

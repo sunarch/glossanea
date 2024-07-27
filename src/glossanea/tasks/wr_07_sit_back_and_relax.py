@@ -12,6 +12,7 @@ from glossanea.cli import output
 # from glossanea.cli import user_input
 from glossanea.tasks._common import TaskResult
 
+DATA_KEY: str = 'wr_sit_back_and_relax'
 TITLE: str = 'now sit back and relax'.upper()
 
 

@@ -9,6 +9,7 @@ import os.path
 from typing import Any
 
 # imports: project
+from glossanea import tasks
 from glossanea.version import REQUIRED_DATA_VERSION
 from glossanea.structure import data
 
@@ -22,30 +23,8 @@ WEEKLY_REVIEW_INDEX: int = 0
 
 # Meta
 KEY_DATA_VERSION: str = 'version'
-
-# Common
-KEY_TITLE: str = 'title'
-KEY_INTRO_TEXT: str = 'intro_text'
-
 # Day only
-KEY_NEW_WORDS: str = 'new_words'
 KEY_NEW_WORDS_EXTENSION: str = 'new_words_extension'
-KEY_SAMPLE_SENTENCES: str = 'sample_sentences'
-KEY_DEFINITIONS: str = 'definitions'
-KEY_MATCHING: str = 'matching'
-KEY_OTHER_NEW_WORDS: str = 'other_new_words'
-
-# Weekly Review only
-KEY_WR_BEFORE_THE_TEST: str = 'wr_before_the_test'
-KEY_WR_DEFINITIONS: str = 'wr_definitions'
-KEY_WR_WORD_COMBINATIONS: str = 'wr_word_combinations'
-KEY_WR_SKELETONS: str = 'wr_skeletons'
-KEY_WR_SUBSTITUTION: str = 'wr_substitution'
-KEY_WR_TRANSLATION: str = 'wr_translation'
-KEY_WR_SIT_BACK_AND_RELAX: str = 'wr_sit_back_and_relax'
-KEY_WR_WORD_FORMATION: str = 'wr_word_formation'
-KEY_WR_USAGE: str = 'wr_usage'
-KEY_WR_EXTRA_CARDS: str = 'wr_extra_cards'
 
 
 # pylint: disable=too-many-public-methods
@@ -108,19 +87,19 @@ class Unit:
     @property
     def title(self) -> str:
         """Get title"""
-        return self._data.get(KEY_TITLE)
+        return self._data.get(tasks.c_1_title.DATA_KEY)
 
     @property
     def intro_text(self) -> list[str]:
         """Get intro text"""
-        return self._data.get(KEY_INTRO_TEXT)
+        return self._data.get(tasks.c_2_intro_text.DATA_KEY)
 
     # Day only ------------------------------------------------------- #
 
     @property
     def new_words(self) -> list[dict[str, str]]:
         """Get new words"""
-        return self._data.get(KEY_NEW_WORDS)
+        return self._data.get(tasks.new_words.DATA_KEY)
 
     @property
     def new_words_extension(self) -> list[str]:
@@ -130,74 +109,74 @@ class Unit:
     @property
     def sample_sentences(self) -> dict[str, Any]:
         """Get sample sentences"""
-        return self._data.get(KEY_SAMPLE_SENTENCES)
+        return self._data.get(tasks.t_2_sample_sentences.DATA_KEY)
 
     @property
     def definitions(self) -> dict[str, Any]:
         """Get definitions"""
-        return self._data.get(KEY_DEFINITIONS)
+        return self._data.get(tasks.t_3_definitions.DATA_KEY)
 
     @property
     def matching(self) -> dict[str, Any]:
         """Get matching"""
-        return self._data.get(KEY_MATCHING)
+        return self._data.get(tasks.t_4_matching.DATA_KEY)
 
     @property
     def other_new_words(self) -> dict[str, str]:
         """Get other new words"""
-        return self._data.get(KEY_OTHER_NEW_WORDS)
+        return self._data.get(tasks.t_5_other_new_words.DATA_KEY)
 
     # Weekly Review only --------------------------------------------- #
 
     @property
     def wr_before_the_test(self) -> dict[str, Any]:
         """Get before the test"""
-        return self._data.get(KEY_WR_BEFORE_THE_TEST)
+        return self._data.get(tasks.wr_01_before_the_test.DATA_KEY)
 
     @property
     def wr_definitions(self) -> dict[str, Any]:
         """Get WR definitions"""
-        return self._data.get(KEY_WR_DEFINITIONS)
+        return self._data.get(tasks.wr_02_definitions.DATA_KEY)
 
     @property
     def wr_word_combinations(self) -> dict[str, Any]:
         """Get WR word combinations"""
-        return self._data.get(KEY_WR_WORD_COMBINATIONS)
+        return self._data.get(tasks.wr_03_word_combinations.DATA_KEY)
 
     @property
     def wr_skeletons(self) -> dict[str, Any]:
         """Get WR skeletons"""
-        return self._data.get(KEY_WR_SKELETONS)
+        return self._data.get(tasks.wr_04_skeletons.DATA_KEY)
 
     @property
     def wr_substitution(self) -> dict[str, Any]:
         """Get WR substitution"""
-        return self._data.get(KEY_WR_SUBSTITUTION)
+        return self._data.get(tasks.wr_05_substitution.DATA_KEY)
 
     @property
     def wr_translation(self) -> dict[str, Any]:
         """Get WR translation"""
-        return self._data.get(KEY_WR_TRANSLATION)
+        return self._data.get(tasks.wr_06_translation.DATA_KEY)
 
     @property
     def wr_sit_back_and_relax(self) -> dict[str, Any]:
         """Get WR sit back and relax"""
-        return self._data.get(KEY_WR_SIT_BACK_AND_RELAX)
+        return self._data.get(tasks.wr_07_sit_back_and_relax.DATA_KEY)
 
     @property
     def wr_word_formation(self) -> dict[str, Any]:
         """Get WR word formation"""
-        return self._data.get(KEY_WR_WORD_FORMATION)
+        return self._data.get(tasks.wr_08_word_formation.DATA_KEY)
 
     @property
     def wr_usage(self) -> dict[str, list[str]]:
         """Get WR usage"""
-        return self._data.get(KEY_WR_USAGE)
+        return self._data.get(tasks.wr_09_usage.DATA_KEY)
 
     @property
     def wr_extra_cards(self) -> list[str]:
         """Get  WR extra cards"""
-        return self._data.get(KEY_WR_EXTRA_CARDS)
+        return self._data.get(tasks.wr_10_extra_cards.DATA_KEY)
 
     # init and data load --------------------------------------------- #
 

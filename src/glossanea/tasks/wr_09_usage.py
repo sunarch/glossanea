@@ -9,6 +9,7 @@ from glossanea.cli import output
 # from glossanea.cli import user_input
 from glossanea.tasks._common import TaskResult
 
+DATA_KEY: str = 'wr_usage'
 TITLE: str = 'usage'.upper()
 
 

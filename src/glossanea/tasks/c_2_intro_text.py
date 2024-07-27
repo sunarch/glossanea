@@ -9,6 +9,7 @@ from glossanea.cli import output
 from glossanea.cli import user_input
 from glossanea.tasks._common import TaskResult
 
+DATA_KEY: str = 'intro_text'
 INTRO_TEXT_WIDTH: int = 60
 
 

@@ -10,6 +10,7 @@ from glossanea.cli import user_input
 from glossanea.tasks._common import TaskResult
 from glossanea.tasks.t_1_new_words_common import new_words_full
 
+DATA_KEY: str = 'new_words'
 TITLE: str = 'new words'.upper()
 
 

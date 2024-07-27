@@ -11,6 +11,8 @@ from typing import Any
 from glossanea.cli import output
 from glossanea.tasks._common import TaskResult, answer_cycle
 
+DATA_KEY: str = 'matching'
+
 
 def task(data: dict[str, Any],
          data_for_new_words: list[dict[str, str]],

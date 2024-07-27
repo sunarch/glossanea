@@ -9,6 +9,7 @@ from glossanea.cli import output
 # from glossanea.cli import user_input
 from glossanea.tasks._common import TaskResult
 
+DATA_KEY: str = 'wr_extra_cards'
 TITLE: str = 'fill in the extra cards'.upper()
 
 
