@@ -42,7 +42,10 @@ def main() -> None:
 
     config.check_data_dir_path()
 
-    cli.mainloop()
+    try:
+        cli.mainloop()
+    except KeyboardInterrupt:
+        return
 
 
 if __name__ == '__main__':
