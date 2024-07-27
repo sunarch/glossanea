@@ -19,9 +19,6 @@ def task(data: dict[str, Any],
          ) -> TaskResult:
     """Display 'matching' task"""
 
-    # skip until data files are complete
-    return TaskResult.NOT_IMPLEMENTED
-
     output.section_title(data['name'].upper())
 
     output.empty_line()
@@ -31,18 +28,18 @@ def task(data: dict[str, Any],
     for sentence in data['sentences']:
         output.numbered_sentence(sentence['id'], sentence['text'], output.Formatting.INDENTED)
 
-    def l_words() -> list[None]:
+    def l_words() -> None:
         """l_words"""
-        return [output.numbered_sentence(word['id'], word['text'], output.Formatting.INDENTED)
-                for word in data['words']]
+        for word in data['words']:
+            output.numbered_sentence(word['id'], word['text'], output.Formatting.INDENTED)
 
     for sentence in data['sentences']:
 
-        prompt: str = f'{definition["id"]}. '
+        prompt: str = f'{sentence["id"]}. '
 
         def l_pr_question() -> None:
             """l_pr_question"""
-            return output.numbered_sentence(sentence['id'], sentence['text'])
+            output.numbered_sentence(sentence['id'], sentence['text'])
 
         answers: list[str] = []
         answer_id: str = [
@@ -60,7 +57,8 @@ def task(data: dict[str, Any],
 
         def l_pr_answer() -> None:
             """l_pr_answer"""
-            return output.numbered_sentence(answer_id, answer_text)
+            l_pr_question()
+            output.numbered_sentence(answer_id, answer_text)
 
         # answer cycle
 
