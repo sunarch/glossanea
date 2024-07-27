@@ -114,6 +114,7 @@ def command_prompt(week_number: int, unit_number_display: str) -> str:
 
         if len(input_text) < 1:
             output.warning('No command given!')
+            continue
 
         return input_text
 
