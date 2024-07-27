@@ -172,8 +172,10 @@ def new_words_extension(data: list[str]):
         print(line)
 
 
-def framed(parts: list[str], width: int) -> None:
+def framed(parts: list[str], width_fraction: float) -> None:
     """Framed"""
+
+    width: int = int(DISPLAY_WIDTH * width_fraction)
 
     if width > DISPLAY_WIDTH:
         width = DISPLAY_WIDTH - 4

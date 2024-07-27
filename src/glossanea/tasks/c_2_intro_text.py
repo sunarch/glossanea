@@ -10,14 +10,14 @@ from glossanea.cli import user_input
 from glossanea.tasks._common import TaskResult
 
 DATA_KEY: str = 'intro_text'
-INTRO_TEXT_WIDTH: int = 60
+INTRO_TEXT_WIDTH_FRACTION: float = 0.6
 
 
 def task(parts: list[str], *_args, **_kwargs) -> TaskResult:
     """Display intro text"""
 
     output.empty_line()
-    output.framed(parts, INTRO_TEXT_WIDTH)
+    output.framed(parts, INTRO_TEXT_WIDTH_FRACTION)
 
     user_input.wait_for_enter()
 
