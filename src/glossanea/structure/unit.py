@@ -10,8 +10,9 @@ from typing import Any
 
 # imports: project
 from glossanea import tasks
-from glossanea.version import REQUIRED_DATA_VERSION
 from glossanea.structure import data
+from glossanea.structure import data_version
+from glossanea.structure.exceptions import DataError
 
 
 MIN_WEEK_NUMBER: int = 1
@@ -21,8 +22,6 @@ MIN_DAY_NUMBER: int = 1
 MAX_DAY_NUMBER: int = 6
 WEEKLY_REVIEW_INDEX: int = 0
 
-# Meta
-KEY_DATA_VERSION: str = 'version'
 # Day only
 KEY_NEW_WORDS_EXTENSION: str = 'new_words_extension'
 
@@ -65,22 +64,11 @@ class Unit:
 
         key_list: list[str] = list(self._data.keys())
         try:
-            key_list.remove(KEY_DATA_VERSION)
-        except ValueError:
-            pass
-        try:
             key_list.remove(KEY_NEW_WORDS_EXTENSION)
         except ValueError:
             pass
 
         return key_list
-
-    # Meta ----------------------------------------------------------- #
-
-    @property
-    def data_version(self) -> int:
-        """Get data version"""
-        return self._data.get(KEY_DATA_VERSION)
 
     # Common --------------------------------------------------------- #
 
@@ -198,16 +186,12 @@ class Unit:
 
         self._data: dict[str, Any] = data.load_json_file(file_path)
 
-        if KEY_DATA_VERSION not in self._data:
-            msg: str = 'Data version key not found in data file: '
-            msg += f'{self._week_number}/{self.unit_number_display}'
-            raise ValueError(msg)
-
-        if self.data_version != REQUIRED_DATA_VERSION:
-            msg: str = 'Incorrect data file version: '
-            msg += f'{self._week_number}/{self.unit_number_display}'
-            msg += f'(FOUND: {self.data_version} - REQUIRED: {REQUIRED_DATA_VERSION})'
-            raise ValueError(msg)
+        match data_version.validate(self._data):
+            case data_version.ValidationResult.OK, _:
+                del self._data[data_version.DATA_KEY]
+            case _, reason:
+                msg: str = f'{reason} (Week {self._week_number} / Day {self.unit_number_display})'
+                raise DataError(msg)
 
 
 # validators --------------------------------------------------------- #

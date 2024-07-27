@@ -6,6 +6,7 @@
 
 # imports: library
 import enum
+import logging
 import random
 
 # imports: project
@@ -16,6 +17,7 @@ from glossanea.cli import user_input
 from glossanea.structure import data
 from glossanea.structure import unit
 from glossanea.structure.unit import Unit
+from glossanea.structure.exceptions import DataError
 
 
 class Command(enum.Enum):
@@ -51,9 +53,16 @@ COMMAND_TEXTS: dict[str, Command] = {
 def mainloop() -> None:
     """CLI main loop"""
 
-    unit_obj: Unit = Unit(unit.MIN_WEEK_NUMBER, unit.MIN_DAY_NUMBER)
-
     display_introduction()
+
+    try:
+        unit_obj: Unit = Unit(unit.MIN_WEEK_NUMBER, unit.MIN_DAY_NUMBER)
+    except DataError as exc:
+        logging.error(str(exc))
+        output.empty_line()
+        output.error(str(exc))
+        output.error('Exiting...')
+        return
 
     while True:
 
@@ -90,6 +99,11 @@ def mainloop() -> None:
                 case Command.INVALID | _:
                     output.warning('Invalid command!')
                     continue
+
+        except DataError as exc:
+            logging.warning(str(exc))
+            output.warning(str(exc))
+            continue
 
         except KeyError as exc:
             output.warning(str(exc))
