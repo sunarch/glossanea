@@ -222,15 +222,6 @@ def numbered_sentence(number: int,
         print(line)
 
 
-def general_message(message: str) -> None:
-    """General message"""
-
-    empty_line()
-    filled_line('#')
-    center(message, '#')
-    filled_line('#')
-
-
 def simple(text: str):
     """Simple"""
 
@@ -287,12 +278,6 @@ def value_pair_list(collection: list[list[str]],
 def empty_line() -> None:
     """Empty line"""
     print()
-
-
-def filled_line(character: str, count: int = 1) -> None:
-    """Filled line"""
-    for _ in range(1, count + 1):
-        print(_template(character, Align.CENTER, DISPLAY_WIDTH).format(''))
 
 
 # message displays --------------------------------------------------- #

@@ -10,7 +10,6 @@ from typing import Callable
 # imports: project
 from glossanea import tasks
 from glossanea.tasks import TaskResult
-from glossanea.cli import output
 from glossanea.structure.unit import Unit
 
 
@@ -38,8 +37,6 @@ def run(unit_obj: Unit) -> None:
 
             case TaskResult.BACK_TO_PREVIOUS_TASK:
                 task_index = max(0, task_index - 1)
-                if task_index == 0:
-                    output.general_message('This is the first task: Starting from the beginning.')
                 continue
 
             case TaskResult.JUMP_TO_NEXT_TASK:
