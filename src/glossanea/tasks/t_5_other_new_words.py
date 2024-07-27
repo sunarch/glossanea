@@ -4,6 +4,9 @@
 
 """Other new words"""
 
+# imports: library
+from typing import Any
+
 # imports: project
 from glossanea.cli import output
 from glossanea.tasks._common import TaskResult
@@ -12,13 +15,17 @@ DATA_KEY: str = 'other_new_words'
 TITLE: str = 'other new words'.upper()
 
 
-def task(data: dict[str, str], *_args, **_kwargs) -> TaskResult:
+def task(unit_data: dict[str, Any]) -> TaskResult:
     """Display other new words section"""
+
+    assert DATA_KEY in unit_data
+
+    task_data: dict[str, str] = unit_data[DATA_KEY]
 
     output.section_title(f'{TITLE}:')
 
     output.empty_line()
-    output.simple(data['prompt'])
+    output.simple(task_data['prompt'])
 
     output.empty_line()
     _ = input()

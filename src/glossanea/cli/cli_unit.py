@@ -5,7 +5,7 @@
 """CLI Unit"""
 
 # imports: library
-from typing import Any, Callable
+from typing import Callable
 
 # imports: project
 from glossanea import tasks
@@ -30,13 +30,9 @@ def run(unit_obj: Unit) -> None:
         if not hasattr(tasks, task_list[task_index]):
             raise ValueError(f'Unrecognized task type: {task_list[task_index]}')
 
-        if not hasattr(unit_obj, task_list[task_index]):
-            raise ValueError(f'No data property for task type: {task_list[task_index]}')
-
         task_fn: Callable = getattr(tasks, task_list[task_index]).task
-        task_data: Any = getattr(unit_obj, task_list[task_index])
 
-        task_result = task_fn(task_data, unit_obj.new_words, unit_obj.new_words_extension)
+        task_result = task_fn(unit_obj.unit_data)
 
         match task_result:
 

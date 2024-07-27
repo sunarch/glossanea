@@ -7,12 +7,12 @@
 # imports: library
 import enum
 import logging
-from typing import Callable
+from typing import Any, Callable
 
 # imports: project
 from glossanea.cli import output
 from glossanea.cli import user_input
-from glossanea.tasks.t_1_new_words_common import new_words
+from glossanea.tasks import t_1_new_words_common as new_words
 
 
 class TaskResult(enum.Enum):
@@ -101,7 +101,7 @@ def answer_cycle(prompt: str,
                  l_pr_question: Callable[[], None],
                  answers: list[str],
                  l_pr_answer: Callable[[], None],
-                 data_for_new_words: list[dict[str, str]],
+                 unit_data: dict[str, Any],
                  ) -> TaskResult:
     """Answer cycle"""
 
@@ -113,7 +113,7 @@ def answer_cycle(prompt: str,
             case InputType.ANSWER:
                 task_result = process_answer(a_content, answers, l_pr_answer)
             case InputType.COMMAND:
-                task_result = process_command(a_content, answers, data_for_new_words, l_pr_question)
+                task_result = process_command(a_content, answers, unit_data, l_pr_question)
             case _:
                 error_msg: str = f'Unknown answer type: {a_type}'
                 logging.error(error_msg)
@@ -148,7 +148,7 @@ def process_answer(input_text: str,
 # pylint: disable=too-many-return-statements
 def process_command(input_text: str,
                     answers: list[str],
-                    data_for_new_words: list[dict[str, str]],
+                    unit_data: dict[str, Any],
                     l_pr_question: Callable[[], None],
                     ) -> TaskResult:
     """Process a command"""
@@ -166,7 +166,7 @@ def process_command(input_text: str,
 
     match command:
         case Command.WORDS:
-            new_words(data_for_new_words)
+            new_words.new_words(unit_data)
             output.empty_line()
             l_pr_question()
             return TaskResult.SUBTASK_RETRY

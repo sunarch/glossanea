@@ -10,28 +10,28 @@ from typing import Any
 # imports: project
 from glossanea.cli import output
 from glossanea.tasks._common import TaskResult, answer_cycle
-from glossanea.tasks.t_1_new_words_common import new_words
+from glossanea.tasks import t_1_new_words_common as new_words
 
 DATA_KEY: str = 'sample_sentences'
 TITLE: str = 'sample sentences'.upper()
 
 
-def task(data: dict[str, Any],
-         data_for_new_words: list[dict[str, str]],
-         new_words_extension: list[str],
-         *_args,
-         **_kwargs,
-         ) -> TaskResult:
+def task(unit_data: dict[str, Any]) -> TaskResult:
     """Display 'sample sentences' task"""
+
+    assert DATA_KEY in unit_data
+
+    task_data: dict[str, Any] = unit_data[DATA_KEY]
+    new_words_extension: list[str] = unit_data[new_words.DATA_KEY_NEW_WORDS_EXTENSION]
 
     output.section_title(TITLE)
 
     output.empty_line()
-    output.simple(data['prompt'])
+    output.simple(task_data['prompt'])
 
     output.empty_line()
 
-    for sentence in data['sentences']:
+    for sentence in task_data['sentences']:
         output.numbered_sentence(sentence['id'],
                                  sentence['beginning'] + output.BLANK + sentence['end'],
                                  output.Formatting.INDENTED)
@@ -40,7 +40,7 @@ def task(data: dict[str, Any],
 
     output.empty_line()
 
-    for sentence in data['sentences']:
+    for sentence in task_data['sentences']:
 
         prompt: str = f'{sentence["id"]}. '
 
@@ -65,7 +65,7 @@ def task(data: dict[str, Any],
 
         # answer cycle
 
-        new_words(data_for_new_words)
+        new_words.new_words(unit_data)
         output.empty_line()
         l_pr_question()
 
@@ -73,7 +73,7 @@ def task(data: dict[str, Any],
                                                l_pr_question,
                                                answers,
                                                l_pr_answer,
-                                               data_for_new_words)
+                                               unit_data)
         match task_result:
             case TaskResult.SUBTASK_CORRECT_ANSWER | TaskResult.SUBTASK_SKIP_TO_NEXT:
                 continue

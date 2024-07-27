@@ -16,10 +16,14 @@ DATA_KEY: str = 'wr_sit_back_and_relax'
 TITLE: str = 'now sit back and relax'.upper()
 
 
-def task(data: dict[str, Any], *_args, **_kwargs) -> TaskResult:
+def task(unit_data: dict[str, Any]) -> TaskResult:
     """Display now sit back and relax section"""
+
+    assert DATA_KEY in unit_data
 
     # skip until data files are complete
     return TaskResult.NOT_IMPLEMENTED
+
+    task_data: dict[str, Any] = unit_data[DATA_KEY]
 
     output.section_title(f'{TITLE}:')

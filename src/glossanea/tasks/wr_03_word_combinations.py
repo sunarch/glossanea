@@ -16,10 +16,14 @@ DATA_KEY: str = 'wr_word_combinations'
 TITLE: str = 'word combinations'.upper()
 
 
-def task(data: dict[str, Any], *_args, **_kwargs) -> TaskResult:
+def task(unit_data: dict[str, Any]) -> TaskResult:
     """Display word combinations section"""
+
+    assert DATA_KEY in unit_data
 
     # skip until data files are complete
     return TaskResult.NOT_IMPLEMENTED
+
+    task_data: dict[str, Any] = unit_data[DATA_KEY]
 
     output.section_title(f'{TITLE}:')

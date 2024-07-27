@@ -4,22 +4,24 @@
 
 """Other new words"""
 
+# imports: library
+from typing import Any
+
 # imports: project
 from glossanea.cli import output
 from glossanea.cli import user_input
 from glossanea.tasks._common import TaskResult
-from glossanea.tasks.t_1_new_words_common import new_words_full
+from glossanea.tasks import t_1_new_words_common as new_words
 
-DATA_KEY: str = 'new_words'
 TITLE: str = 'new words'.upper()
 
 
-def task(data: list[dict[str, str]], *_args, **_kwargs) -> TaskResult:
+def task(unit_data: dict[str, Any]) -> TaskResult:
     """Display intro text"""
 
     output.section_title(TITLE)
 
-    new_words_full(data)
+    new_words.new_words_full(unit_data)
 
     user_input.wait_for_enter()
 

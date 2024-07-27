@@ -4,6 +4,9 @@
 
 """Other new words"""
 
+# imports: library
+from typing import Any
+
 # imports: project
 from glossanea.cli import output
 from glossanea.cli import user_input
@@ -12,8 +15,12 @@ from glossanea.tasks._common import TaskResult
 DATA_KEY: str = 'title'
 
 
-def task(text: str, *_args, **_kwargs) -> TaskResult:
+def task(unit_data: dict[str, Any]) -> TaskResult:
     """Display title"""
+
+    assert DATA_KEY in unit_data
+
+    text: str = unit_data[DATA_KEY]
 
     output.empty_line()
     output.center(text)

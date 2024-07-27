@@ -4,6 +4,9 @@
 
 """Other new words"""
 
+# imports: library
+from typing import Any
+
 # imports: project
 from glossanea.cli import output
 from glossanea.cli import user_input
@@ -13,8 +16,12 @@ DATA_KEY: str = 'intro_text'
 INTRO_TEXT_WIDTH_FRACTION: float = 0.6
 
 
-def task(parts: list[str], *_args, **_kwargs) -> TaskResult:
+def task(unit_data: dict[str, Any]) -> TaskResult:
     """Display intro text"""
+
+    assert DATA_KEY in unit_data
+
+    parts: list[str] = unit_data[DATA_KEY]
 
     output.empty_line()
     output.framed(parts, INTRO_TEXT_WIDTH_FRACTION)

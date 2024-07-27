@@ -4,6 +4,9 @@
 
 """Fill in the extra cards"""
 
+# imports: library
+from typing import Any
+
 # imports: project
 from glossanea.cli import output
 # from glossanea.cli import user_input
@@ -13,10 +16,14 @@ DATA_KEY: str = 'wr_extra_cards'
 TITLE: str = 'fill in the extra cards'.upper()
 
 
-def task(data: list[str], *_args, **_kwargs) -> TaskResult:
+def task(unit_data: dict[str, Any]) -> TaskResult:
     """Display fill in the extra cards section"""
+
+    assert DATA_KEY in unit_data
 
     # skip until data files are complete
     return TaskResult.NOT_IMPLEMENTED
+
+    task_data: dict[str, Any] = unit_data[DATA_KEY]
 
     output.section_title(f'{TITLE}:')

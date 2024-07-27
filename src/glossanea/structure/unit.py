@@ -9,10 +9,10 @@ import os.path
 from typing import Any
 
 # imports: project
-from glossanea import tasks
 from glossanea.structure import data
 from glossanea.structure import data_version
 from glossanea.structure.exceptions import DataError
+from glossanea.tasks.t_1_new_words_common import DATA_KEY_NEW_WORDS_EXTENSION
 
 
 MIN_WEEK_NUMBER: int = 1
@@ -21,9 +21,6 @@ UNITS_PER_WEEK: int = 7
 MIN_DAY_NUMBER: int = 1
 MAX_DAY_NUMBER: int = 6
 WEEKLY_REVIEW_INDEX: int = 0
-
-# Day only
-KEY_NEW_WORDS_EXTENSION: str = 'new_words_extension'
 
 
 # pylint: disable=too-many-public-methods
@@ -62,109 +59,13 @@ class Unit:
     def task_names(self) -> list[str]:
         """Return a list of keys in the data file which describe tasks"""
 
-        key_list: list[str] = list(self._data.keys())
+        key_list: list[str] = list(self.unit_data.keys())
         try:
-            key_list.remove(KEY_NEW_WORDS_EXTENSION)
+            key_list.remove(DATA_KEY_NEW_WORDS_EXTENSION)
         except ValueError:
             pass
 
         return key_list
-
-    # Common --------------------------------------------------------- #
-
-    @property
-    def title(self) -> str:
-        """Get title"""
-        return self._data.get(tasks.c_1_title.DATA_KEY)
-
-    @property
-    def intro_text(self) -> list[str]:
-        """Get intro text"""
-        return self._data.get(tasks.c_2_intro_text.DATA_KEY)
-
-    # Day only ------------------------------------------------------- #
-
-    @property
-    def new_words(self) -> list[dict[str, str]]:
-        """Get new words"""
-        return self._data.get(tasks.new_words.DATA_KEY)
-
-    @property
-    def new_words_extension(self) -> list[str]:
-        """Get new words extension"""
-        return self._data.get(KEY_NEW_WORDS_EXTENSION)
-
-    @property
-    def sample_sentences(self) -> dict[str, Any]:
-        """Get sample sentences"""
-        return self._data.get(tasks.t_2_sample_sentences.DATA_KEY)
-
-    @property
-    def definitions(self) -> dict[str, Any]:
-        """Get definitions"""
-        return self._data.get(tasks.t_3_definitions.DATA_KEY)
-
-    @property
-    def matching(self) -> dict[str, Any]:
-        """Get matching"""
-        return self._data.get(tasks.t_4_matching.DATA_KEY)
-
-    @property
-    def other_new_words(self) -> dict[str, str]:
-        """Get other new words"""
-        return self._data.get(tasks.t_5_other_new_words.DATA_KEY)
-
-    # Weekly Review only --------------------------------------------- #
-
-    @property
-    def wr_before_the_test(self) -> dict[str, Any]:
-        """Get before the test"""
-        return self._data.get(tasks.wr_01_before_the_test.DATA_KEY)
-
-    @property
-    def wr_definitions(self) -> dict[str, Any]:
-        """Get WR definitions"""
-        return self._data.get(tasks.wr_02_definitions.DATA_KEY)
-
-    @property
-    def wr_word_combinations(self) -> dict[str, Any]:
-        """Get WR word combinations"""
-        return self._data.get(tasks.wr_03_word_combinations.DATA_KEY)
-
-    @property
-    def wr_skeletons(self) -> dict[str, Any]:
-        """Get WR skeletons"""
-        return self._data.get(tasks.wr_04_skeletons.DATA_KEY)
-
-    @property
-    def wr_substitution(self) -> dict[str, Any]:
-        """Get WR substitution"""
-        return self._data.get(tasks.wr_05_substitution.DATA_KEY)
-
-    @property
-    def wr_translation(self) -> dict[str, Any]:
-        """Get WR translation"""
-        return self._data.get(tasks.wr_06_translation.DATA_KEY)
-
-    @property
-    def wr_sit_back_and_relax(self) -> dict[str, Any]:
-        """Get WR sit back and relax"""
-        return self._data.get(tasks.wr_07_sit_back_and_relax.DATA_KEY)
-
-    @property
-    def wr_word_formation(self) -> dict[str, Any]:
-        """Get WR word formation"""
-        return self._data.get(tasks.wr_08_word_formation.DATA_KEY)
-
-    @property
-    def wr_usage(self) -> dict[str, list[str]]:
-        """Get WR usage"""
-        return self._data.get(tasks.wr_09_usage.DATA_KEY)
-
-    @property
-    def wr_extra_cards(self) -> list[str]:
-        """Get  WR extra cards"""
-        return self._data.get(tasks.wr_10_extra_cards.DATA_KEY)
 
     # init and data load --------------------------------------------- #
 
@@ -184,11 +85,11 @@ class Unit:
         else:
             file_path: str = build_path_day(self._week_number, self._unit_number)
 
-        self._data: dict[str, Any] = data.load_json_file(file_path)
+        self.unit_data: dict[str, Any] = data.load_json_file(file_path)
 
-        match data_version.validate(self._data):
+        match data_version.validate(self.unit_data):
             case data_version.ValidationResult.OK, _:
-                del self._data[data_version.DATA_KEY]
+                del self.unit_data[data_version.DATA_KEY]
             case _, reason:
                 msg: str = f'{reason} (Week {self._week_number} / Day {self.unit_number_display})'
                 raise DataError(msg)

@@ -4,6 +4,9 @@
 
 """Usage"""
 
+# imports: library
+from typing import Any
+
 # imports: project
 from glossanea.cli import output
 # from glossanea.cli import user_input
@@ -13,10 +16,14 @@ DATA_KEY: str = 'wr_usage'
 TITLE: str = 'usage'.upper()
 
 
-def task(data: dict[str, list[str]], *_args, **_kwargs) -> TaskResult:
+def task(unit_data: dict[str, Any]) -> TaskResult:
     """Display usage section"""
+
+    assert DATA_KEY in unit_data
 
     # skip until data files are complete
     return TaskResult.NOT_IMPLEMENTED
+
+    task_data: dict[str, Any] = unit_data[DATA_KEY]
 
     output.section_title(f'{TITLE}:')

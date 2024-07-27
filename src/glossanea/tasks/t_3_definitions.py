@@ -11,35 +11,37 @@ from typing import Any
 from glossanea.cli import output
 from glossanea.cli.output import Formatting
 from glossanea.tasks._common import TaskResult, answer_cycle
+from glossanea.tasks import t_1_new_words_common as new_words
 
 DATA_KEY: str = 'definitions'
 TITLE: str = 'definitions'.upper()
 
 
-def task(data: dict[str, Any],
-         data_for_new_words: list[dict[str, str]],
-         *_args,
-         **_kwargs,
-         ) -> TaskResult:
+def task(unit_data: dict[str, Any]) -> TaskResult:
     """Display 'definitions' task"""
+
+    assert DATA_KEY in unit_data
+
+    task_data: dict[str, Any] = unit_data[DATA_KEY]
+    data_for_new_words: list[dict[str, str]] = unit_data[new_words.DATA_KEY]
 
     output.section_title(TITLE)
 
     output.empty_line()
-    output.simple(data['prompt'])
+    output.simple(task_data['prompt'])
 
     output.empty_line()
-    for definition in data['definitions']:
+    for definition in task_data['definitions']:
         output.numbered_sentence(definition['id'], definition['text'], Formatting.INDENTED)
 
     def l_words() -> None:
         """l_words"""
         output.words_table(
-            [word['id'] for word in data['words']],
-            [word['text'] for word in data['words']],
+            [word['id'] for word in task_data['words']],
+            [word['text'] for word in task_data['words']],
         )
 
-    for definition in data['definitions']:
+    for definition in task_data['definitions']:
 
         prompt: str = f'{definition["id"]}. '
 
@@ -50,13 +52,13 @@ def task(data: dict[str, Any],
         answers: list[str] = []
         answer_id: str = [
             value
-            for (item_id, value) in data['answers']
+            for (item_id, value) in task_data['answers']
             if item_id == definition['id']
         ][0]
         answers.append(answer_id)
         answer_text: str = [
             item['text']
-            for item in data['words']
+            for item in task_data['words']
             if item['id'] == answer_id
         ][0]
         answers.append(answer_text)
