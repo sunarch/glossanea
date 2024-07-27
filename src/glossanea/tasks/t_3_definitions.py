@@ -22,9 +22,6 @@ def task(data: dict[str, Any],
          ) -> TaskResult:
     """Display 'definitions' task"""
 
-    # skip until data files are complete
-    return TaskResult.NOT_IMPLEMENTED
-
     output.section_title(TITLE)
 
     output.empty_line()
@@ -34,10 +31,12 @@ def task(data: dict[str, Any],
     for definition in data['definitions']:
         output.numbered_sentence(definition['id'], definition['text'], Formatting.INDENTED)
 
-    def l_words() -> list[None]:
+    def l_words() -> None:
         """l_words"""
-        return [output.numbered_sentence(word['id'], word['text'], Formatting.INDENTED)
-                for word in data['words']]
+        output.words_table(
+            [word['id'] for word in data['words']],
+            [word['text'] for word in data['words']],
+        )
 
     for definition in data['definitions']:
 
@@ -45,7 +44,7 @@ def task(data: dict[str, Any],
 
         def l_pr_question() -> None:
             """l_pr_question"""
-            return output.numbered_sentence(definition['id'], definition['text'])
+            output.numbered_sentence(definition['id'], definition['text'])
 
         answers: list[str] = []
         answer_id: str = [
@@ -63,7 +62,8 @@ def task(data: dict[str, Any],
 
         def l_pr_answer() -> None:
             """l_pr_answer"""
-            return output.numbered_sentence(answer_id, answer_text)
+            l_pr_question()
+            output.numbered_sentence(answer_id, answer_text)
 
         # answer cycle
 
