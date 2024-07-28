@@ -13,9 +13,7 @@ from jsonschema import Draft202012Validator
 # imports: project
 from glossanea.cli import output
 from glossanea.cli import user_input
-from glossanea.structure import schema
-from glossanea.structure.schema import ValidationResult
-from glossanea.tasks._common import TaskResult
+from glossanea.tasks._common import TaskResult, validate_unit_data_on_task
 
 DATA_KEY: str = 'title'
 
@@ -32,14 +30,9 @@ SCHEMA = {
 DATA_VALIDATOR = Draft202012Validator(SCHEMA)
 
 
+@validate_unit_data_on_task(data_validator=DATA_VALIDATOR)
 def task(unit_data: dict[str, Any]) -> TaskResult:
     """Display title"""
-
-    match schema.validate_unit_data(DATA_VALIDATOR, unit_data):
-        case ValidationResult.OK:
-            pass
-        case _:
-            return TaskResult.DATA_VALIDATION_FAILED
 
     text: str = unit_data[DATA_KEY]
 

@@ -12,9 +12,7 @@ from jsonschema import Draft202012Validator
 
 # imports: project
 from glossanea.cli import output
-from glossanea.structure import schema
-from glossanea.structure.schema import ValidationResult
-from glossanea.tasks._common import TaskResult, answer_cycle
+from glossanea.tasks._common import TaskResult, answer_cycle, validate_unit_data_on_task
 from glossanea.tasks import t_1_new_words_common as new_words
 
 DATA_KEY: str = 'sample_sentences'
@@ -53,14 +51,9 @@ SCHEMA = {
 DATA_VALIDATOR = Draft202012Validator(SCHEMA)
 
 
+@validate_unit_data_on_task(data_validator=DATA_VALIDATOR)
 def task(unit_data: dict[str, Any]) -> TaskResult:
     """Display 'sample sentences' task"""
-
-    match schema.validate_unit_data(DATA_VALIDATOR, unit_data):
-        case ValidationResult.OK:
-            pass
-        case _:
-            return TaskResult.DATA_VALIDATION_FAILED
 
     task_data: dict[str, Any] = unit_data[DATA_KEY]
     new_words_extension: list[str] = unit_data[new_words.DATA_KEY_NEW_WORDS_EXTENSION]

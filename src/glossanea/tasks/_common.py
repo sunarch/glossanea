@@ -9,9 +9,14 @@ import enum
 import logging
 from typing import Any, Callable
 
+# imports: dependencies
+from jsonschema import Draft202012Validator
+
 # imports: project
 from glossanea.cli import output
 from glossanea.cli import user_input
+from glossanea.structure import schema
+from glossanea.structure.schema import ValidationResult
 from glossanea.tasks import t_1_new_words_common as new_words
 
 
@@ -189,3 +194,29 @@ def process_command(input_text: str,
         case _:
             output.warning(f'Invalid command: {input_text}')
             return TaskResult.SUBTASK_RETRY
+
+
+def validate_unit_data_on_task(
+        data_validator: Draft202012Validator,
+) -> Callable[
+    [Callable[[dict[str, Any]], TaskResult]],
+    Callable[[dict[str, Any]], TaskResult]
+]:
+    """Decorator to run unit data validation on tasks"""
+
+    def parameter_wrapper(task: Callable[[dict[str, Any]], TaskResult]
+                          ) -> Callable[[dict[str, Any]], TaskResult]:
+        """Parameter wrapper"""
+
+        def function_wrapper(unit_data: dict[str, Any]) -> TaskResult:
+            """Function wrapper"""
+
+            match schema.validate_unit_data(data_validator, unit_data):
+                case ValidationResult.OK:
+                    return task(unit_data)
+                case _:
+                    return TaskResult.DATA_VALIDATION_FAILED
+
+        return function_wrapper
+
+    return parameter_wrapper
