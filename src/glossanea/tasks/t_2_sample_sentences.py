@@ -18,7 +18,7 @@ from glossanea.tasks import t_1_new_words_common as new_words
 DATA_KEY: str = 'sample_sentences'
 TITLE: str = 'sample sentences'.upper()
 
-SCHEMA = {
+DATA_SCHEMA = {
     "type": "object",
     "required": [DATA_KEY, new_words.DATA_KEY_NEW_WORDS_EXTENSION],
     "properties": {
@@ -48,7 +48,7 @@ SCHEMA = {
     },
 }
 
-DATA_VALIDATOR = Draft202012Validator(SCHEMA)
+DATA_VALIDATOR = Draft202012Validator(DATA_SCHEMA)
 
 
 @validate_unit_data_on_task(data_validator=DATA_VALIDATOR)

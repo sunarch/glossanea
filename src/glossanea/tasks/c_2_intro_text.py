@@ -17,8 +17,8 @@ from glossanea.structure import schema
 from glossanea.tasks._common import TaskResult, validate_unit_data_on_task
 
 DATA_KEY: str = 'intro_text'
-SCHEMA = schema.schema_text_list(DATA_KEY, 1)
-DATA_VALIDATOR = Draft202012Validator(SCHEMA)
+DATA_SCHEMA = schema.schema_text_list(DATA_KEY, 1)
+DATA_VALIDATOR = Draft202012Validator(DATA_SCHEMA)
 
 INTRO_TEXT_WIDTH_FRACTION: float = 0.6
 

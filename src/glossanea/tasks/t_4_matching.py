@@ -16,7 +16,7 @@ from glossanea.tasks._common import TaskResult, answer_cycle, validate_unit_data
 
 DATA_KEY: str = 'matching'
 
-SCHEMA = {
+DATA_SCHEMA = {
     "type": "object",
     "required": [DATA_KEY],
     "properties": {
@@ -65,7 +65,7 @@ SCHEMA = {
     },
 }
 
-DATA_VALIDATOR = Draft202012Validator(SCHEMA)
+DATA_VALIDATOR = Draft202012Validator(DATA_SCHEMA)
 
 
 @validate_unit_data_on_task(data_validator=DATA_VALIDATOR)

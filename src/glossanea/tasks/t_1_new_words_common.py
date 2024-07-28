@@ -18,7 +18,7 @@ from glossanea.structure.schema import ValidationResult
 DATA_KEY: str = 'new_words'
 DATA_KEY_NEW_WORDS_EXTENSION: str = 'new_words_extension'
 
-SCHEMA = {
+DATA_SCHEMA = {
     "type": "object",
     "required": [DATA_KEY],
     "properties": {
@@ -37,7 +37,7 @@ SCHEMA = {
     },
 }
 
-DATA_VALIDATOR = Draft202012Validator(SCHEMA)
+DATA_VALIDATOR = Draft202012Validator(DATA_SCHEMA)
 
 
 def new_words_full(unit_data: dict[str, Any]) -> None:

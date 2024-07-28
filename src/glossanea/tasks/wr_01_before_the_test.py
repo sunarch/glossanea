@@ -18,7 +18,7 @@ from glossanea.tasks._common import TaskResult, validate_unit_data_on_task
 DATA_KEY: str = 'wr_before_the_test'
 TITLE: str = 'before the test'.upper()
 
-SCHEMA = {
+DATA_SCHEMA = {
     "type": "object",
     "required": [DATA_KEY],
     "properties": {
@@ -41,7 +41,7 @@ SCHEMA = {
     },
 }
 
-DATA_VALIDATOR = Draft202012Validator(SCHEMA)
+DATA_VALIDATOR = Draft202012Validator(DATA_SCHEMA)
 
 
 @validate_unit_data_on_task(data_validator=DATA_VALIDATOR)

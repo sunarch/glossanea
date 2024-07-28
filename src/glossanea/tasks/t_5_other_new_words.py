@@ -17,7 +17,7 @@ from glossanea.tasks._common import TaskResult, validate_unit_data_on_task
 DATA_KEY: str = 'other_new_words'
 TITLE: str = 'other new words'.upper()
 
-SCHEMA = {
+DATA_SCHEMA = {
     "type": "object",
     "required": [DATA_KEY],
     "properties": {
@@ -30,7 +30,7 @@ SCHEMA = {
     },
 }
 
-DATA_VALIDATOR = Draft202012Validator(SCHEMA)
+DATA_VALIDATOR = Draft202012Validator(DATA_SCHEMA)
 
 
 @validate_unit_data_on_task(data_validator=DATA_VALIDATOR)

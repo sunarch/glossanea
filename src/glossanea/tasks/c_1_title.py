@@ -17,8 +17,8 @@ from glossanea.structure import schema
 from glossanea.tasks._common import TaskResult, validate_unit_data_on_task
 
 DATA_KEY: str = 'title'
-SCHEMA = schema.schema_text_single(DATA_KEY)
-DATA_VALIDATOR = Draft202012Validator(SCHEMA)
+DATA_SCHEMA = schema.schema_text_single(DATA_KEY)
+DATA_VALIDATOR = Draft202012Validator(DATA_SCHEMA)
 
 
 @validate_unit_data_on_task(data_validator=DATA_VALIDATOR)
