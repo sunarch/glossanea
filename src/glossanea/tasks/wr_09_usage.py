@@ -7,9 +7,14 @@
 # imports: library
 from typing import Any
 
+# imports: dependencies
+from jsonschema import Draft202012Validator
+
 # imports: project
 from glossanea.cli import output
 # from glossanea.cli import user_input
+from glossanea.structure import schema
+from glossanea.structure.schema import ValidationResult
 from glossanea.tasks._common import TaskResult
 
 DATA_KEY: str = 'wr_usage'
@@ -19,7 +24,11 @@ TITLE: str = 'usage'.upper()
 def task(unit_data: dict[str, Any]) -> TaskResult:
     """Display usage section"""
 
-    assert DATA_KEY in unit_data
+    match schema.validate_unit_data(DATA_VALIDATOR, unit_data):
+        case ValidationResult.OK:
+            pass
+        case _:
+            return TaskResult.DATA_VALIDATION_FAILED
 
     # skip until data files are complete
     return TaskResult.NOT_IMPLEMENTED
@@ -27,3 +36,34 @@ def task(unit_data: dict[str, Any]) -> TaskResult:
     task_data: dict[str, Any] = unit_data[DATA_KEY]
 
     output.section_title(f'{TITLE}:')
+
+
+SCHEMA = {
+    "type": "object",
+    "required": ["wr_usage"],
+    "properties": {
+        "wr_usage": {
+            "type": "object",
+            "properties": {
+                "prompt": {"type": "string"},
+                "items": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "word": {"type": "string"},
+                            "sentences": {
+                                "type": "array",
+                                "minItems": 1,
+                                "items": {"type": "string"},
+                            },
+                        },
+                    },
+                },
+            },
+        },
+    },
+}
+
+DATA_VALIDATOR = Draft202012Validator(SCHEMA)

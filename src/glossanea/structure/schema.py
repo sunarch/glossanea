@@ -5,49 +5,86 @@
 """Data schema"""
 
 # imports: library
+import enum
 import logging
 from typing import Any
 
 # imports: dependencies
 from jsonschema import ValidationError, SchemaError, Draft202012Validator
 
-# imports: project
-from glossanea.structure.exceptions import DataError
+
+class ValidationResult(enum.Enum):
+    """Data validation """
+
+    OK = enum.auto()
+
+    VALIDATION_FAILED = enum.auto()
+    VERSION_INCORRECT = enum.auto()
 
 
-def validate_unit_data(data: dict | list) -> None:
-    """Validate unit data"""
+def _validate_schema(data_validator: Draft202012Validator) -> bool:
+    """Validate data schema"""
 
     try:
-        DATA_VALIDATOR.validate(data)
-    except ValidationError as exc:
-        logging.warning('Validation Error(s):')
-        for error in DATA_VALIDATOR.iter_errors(data):
-            logging.warning(error.message)
-        raise DataError('Failed to validate unit data file by schema') from exc
+        data_validator.check_schema(data_validator.schema)
     except SchemaError:
-        assert False
+        return False
+
+    return True
 
 
-def subschema_wr_task(question_key: str) -> dict[str, Any]:
+def validate_unit_data(data_validator: Draft202012Validator,
+                       data: dict | list,
+                       ) -> ValidationResult:
+    """Validate unit data"""
+
+    assert _validate_schema(data_validator), "Failed to validate unit data schema"
+
+    try:
+        data_validator.validate(data)
+    except ValidationError:
+        logging.warning('Validation Error(s):')
+        for error in data_validator.iter_errors(data):
+            logging.warning(error.message)
+        return ValidationResult.VALIDATION_FAILED
+
+    return ValidationResult.OK
+
+
+def subschema_prompt_list(minimum_items: int) -> dict[str, Any]:
+    """Subschema for tasks with string list prompts"""
+
+    return {
+        "type": "array",
+        "minItems": minimum_items,
+        "items": {"type": "string"},
+    }
+
+
+def subschema_items_task() -> dict[str, Any]:
     """Subschema for multiple WR tasks"""
 
     return {
         "type": "object",
         "properties": {
-            "task_number": {"type": "integer"},
+            "task_number": {
+                "type": "integer",
+                "minimum": 1,
+            },
             "prompt": {"type": "string"},
             "scoring": {"type": "string"},
             "items": {
                 "type": "array",
+                "minItems": 1,
                 "items": {
                     "type": "object",
                     "properties": {
                         "id": {"type": "string"},
-                        question_key: {"type": "string"},
+                        "question": {"type": "string"},
                         "answer": {"type": "string"},
                         "accept": {
                             "type": "array",
+                            "minItems": 0,
                             "items": {"type": "string"},
                         },
                     },
@@ -55,248 +92,3 @@ def subschema_wr_task(question_key: str) -> dict[str, Any]:
             },
         },
     }
-
-
-SCHEMA = {
-    "type": "object",
-    "required": ["version", "title", "intro_text"],
-    "properties": {
-        "version": {
-            "type": "integer",
-            "minimum": 1,
-        },
-        "title": {
-            "type": "string",
-        },
-        "new_words": {
-            "type": "array",
-            "items": {
-                "type": "object",
-                "properties": {
-                    "regular": {"type": "string"},
-                    "phonetic": {"type": "string"},
-                    "search": {"type": "string"},
-                },
-            },
-        },
-        "new_words_extension": {
-            "type": "array",
-            "items": {"type": "string"},
-        },
-        "intro_text": {
-            "type": "array",
-            "items": {"type": "string"},
-        },
-        "sample_sentences": {
-            "type": "object",
-            "properties": {
-                "prompt": {"type": "string"},
-                "sentences": {
-                    "type": "array",
-                    "items": {
-                        "type": "object",
-                        "properties": {
-                            "id": {"type": "string"},
-                            "beginning": {"type": "string"},
-                            "answer": {"type": "string"},
-                            "end": {"type": "string"},
-                        },
-                    },
-                },
-            },
-        },
-        "definitions": {
-            "type": "object",
-            "properties": {
-                "prompt": {"type": "string"},
-                "definitions": {
-                    "type": "array",
-                    "items": {
-                        "type": "object",
-                        "properties": {
-                            "id": {"type": "string"},
-                            "text": {"type": "string"},
-                        },
-                    },
-                    "minItems": 5,
-                    "maxItems": 5,
-                },
-                "words": {
-                    "type": "array",
-                    "items": {
-                        "type": "object",
-                        "properties": {
-                            "id": {"type": "string"},
-                            "text": {"type": "string"},
-                        },
-                    },
-                    "minItems": 5,
-                    "maxItems": 5,
-                },
-                "answers": {
-                    "type": "array",
-                    "items": {
-                        "type": "array",
-                        "items": {"type": "string"},
-                        "minItems": 2,
-                        "maxItems": 2,
-                    },
-                    "minItems": 5,
-                    "maxItems": 5,
-                },
-            },
-        },
-        "matching": {
-            "type": "object",
-            "properties": {
-                "name": {"type": "string"},
-                "prompt": {"type": "string"},
-                "sentences": {
-                    "type": "array",
-                    "items": {
-                        "type": "object",
-                        "properties": {
-                            "id": {"type": "string"},
-                            "text": {"type": "string"},
-                        },
-                    },
-                    "minItems": 5,
-                    "maxItems": 5,
-                },
-                "words": {
-                    "type": "array",
-                    "items": {
-                        "type": "object",
-                        "properties": {
-                            "id": {"type": "string"},
-                            "text": {"type": "string"},
-                        },
-                    },
-                    "minItems": 5,
-                    "maxItems": 5,
-                },
-                "answers": {
-                    "type": "array",
-                    "items": {
-                        "type": "array",
-                        "items": {"type": "string"},
-                        "minItems": 2,
-                        "maxItems": 2,
-                    },
-                    "minItems": 5,
-                    "maxItems": 5,
-                },
-            },
-        },
-        "other_new_words": {
-            "type": "object",
-            "properties": {
-                "prompt": {"type": "string"},
-            },
-        },
-        "wr_before_the_test": {
-            "type": "object",
-            "properties": {
-                "prompt": {"type": "string"},
-                "words": {
-                    "type": "array",
-                    "items": {
-                        "type": "array",
-                        "items": {"type": "string"},
-                    },
-                },
-                "after_text": {"type": "string"},
-            },
-        },
-        "wr_definitions": subschema_wr_task('definition'),
-        "wr_word_combinations": {
-            "type": "object",
-            "properties": {
-                "task_number": {"type": "integer"},
-                "prompt": {"type": "string"},
-                "scoring": {"type": "string"},
-                "extra_words": {
-                    "type": "array",
-                    "items": {"type": "string"},
-                },
-                "items": {
-                    "type": "array",
-                    "items": {
-                        "type": "object",
-                        "properties": {
-                            "id": {"type": "string"},
-                            "answer_before": {"type": "string"},
-                            "accept_before": {
-                                "type": "array",
-                                "items": {"type": "string"},
-                            },
-                            "word": {"type": "string"},
-                            "answer_after": {"type": "string"},
-                            "accept_after": {
-                                "type": "array",
-                                "items": {"type": "string"},
-                            },
-                        },
-                    },
-                },
-            },
-        },
-        "wr_skeletons": subschema_wr_task('word'),
-        "wr_substitution": subschema_wr_task('sentence'),
-        "wr_translation": subschema_wr_task('sentence'),
-        "wr_sit_back_and_relax": {
-            "type": "object",
-            "properties": {
-                "text": {"type": "string"},
-                "label_like": {"type": "string"},
-                "label_do_not_like": {"type": "string"},
-                "label_people": {"type": "string"},
-                "people": {
-                    "type": "array",
-                    "items": {
-                        "type": "object",
-                        "properties": {
-                            "name": {"type": "string"},
-                            "like": {"type": "string"},
-                            "do_not_like": {"type": "string"},
-                        },
-                    },
-                },
-            },
-        },
-        "wr_word_formation": {
-            "type": "object",
-            "properties": {
-                "groups": {
-                    "type": "array",
-                    "items": {"type": "string"},
-                },
-            },
-        },
-        "wr_usage": {
-            "type": "object",
-            "properties": {
-                "prompt": {"type": "string"},
-                "items": {
-                    "type": "array",
-                    "items": {
-                        "type": "object",
-                        "properties": {
-                            "word": {"type": "string"},
-                            "sentences": {
-                                "type": "array",
-                                "items": {"type": "string"},
-                            },
-                        },
-                    },
-                },
-            },
-        },
-        "wr_extra_cards": {
-            "type": "array",
-            "items": {"type": "string"},
-        },
-    },
-}
-
-DATA_VALIDATOR = Draft202012Validator(SCHEMA)

@@ -5,29 +5,31 @@
 """Data version"""
 
 # imports: library
-import enum
 from typing import Any
 
+# imports: dependencies
+from jsonschema import Draft202012Validator
+
 # imports: project
+from glossanea.structure import schema
+from glossanea.structure.schema import ValidationResult
 from glossanea.version import REQUIRED_DATA_VERSION
 
 DATA_KEY: str = 'version'
 
 
-class ValidationResult(enum.Enum):
-    """Data validation """
-
-    OK = enum.auto()
-
-    VERSION_INCORRECT = enum.auto()
-
-
-def validate(data_dict: dict[str, Any]) -> tuple[ValidationResult, str]:
+def validate(unit_data: dict[str, Any]) -> tuple[ValidationResult, str]:
     """Validate a data version"""
 
-    data_version: int = data_dict[DATA_KEY]
+    match schema.validate_unit_data(DATA_VALIDATOR, unit_data):
+        case ValidationResult.OK, _:
+            pass
+        case result, reason:
+            return result, reason
 
-    if data_dict[DATA_KEY] != REQUIRED_DATA_VERSION:
+    data_version: int = unit_data[DATA_KEY]
+
+    if unit_data[DATA_KEY] != REQUIRED_DATA_VERSION:
         return (
             ValidationResult.VERSION_INCORRECT,
             'Incorrect data file version: ' +
@@ -35,3 +37,20 @@ def validate(data_dict: dict[str, Any]) -> tuple[ValidationResult, str]:
         )
 
     return ValidationResult.OK, ""
+
+
+SCHEMA = {
+    "type": "object",
+    "required": ["version", "title"],
+    "properties": {
+        "version": {
+            "type": "integer",
+            "minimum": 1,
+        },
+        "title": {
+            "type": "string",
+        },
+    },
+}
+
+DATA_VALIDATOR = Draft202012Validator(SCHEMA)

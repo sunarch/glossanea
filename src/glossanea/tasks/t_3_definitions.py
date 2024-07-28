@@ -7,9 +7,14 @@
 # imports: library
 from typing import Any
 
+# imports: dependencies
+from jsonschema import Draft202012Validator
+
 # imports: project
 from glossanea.cli import output
 from glossanea.cli.output import Formatting
+from glossanea.structure import schema
+from glossanea.structure.schema import ValidationResult
 from glossanea.tasks._common import TaskResult, answer_cycle
 from glossanea.tasks import t_1_new_words_common as new_words
 
@@ -20,7 +25,11 @@ TITLE: str = 'definitions'.upper()
 def task(unit_data: dict[str, Any]) -> TaskResult:
     """Display 'definitions' task"""
 
-    assert DATA_KEY in unit_data
+    match schema.validate_unit_data(DATA_VALIDATOR, unit_data):
+        case ValidationResult.OK:
+            pass
+        case _:
+            return TaskResult.DATA_VALIDATION_FAILED
 
     task_data: dict[str, Any] = unit_data[DATA_KEY]
     data_for_new_words: list[dict[str, str]] = unit_data[new_words.DATA_KEY]
@@ -87,3 +96,54 @@ def task(unit_data: dict[str, Any]) -> TaskResult:
                 return task_result
 
     return TaskResult.FINISHED
+
+
+SCHEMA = {
+    "type": "object",
+    "required": ["definitions"],
+    "properties": {
+        "definitions": {
+            "type": "object",
+            "properties": {
+                "prompt": {"type": "string"},
+                "definitions": {
+                    "type": "array",
+                    "minItems": 5,
+                    "maxItems": 5,
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "id": {"type": "string"},
+                            "text": {"type": "string"},
+                        },
+                    },
+                },
+                "words": {
+                    "type": "array",
+                    "minItems": 5,
+                    "maxItems": 5,
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "id": {"type": "string"},
+                            "text": {"type": "string"},
+                        },
+                    },
+                },
+                "answers": {
+                    "type": "array",
+                    "minItems": 5,
+                    "maxItems": 5,
+                    "items": {
+                        "type": "array",
+                        "items": {"type": "string"},
+                        "minItems": 2,
+                        "maxItems": 2,
+                    },
+                },
+            },
+        },
+    },
+}
+
+DATA_VALIDATOR = Draft202012Validator(SCHEMA)

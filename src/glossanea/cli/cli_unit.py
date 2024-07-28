@@ -3,13 +3,14 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 """CLI Unit"""
-
+import logging
 # imports: library
 from typing import Callable
 
 # imports: project
 from glossanea import tasks
 from glossanea.tasks import TaskResult
+from glossanea.cli import output
 from glossanea.structure.unit import Unit
 
 
@@ -45,6 +46,16 @@ def run(unit_obj: Unit) -> None:
 
             case TaskResult.EXIT_TASK:
                 break
+
+            case TaskResult.DATA_VALIDATION_FAILED:
+                msg: str = "Failed to validate task data: "
+                msg += f'Week {unit_obj.week_number} / Day {unit_obj.unit_number}'
+                msg += f' / {task_list[task_index]}'
+                output.empty_line()
+                output.warning(msg)
+                logging.warning(msg)
+                task_index += 1
+                continue
 
             case TaskResult.NOT_IMPLEMENTED | TaskResult.FINISHED:
                 task_index += 1

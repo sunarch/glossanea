@@ -3,12 +3,17 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 """Other new words"""
-
+import logging
 # imports: library
 from typing import Any
 
+# imports: dependencies
+from jsonschema import Draft202012Validator
+
 # imports: project
 from glossanea.cli import output
+from glossanea.structure import schema
+from glossanea.structure.schema import ValidationResult
 
 DATA_KEY: str = 'new_words'
 DATA_KEY_NEW_WORDS_EXTENSION: str = 'new_words_extension'
@@ -17,7 +22,15 @@ DATA_KEY_NEW_WORDS_EXTENSION: str = 'new_words_extension'
 def new_words_full(unit_data: dict[str, Any]) -> None:
     """Display new words section"""
 
-    assert DATA_KEY in unit_data
+    match schema.validate_unit_data(DATA_VALIDATOR, unit_data):
+        case ValidationResult.OK:
+            pass
+        case _:
+            msg: str = f'Data validation failed: {DATA_KEY}'
+            output.empty_line()
+            output.warning(msg)
+            logging.warning(msg)
+            return
 
     word_data: list[dict[str, str]] = unit_data[DATA_KEY]
 
@@ -31,7 +44,15 @@ def new_words_full(unit_data: dict[str, Any]) -> None:
 def new_words(unit_data: dict[str, Any]) -> None:
     """Display new words section"""
 
-    assert DATA_KEY in unit_data
+    match schema.validate_unit_data(DATA_VALIDATOR, unit_data):
+        case ValidationResult.OK:
+            pass
+        case _:
+            msg: str = f'Data validation failed: {DATA_KEY}'
+            output.empty_line()
+            output.warning(msg)
+            logging.warning(msg)
+            return
 
     word_data: list[dict[str, str]] = unit_data[DATA_KEY]
 
@@ -39,3 +60,25 @@ def new_words(unit_data: dict[str, Any]) -> None:
 
     output.empty_line()
     output.words_table(regular)
+
+
+SCHEMA = {
+    "type": "object",
+    "required": ["new_words"],
+    "properties": {
+        "new_words": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+                "type": "object",
+                "properties": {
+                    "regular": {"type": "string"},
+                    "phonetic": {"type": "string"},
+                    "search": {"type": "string"},
+                },
+            },
+        },
+    },
+}
+
+DATA_VALIDATOR = Draft202012Validator(SCHEMA)

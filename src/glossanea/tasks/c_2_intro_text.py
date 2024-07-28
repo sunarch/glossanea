@@ -7,9 +7,14 @@
 # imports: library
 from typing import Any
 
+# imports: dependencies
+from jsonschema import Draft202012Validator
+
 # imports: project
 from glossanea.cli import output
 from glossanea.cli import user_input
+from glossanea.structure import schema
+from glossanea.structure.schema import ValidationResult
 from glossanea.tasks._common import TaskResult
 
 DATA_KEY: str = 'intro_text'
@@ -19,7 +24,11 @@ INTRO_TEXT_WIDTH_FRACTION: float = 0.6
 def task(unit_data: dict[str, Any]) -> TaskResult:
     """Display intro text"""
 
-    assert DATA_KEY in unit_data
+    match schema.validate_unit_data(DATA_VALIDATOR, unit_data):
+        case ValidationResult.OK:
+            pass
+        case _:
+            return TaskResult.DATA_VALIDATION_FAILED
 
     parts: list[str] = unit_data[DATA_KEY]
 
@@ -29,3 +38,14 @@ def task(unit_data: dict[str, Any]) -> TaskResult:
     user_input.wait_for_enter()
 
     return TaskResult.FINISHED
+
+
+SCHEMA = {
+    "type": "object",
+    "required": ["intro_text"],
+    "properties": {
+        "intro_text": schema.subschema_prompt_list(1),
+    },
+}
+
+DATA_VALIDATOR = Draft202012Validator(SCHEMA)

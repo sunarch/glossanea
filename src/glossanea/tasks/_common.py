@@ -20,6 +20,8 @@ class TaskResult(enum.Enum):
 
     NOT_IMPLEMENTED = enum.auto()
 
+    DATA_VALIDATION_FAILED = enum.auto()
+
     BACK_TO_PREVIOUS_TASK = enum.auto()
     JUMP_TO_NEXT_TASK = enum.auto()
     EXIT_TASK = enum.auto()

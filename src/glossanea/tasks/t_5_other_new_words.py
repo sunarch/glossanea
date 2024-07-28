@@ -7,8 +7,13 @@
 # imports: library
 from typing import Any
 
+# imports: dependencies
+from jsonschema import Draft202012Validator
+
 # imports: project
 from glossanea.cli import output
+from glossanea.structure import schema
+from glossanea.structure.schema import ValidationResult
 from glossanea.tasks._common import TaskResult
 
 DATA_KEY: str = 'other_new_words'
@@ -18,7 +23,11 @@ TITLE: str = 'other new words'.upper()
 def task(unit_data: dict[str, Any]) -> TaskResult:
     """Display other new words section"""
 
-    assert DATA_KEY in unit_data
+    match schema.validate_unit_data(DATA_VALIDATOR, unit_data):
+        case ValidationResult.OK:
+            pass
+        case _:
+            return TaskResult.DATA_VALIDATION_FAILED
 
     task_data: dict[str, str] = unit_data[DATA_KEY]
 
@@ -33,3 +42,19 @@ def task(unit_data: dict[str, Any]) -> TaskResult:
     output.empty_line()
 
     return TaskResult.FINISHED
+
+
+SCHEMA = {
+    "type": "object",
+    "required": ["other_new_words"],
+    "properties": {
+        "other_new_words": {
+            "type": "object",
+            "properties": {
+                "prompt": {"type": "string"},
+            },
+        },
+    },
+}
+
+DATA_VALIDATOR = Draft202012Validator(SCHEMA)
