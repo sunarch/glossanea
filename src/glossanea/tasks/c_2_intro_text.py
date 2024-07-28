@@ -20,6 +20,16 @@ from glossanea.tasks._common import TaskResult
 DATA_KEY: str = 'intro_text'
 INTRO_TEXT_WIDTH_FRACTION: float = 0.6
 
+SCHEMA = {
+    "type": "object",
+    "required": ["intro_text"],
+    "properties": {
+        "intro_text": schema.subschema_prompt_list(1),
+    },
+}
+
+DATA_VALIDATOR = Draft202012Validator(SCHEMA)
+
 
 def task(unit_data: dict[str, Any]) -> TaskResult:
     """Display intro text"""
@@ -38,14 +48,3 @@ def task(unit_data: dict[str, Any]) -> TaskResult:
     user_input.wait_for_enter()
 
     return TaskResult.FINISHED
-
-
-SCHEMA = {
-    "type": "object",
-    "required": ["intro_text"],
-    "properties": {
-        "intro_text": schema.subschema_prompt_list(1),
-    },
-}
-
-DATA_VALIDATOR = Draft202012Validator(SCHEMA)

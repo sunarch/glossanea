@@ -20,6 +20,16 @@ from glossanea.tasks._common import TaskResult
 DATA_KEY: str = 'wr_skeletons'
 TITLE: str = 'skeletons'.upper()
 
+SCHEMA = {
+    "type": "object",
+    "required": ["wr_skeletons"],
+    "properties": {
+        "wr_skeletons": schema.subschema_items_task(),
+    },
+}
+
+DATA_VALIDATOR = Draft202012Validator(SCHEMA)
+
 
 def task(unit_data: dict[str, Any]) -> TaskResult:
     """Display skeletons section"""
@@ -36,14 +46,3 @@ def task(unit_data: dict[str, Any]) -> TaskResult:
     task_data: dict[str, Any] = unit_data[DATA_KEY]
 
     output.section_title(f'{TITLE}:')
-
-
-SCHEMA = {
-    "type": "object",
-    "required": ["wr_skeletons"],
-    "properties": {
-        "wr_skeletons": schema.subschema_items_task(),
-    },
-}
-
-DATA_VALIDATOR = Draft202012Validator(SCHEMA)

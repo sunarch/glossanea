@@ -19,6 +19,18 @@ from glossanea.tasks._common import TaskResult
 
 DATA_KEY: str = 'title'
 
+SCHEMA = {
+    "type": "object",
+    "required": ["title"],
+    "properties": {
+        "title": {
+            "type": "string",
+        },
+    },
+}
+
+DATA_VALIDATOR = Draft202012Validator(SCHEMA)
+
 
 def task(unit_data: dict[str, Any]) -> TaskResult:
     """Display title"""
@@ -37,16 +49,3 @@ def task(unit_data: dict[str, Any]) -> TaskResult:
     user_input.wait_for_enter()
 
     return TaskResult.FINISHED
-
-
-SCHEMA = {
-    "type": "object",
-    "required": ["title"],
-    "properties": {
-        "title": {
-            "type": "string",
-        },
-    },
-}
-
-DATA_VALIDATOR = Draft202012Validator(SCHEMA)

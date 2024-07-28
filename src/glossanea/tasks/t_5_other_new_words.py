@@ -19,6 +19,21 @@ from glossanea.tasks._common import TaskResult
 DATA_KEY: str = 'other_new_words'
 TITLE: str = 'other new words'.upper()
 
+SCHEMA = {
+    "type": "object",
+    "required": ["other_new_words"],
+    "properties": {
+        "other_new_words": {
+            "type": "object",
+            "properties": {
+                "prompt": {"type": "string"},
+            },
+        },
+    },
+}
+
+DATA_VALIDATOR = Draft202012Validator(SCHEMA)
+
 
 def task(unit_data: dict[str, Any]) -> TaskResult:
     """Display other new words section"""
@@ -42,19 +57,3 @@ def task(unit_data: dict[str, Any]) -> TaskResult:
     output.empty_line()
 
     return TaskResult.FINISHED
-
-
-SCHEMA = {
-    "type": "object",
-    "required": ["other_new_words"],
-    "properties": {
-        "other_new_words": {
-            "type": "object",
-            "properties": {
-                "prompt": {"type": "string"},
-            },
-        },
-    },
-}
-
-DATA_VALIDATOR = Draft202012Validator(SCHEMA)

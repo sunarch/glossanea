@@ -20,6 +20,38 @@ from glossanea.tasks import t_1_new_words_common as new_words
 DATA_KEY: str = 'sample_sentences'
 TITLE: str = 'sample sentences'.upper()
 
+SCHEMA = {
+    "type": "object",
+    "required": ["sample_sentences", "new_words_extension"],
+    "properties": {
+        "sample_sentences": {
+            "type": "object",
+            "properties": {
+                "prompt": {"type": "string"},
+                "sentences": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "id": {"type": "string"},
+                            "beginning": {"type": "string"},
+                            "answer": {"type": "string"},
+                            "end": {"type": "string"},
+                        },
+                    },
+                },
+            },
+        },
+        "new_words_extension": {
+            "type": "array",
+            "items": {"type": "string"},
+        },
+    },
+}
+
+DATA_VALIDATOR = Draft202012Validator(SCHEMA)
+
 
 def task(unit_data: dict[str, Any]) -> TaskResult:
     """Display 'sample sentences' task"""
@@ -90,36 +122,3 @@ def task(unit_data: dict[str, Any]) -> TaskResult:
                 return task_result
 
     return TaskResult.FINISHED
-
-
-SCHEMA = {
-    "type": "object",
-    "required": ["sample_sentences", "new_words_extension"],
-    "properties": {
-        "sample_sentences": {
-            "type": "object",
-            "properties": {
-                "prompt": {"type": "string"},
-                "sentences": {
-                    "type": "array",
-                    "minItems": 1,
-                    "items": {
-                        "type": "object",
-                        "properties": {
-                            "id": {"type": "string"},
-                            "beginning": {"type": "string"},
-                            "answer": {"type": "string"},
-                            "end": {"type": "string"},
-                        },
-                    },
-                },
-            },
-        },
-        "new_words_extension": {
-            "type": "array",
-            "items": {"type": "string"},
-        },
-    },
-}
-
-DATA_VALIDATOR = Draft202012Validator(SCHEMA)

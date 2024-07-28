@@ -20,24 +20,6 @@ from glossanea.tasks._common import TaskResult
 DATA_KEY: str = 'wr_sit_back_and_relax'
 TITLE: str = 'now sit back and relax'.upper()
 
-
-def task(unit_data: dict[str, Any]) -> TaskResult:
-    """Display now sit back and relax section"""
-
-    match schema.validate_unit_data(DATA_VALIDATOR, unit_data):
-        case ValidationResult.OK:
-            pass
-        case _:
-            return TaskResult.DATA_VALIDATION_FAILED
-
-    # skip until data files are complete
-    return TaskResult.NOT_IMPLEMENTED
-
-    task_data: dict[str, Any] = unit_data[DATA_KEY]
-
-    output.section_title(f'{TITLE}:')
-
-
 SCHEMA = {
     "type": "object",
     "required": ["wr_sit_back_and_relax"],
@@ -67,3 +49,20 @@ SCHEMA = {
 }
 
 DATA_VALIDATOR = Draft202012Validator(SCHEMA)
+
+
+def task(unit_data: dict[str, Any]) -> TaskResult:
+    """Display now sit back and relax section"""
+
+    match schema.validate_unit_data(DATA_VALIDATOR, unit_data):
+        case ValidationResult.OK:
+            pass
+        case _:
+            return TaskResult.DATA_VALIDATION_FAILED
+
+    # skip until data files are complete
+    return TaskResult.NOT_IMPLEMENTED
+
+    task_data: dict[str, Any] = unit_data[DATA_KEY]
+
+    output.section_title(f'{TITLE}:')

@@ -18,6 +18,57 @@ from glossanea.tasks._common import TaskResult, answer_cycle
 
 DATA_KEY: str = 'matching'
 
+SCHEMA = {
+    "type": "object",
+    "required": ["matching"],
+    "properties": {
+        "matching": {
+            "type": "object",
+            "properties": {
+                "name": {"type": "string"},
+                "prompt": {"type": "string"},
+                "sentences": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "id": {"type": "string"},
+                            "text": {"type": "string"},
+                        },
+                    },
+                    "minItems": 5,
+                    "maxItems": 5,
+                },
+                "words": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "id": {"type": "string"},
+                            "text": {"type": "string"},
+                        },
+                    },
+                    "minItems": 5,
+                    "maxItems": 5,
+                },
+                "answers": {
+                    "type": "array",
+                    "items": {
+                        "type": "array",
+                        "items": {"type": "string"},
+                        "minItems": 2,
+                        "maxItems": 2,
+                    },
+                    "minItems": 5,
+                    "maxItems": 5,
+                },
+            },
+        },
+    },
+}
+
+DATA_VALIDATOR = Draft202012Validator(SCHEMA)
+
 
 def task(unit_data: dict[str, Any]) -> TaskResult:
     """Display 'matching' task"""
@@ -90,55 +141,3 @@ def task(unit_data: dict[str, Any]) -> TaskResult:
                 return task_result
 
     return TaskResult.FINISHED
-
-
-SCHEMA = {
-    "type": "object",
-    "required": ["matching"],
-    "properties": {
-        "matching": {
-            "type": "object",
-            "properties": {
-                "name": {"type": "string"},
-                "prompt": {"type": "string"},
-                "sentences": {
-                    "type": "array",
-                    "items": {
-                        "type": "object",
-                        "properties": {
-                            "id": {"type": "string"},
-                            "text": {"type": "string"},
-                        },
-                    },
-                    "minItems": 5,
-                    "maxItems": 5,
-                },
-                "words": {
-                    "type": "array",
-                    "items": {
-                        "type": "object",
-                        "properties": {
-                            "id": {"type": "string"},
-                            "text": {"type": "string"},
-                        },
-                    },
-                    "minItems": 5,
-                    "maxItems": 5,
-                },
-                "answers": {
-                    "type": "array",
-                    "items": {
-                        "type": "array",
-                        "items": {"type": "string"},
-                        "minItems": 2,
-                        "maxItems": 2,
-                    },
-                    "minItems": 5,
-                    "maxItems": 5,
-                },
-            },
-        },
-    },
-}
-
-DATA_VALIDATOR = Draft202012Validator(SCHEMA)

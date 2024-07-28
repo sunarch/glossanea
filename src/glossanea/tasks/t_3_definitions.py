@@ -21,6 +21,56 @@ from glossanea.tasks import t_1_new_words_common as new_words
 DATA_KEY: str = 'definitions'
 TITLE: str = 'definitions'.upper()
 
+SCHEMA = {
+    "type": "object",
+    "required": ["definitions"],
+    "properties": {
+        "definitions": {
+            "type": "object",
+            "properties": {
+                "prompt": {"type": "string"},
+                "definitions": {
+                    "type": "array",
+                    "minItems": 5,
+                    "maxItems": 5,
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "id": {"type": "string"},
+                            "text": {"type": "string"},
+                        },
+                    },
+                },
+                "words": {
+                    "type": "array",
+                    "minItems": 5,
+                    "maxItems": 5,
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "id": {"type": "string"},
+                            "text": {"type": "string"},
+                        },
+                    },
+                },
+                "answers": {
+                    "type": "array",
+                    "minItems": 5,
+                    "maxItems": 5,
+                    "items": {
+                        "type": "array",
+                        "items": {"type": "string"},
+                        "minItems": 2,
+                        "maxItems": 2,
+                    },
+                },
+            },
+        },
+    },
+}
+
+DATA_VALIDATOR = Draft202012Validator(SCHEMA)
+
 
 def task(unit_data: dict[str, Any]) -> TaskResult:
     """Display 'definitions' task"""
@@ -96,54 +146,3 @@ def task(unit_data: dict[str, Any]) -> TaskResult:
                 return task_result
 
     return TaskResult.FINISHED
-
-
-SCHEMA = {
-    "type": "object",
-    "required": ["definitions"],
-    "properties": {
-        "definitions": {
-            "type": "object",
-            "properties": {
-                "prompt": {"type": "string"},
-                "definitions": {
-                    "type": "array",
-                    "minItems": 5,
-                    "maxItems": 5,
-                    "items": {
-                        "type": "object",
-                        "properties": {
-                            "id": {"type": "string"},
-                            "text": {"type": "string"},
-                        },
-                    },
-                },
-                "words": {
-                    "type": "array",
-                    "minItems": 5,
-                    "maxItems": 5,
-                    "items": {
-                        "type": "object",
-                        "properties": {
-                            "id": {"type": "string"},
-                            "text": {"type": "string"},
-                        },
-                    },
-                },
-                "answers": {
-                    "type": "array",
-                    "minItems": 5,
-                    "maxItems": 5,
-                    "items": {
-                        "type": "array",
-                        "items": {"type": "string"},
-                        "minItems": 2,
-                        "maxItems": 2,
-                    },
-                },
-            },
-        },
-    },
-}
-
-DATA_VALIDATOR = Draft202012Validator(SCHEMA)

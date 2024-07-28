@@ -18,6 +18,27 @@ from glossanea.structure.schema import ValidationResult
 DATA_KEY: str = 'new_words'
 DATA_KEY_NEW_WORDS_EXTENSION: str = 'new_words_extension'
 
+SCHEMA = {
+    "type": "object",
+    "required": ["new_words"],
+    "properties": {
+        "new_words": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+                "type": "object",
+                "properties": {
+                    "regular": {"type": "string"},
+                    "phonetic": {"type": "string"},
+                    "search": {"type": "string"},
+                },
+            },
+        },
+    },
+}
+
+DATA_VALIDATOR = Draft202012Validator(SCHEMA)
+
 
 def new_words_full(unit_data: dict[str, Any]) -> None:
     """Display new words section"""
@@ -60,25 +81,3 @@ def new_words(unit_data: dict[str, Any]) -> None:
 
     output.empty_line()
     output.words_table(regular)
-
-
-SCHEMA = {
-    "type": "object",
-    "required": ["new_words"],
-    "properties": {
-        "new_words": {
-            "type": "array",
-            "minItems": 1,
-            "items": {
-                "type": "object",
-                "properties": {
-                    "regular": {"type": "string"},
-                    "phonetic": {"type": "string"},
-                    "search": {"type": "string"},
-                },
-            },
-        },
-    },
-}
-
-DATA_VALIDATOR = Draft202012Validator(SCHEMA)

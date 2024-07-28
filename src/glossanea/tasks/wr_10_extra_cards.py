@@ -20,6 +20,16 @@ from glossanea.tasks._common import TaskResult
 DATA_KEY: str = 'wr_extra_cards'
 TITLE: str = 'fill in the extra cards'.upper()
 
+SCHEMA = {
+    "type": "object",
+    "required": ["wr_extra_cards"],
+    "properties": {
+        "wr_extra_cards": schema.subschema_prompt_list(0),
+    },
+}
+
+DATA_VALIDATOR = Draft202012Validator(SCHEMA)
+
 
 def task(unit_data: dict[str, Any]) -> TaskResult:
     """Display fill in the extra cards section"""
@@ -36,14 +46,3 @@ def task(unit_data: dict[str, Any]) -> TaskResult:
     task_data: dict[str, Any] = unit_data[DATA_KEY]
 
     output.section_title(f'{TITLE}:')
-
-
-SCHEMA = {
-    "type": "object",
-    "required": ["wr_extra_cards"],
-    "properties": {
-        "wr_extra_cards": schema.subschema_prompt_list(0),
-    },
-}
-
-DATA_VALIDATOR = Draft202012Validator(SCHEMA)
