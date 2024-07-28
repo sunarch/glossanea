@@ -79,31 +79,37 @@ def schema_text_list(data_key: str, minimum_items: int) -> dict[str, Any]:
     }
 
 
-def subschema_items_task() -> dict[str, Any]:
+def schema_items_task(data_key: str) -> dict[str, Any]:
     """Subschema for multiple WR tasks"""
 
     return {
         "type": "object",
+        "required": [data_key],
         "properties": {
-            "task_number": {
-                "type": "integer",
-                "minimum": 1,
-            },
-            "prompt": {"type": "string"},
-            "scoring": {"type": "string"},
-            "items": {
-                "type": "array",
-                "minItems": 1,
-                "items": {
-                    "type": "object",
-                    "properties": {
-                        "id": {"type": "string"},
-                        "question": {"type": "string"},
-                        "answer": {"type": "string"},
-                        "accept": {
-                            "type": "array",
-                            "minItems": 0,
-                            "items": {"type": "string"},
+            data_key: {
+                "type": "object",
+                "properties": {
+                    "task_number": {
+                        "type": "integer",
+                        "minimum": 1,
+                    },
+                    "prompt": {"type": "string"},
+                    "scoring": {"type": "string"},
+                    "items": {
+                        "type": "array",
+                        "minItems": 1,
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "id": {"type": "string"},
+                                "question": {"type": "string"},
+                                "answer": {"type": "string"},
+                                "accept": {
+                                    "type": "array",
+                                    "minItems": 0,
+                                    "items": {"type": "string"},
+                                },
+                            },
                         },
                     },
                 },

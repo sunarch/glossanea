@@ -17,17 +17,10 @@ from glossanea.structure import schema
 from glossanea.tasks._common import TaskResult, validate_unit_data_on_task
 
 DATA_KEY: str = 'wr_skeletons'
-TITLE: str = 'skeletons'.upper()
-
-DATA_SCHEMA = {
-    "type": "object",
-    "required": [DATA_KEY],
-    "properties": {
-        DATA_KEY: schema.subschema_items_task(),
-    },
-}
-
+DATA_SCHEMA = schema.schema_items_task(DATA_KEY)
 DATA_VALIDATOR = Draft202012Validator(DATA_SCHEMA)
+
+TITLE: str = 'skeletons'.upper()
 
 
 @validate_unit_data_on_task(data_validator=DATA_VALIDATOR)
