@@ -20,9 +20,9 @@ TITLE: str = 'word combinations'.upper()
 
 SCHEMA = {
     "type": "object",
-    "required": ["wr_word_combinations"],
+    "required": [DATA_KEY],
     "properties": {
-        "wr_word_combinations": {
+        DATA_KEY: {
             "type": "object",
             "properties": {
                 "task_number": {"type": "integer"},

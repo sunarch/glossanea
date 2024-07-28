@@ -19,9 +19,9 @@ TITLE: str = 'other new words'.upper()
 
 SCHEMA = {
     "type": "object",
-    "required": ["other_new_words"],
+    "required": [DATA_KEY],
     "properties": {
-        "other_new_words": {
+        DATA_KEY: {
             "type": "object",
             "properties": {
                 "prompt": {"type": "string"},

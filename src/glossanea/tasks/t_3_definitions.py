@@ -21,9 +21,9 @@ TITLE: str = 'definitions'.upper()
 
 SCHEMA = {
     "type": "object",
-    "required": ["definitions"],
+    "required": [DATA_KEY],
     "properties": {
-        "definitions": {
+        DATA_KEY: {
             "type": "object",
             "properties": {
                 "prompt": {"type": "string"},

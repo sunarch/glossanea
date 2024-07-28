@@ -20,9 +20,9 @@ TITLE: str = 'sample sentences'.upper()
 
 SCHEMA = {
     "type": "object",
-    "required": ["sample_sentences", "new_words_extension"],
+    "required": [DATA_KEY, new_words.DATA_KEY_NEW_WORDS_EXTENSION],
     "properties": {
-        "sample_sentences": {
+        DATA_KEY: {
             "type": "object",
             "properties": {
                 "prompt": {"type": "string"},
@@ -41,7 +41,7 @@ SCHEMA = {
                 },
             },
         },
-        "new_words_extension": {
+        new_words.DATA_KEY_NEW_WORDS_EXTENSION: {
             "type": "array",
             "items": {"type": "string"},
         },

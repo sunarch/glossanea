@@ -20,9 +20,9 @@ TITLE: str = 'word formation'.upper()
 
 SCHEMA = {
     "type": "object",
-    "required": ["wr_word_formation"],
+    "required": [DATA_KEY],
     "properties": {
-        "wr_word_formation": {
+        DATA_KEY: {
             "type": "object",
             "properties": {
                 "groups": {

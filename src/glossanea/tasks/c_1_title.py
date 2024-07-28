@@ -19,9 +19,9 @@ DATA_KEY: str = 'title'
 
 SCHEMA = {
     "type": "object",
-    "required": ["title"],
+    "required": [DATA_KEY],
     "properties": {
-        "title": {
+        DATA_KEY: {
             "type": "string",
         },
     },

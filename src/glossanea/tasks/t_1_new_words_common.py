@@ -20,9 +20,9 @@ DATA_KEY_NEW_WORDS_EXTENSION: str = 'new_words_extension'
 
 SCHEMA = {
     "type": "object",
-    "required": ["new_words"],
+    "required": [DATA_KEY],
     "properties": {
-        "new_words": {
+        DATA_KEY: {
             "type": "array",
             "minItems": 1,
             "items": {

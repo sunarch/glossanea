@@ -21,9 +21,9 @@ TITLE: str = 'fill in the extra cards'.upper()
 
 SCHEMA = {
     "type": "object",
-    "required": ["wr_extra_cards"],
+    "required": [DATA_KEY],
     "properties": {
-        "wr_extra_cards": schema.subschema_prompt_list(0),
+        DATA_KEY: schema.subschema_prompt_list(0),
     },
 }
 

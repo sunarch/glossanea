@@ -21,9 +21,9 @@ TITLE: str = 'definitions'.upper()
 
 SCHEMA = {
     "type": "object",
-    "required": ["wr_definitions"],
+    "required": [DATA_KEY],
     "properties": {
-        "wr_definitions": schema.subschema_items_task(),
+        DATA_KEY: schema.subschema_items_task(),
     },
 }
 

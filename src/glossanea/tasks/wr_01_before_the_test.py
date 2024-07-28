@@ -20,9 +20,9 @@ TITLE: str = 'before the test'.upper()
 
 SCHEMA = {
     "type": "object",
-    "required": ["wr_before_the_test"],
+    "required": [DATA_KEY],
     "properties": {
-        "wr_before_the_test": {
+        DATA_KEY: {
             "type": "object",
             "properties": {
                 "prompt": {"type": "string"},

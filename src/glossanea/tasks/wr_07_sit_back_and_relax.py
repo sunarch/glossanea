@@ -20,9 +20,9 @@ TITLE: str = 'now sit back and relax'.upper()
 
 SCHEMA = {
     "type": "object",
-    "required": ["wr_sit_back_and_relax"],
+    "required": [DATA_KEY],
     "properties": {
-        "wr_sit_back_and_relax": {
+        DATA_KEY: {
             "type": "object",
             "properties": {
                 "text": {"type": "string"},

@@ -18,9 +18,9 @@ DATA_KEY: str = 'matching'
 
 SCHEMA = {
     "type": "object",
-    "required": ["matching"],
+    "required": [DATA_KEY],
     "properties": {
-        "matching": {
+        DATA_KEY: {
             "type": "object",
             "properties": {
                 "name": {"type": "string"},

@@ -21,9 +21,9 @@ INTRO_TEXT_WIDTH_FRACTION: float = 0.6
 
 SCHEMA = {
     "type": "object",
-    "required": ["intro_text"],
+    "required": [DATA_KEY],
     "properties": {
-        "intro_text": schema.subschema_prompt_list(1),
+        DATA_KEY: schema.subschema_prompt_list(1),
     },
 }
 

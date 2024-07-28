@@ -20,9 +20,9 @@ TITLE: str = 'usage'.upper()
 
 SCHEMA = {
     "type": "object",
-    "required": ["wr_usage"],
+    "required": [DATA_KEY],
     "properties": {
-        "wr_usage": {
+        DATA_KEY: {
             "type": "object",
             "properties": {
                 "prompt": {"type": "string"},

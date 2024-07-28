@@ -21,9 +21,9 @@ TITLE: str = 'translation'.upper()
 
 SCHEMA = {
     "type": "object",
-    "required": ["wr_translation"],
+    "required": [DATA_KEY],
     "properties": {
-        "wr_translation": schema.subschema_items_task(),
+        DATA_KEY: schema.subschema_items_task(),
     },
 }
 

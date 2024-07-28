@@ -21,9 +21,9 @@ TITLE: str = 'skeletons'.upper()
 
 SCHEMA = {
     "type": "object",
-    "required": ["wr_skeletons"],
+    "required": [DATA_KEY],
     "properties": {
-        "wr_skeletons": schema.subschema_items_task(),
+        DATA_KEY: schema.subschema_items_task(),
     },
 }
 

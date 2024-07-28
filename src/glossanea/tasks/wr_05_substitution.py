@@ -21,9 +21,9 @@ TITLE: str = 'substitution'.upper()
 
 SCHEMA = {
     "type": "object",
-    "required": ["wr_substitution"],
+    "required": [DATA_KEY],
     "properties": {
-        "wr_substitution": schema.subschema_items_task(),
+        DATA_KEY: schema.subschema_items_task(),
     },
 }
 
