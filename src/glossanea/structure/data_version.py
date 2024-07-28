@@ -19,34 +19,13 @@ class ValidationResult(enum.Enum):
 
     OK = enum.auto()
 
-    DATA_BAD_TYPE = enum.auto()
-    VERSION_KEY_NOT_FOUND = enum.auto()
-    VERSION_BAD_TYPE = enum.auto()
     VERSION_INCORRECT = enum.auto()
 
 
 def validate(data_dict: dict[str, Any]) -> tuple[ValidationResult, str]:
     """Validate a data version"""
 
-    if not isinstance(data_dict, dict):
-        return (
-            ValidationResult.DATA_BAD_TYPE,
-            'Data file is not a dictionary'
-        )
-
-    if DATA_KEY not in data_dict:
-        return (
-            ValidationResult.VERSION_KEY_NOT_FOUND,
-            "Data version key not found"
-        )
-
     data_version: int = data_dict[DATA_KEY]
-
-    if not isinstance(data_version, int):
-        return (
-            ValidationResult.VERSION_BAD_TYPE,
-            'Data file version is not an integer'
-        )
 
     if data_dict[DATA_KEY] != REQUIRED_DATA_VERSION:
         return (

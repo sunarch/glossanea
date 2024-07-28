@@ -11,6 +11,7 @@ from typing import Any
 # imports: project
 from glossanea.structure import data
 from glossanea.structure import data_version
+from glossanea.structure import schema
 from glossanea.structure.exceptions import DataError
 from glossanea.tasks.t_1_new_words_common import DATA_KEY_NEW_WORDS_EXTENSION
 
@@ -86,6 +87,8 @@ class Unit:
             file_path: str = build_path_day(self._week_number, self._unit_number)
 
         self.unit_data: dict[str, Any] = data.load_json_file(file_path)
+
+        schema.validate_unit_data(self.unit_data)
 
         match data_version.validate(self.unit_data):
             case data_version.ValidationResult.OK, _:
