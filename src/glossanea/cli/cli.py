@@ -157,7 +157,12 @@ def display_introduction() -> None:
     """Display introduction"""
 
     file_subpath: str = 'introduction.txt'
-    intro_lines: list[str] = data.load_text_file_lines(file_subpath)
+    try:
+        intro_lines: list[str] = data.load_text_file_lines(file_subpath)
+    except DataError as exc:
+        logging.warning(str(exc))
+        output.warning(str(exc))
+        return
 
     output.empty_line()
     for line in intro_lines:

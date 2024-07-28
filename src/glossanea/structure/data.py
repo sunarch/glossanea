@@ -6,11 +6,13 @@
 
 # imports: library
 import json
+import logging
 import os.path
 from typing import Any
 
 # imports: project
 from glossanea.structure import config
+from glossanea.structure.exceptions import DataError
 
 
 def data_file_path(file_subpath: str) -> str:
@@ -27,8 +29,17 @@ def load_json_file(file_subpath: str) -> dict[str, Any]:
 
     full_path: str = data_file_path(file_subpath)
 
-    with open(full_path, mode='r', encoding='UTF-8', newline=None) as fh:
-        return json.load(fh)
+    try:
+        with open(full_path, mode='r', encoding='UTF-8', newline=None) as fh:
+            return json.load(fh)
+    except json.JSONDecodeError as exc:
+        msg: str = f'Failed to decode JSON data file: "{file_subpath}"'
+        logging.error(msg)
+        raise DataError(msg) from exc
+    except FileNotFoundError as exc:
+        msg: str = f'Data file not found: "{file_subpath}"'
+        logging.error(msg)
+        raise DataError(msg) from exc
 
 
 def load_text_file_lines(file_subpath: str) -> list[str]:
@@ -36,5 +47,10 @@ def load_text_file_lines(file_subpath: str) -> list[str]:
 
     full_path: str = data_file_path(file_subpath)
 
-    with open(full_path, 'r', encoding='UTF-8') as fh:
-        return fh.readlines()
+    try:
+        with open(full_path, 'r', encoding='UTF-8') as fh:
+            return fh.readlines()
+    except FileNotFoundError as exc:
+        msg: str = f'Data file not found: "{file_subpath}"'
+        logging.error(msg)
+        raise DataError(msg) from exc
