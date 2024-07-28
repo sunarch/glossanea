@@ -52,7 +52,7 @@ def validate_unit_data(data_validator: Draft202012Validator,
 
 
 def schema_text_single(data_key: str) -> dict[str, Any]:
-    """Subschema for tasks with single string prompt"""
+    """Schema for tasks with single string prompt"""
 
     return {
         "type": "object",
@@ -64,7 +64,7 @@ def schema_text_single(data_key: str) -> dict[str, Any]:
 
 
 def schema_text_list(data_key: str, minimum_items: int) -> dict[str, Any]:
-    """Subschema for tasks with string list prompts"""
+    """Schema for tasks with string list prompts"""
 
     return {
         "type": "object",
