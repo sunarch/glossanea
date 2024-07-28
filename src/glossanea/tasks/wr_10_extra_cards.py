@@ -17,17 +17,10 @@ from glossanea.structure import schema
 from glossanea.tasks._common import TaskResult, validate_unit_data_on_task
 
 DATA_KEY: str = 'wr_extra_cards'
-TITLE: str = 'fill in the extra cards'.upper()
-
-SCHEMA = {
-    "type": "object",
-    "required": [DATA_KEY],
-    "properties": {
-        DATA_KEY: schema.subschema_prompt_list(0),
-    },
-}
-
+SCHEMA = schema.schema_text_list(DATA_KEY, 0)
 DATA_VALIDATOR = Draft202012Validator(SCHEMA)
+
+TITLE: str = 'fill in the extra cards'.upper()
 
 
 @validate_unit_data_on_task(data_validator=DATA_VALIDATOR)

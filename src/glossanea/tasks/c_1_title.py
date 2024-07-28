@@ -13,20 +13,11 @@ from jsonschema import Draft202012Validator
 # imports: project
 from glossanea.cli import output
 from glossanea.cli import user_input
+from glossanea.structure import schema
 from glossanea.tasks._common import TaskResult, validate_unit_data_on_task
 
 DATA_KEY: str = 'title'
-
-SCHEMA = {
-    "type": "object",
-    "required": [DATA_KEY],
-    "properties": {
-        DATA_KEY: {
-            "type": "string",
-        },
-    },
-}
-
+SCHEMA = schema.schema_text_single(DATA_KEY)
 DATA_VALIDATOR = Draft202012Validator(SCHEMA)
 
 

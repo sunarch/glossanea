@@ -51,13 +51,31 @@ def validate_unit_data(data_validator: Draft202012Validator,
     return ValidationResult.OK
 
 
-def subschema_prompt_list(minimum_items: int) -> dict[str, Any]:
+def schema_text_single(data_key: str) -> dict[str, Any]:
+    """Subschema for tasks with single string prompt"""
+
+    return {
+        "type": "object",
+        "required": [data_key],
+        "properties": {
+            data_key: {"type": "string"},
+        },
+    }
+
+
+def schema_text_list(data_key: str, minimum_items: int) -> dict[str, Any]:
     """Subschema for tasks with string list prompts"""
 
     return {
-        "type": "array",
-        "minItems": minimum_items,
-        "items": {"type": "string"},
+        "type": "object",
+        "required": [data_key],
+        "properties": {
+            data_key: {
+                "type": "array",
+                "minItems": minimum_items,
+                "items": {"type": "string"},
+            },
+        },
     }
 
 

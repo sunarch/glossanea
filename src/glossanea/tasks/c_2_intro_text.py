@@ -17,17 +17,10 @@ from glossanea.structure import schema
 from glossanea.tasks._common import TaskResult, validate_unit_data_on_task
 
 DATA_KEY: str = 'intro_text'
-INTRO_TEXT_WIDTH_FRACTION: float = 0.6
-
-SCHEMA = {
-    "type": "object",
-    "required": [DATA_KEY],
-    "properties": {
-        DATA_KEY: schema.subschema_prompt_list(1),
-    },
-}
-
+SCHEMA = schema.schema_text_list(DATA_KEY, 1)
 DATA_VALIDATOR = Draft202012Validator(SCHEMA)
+
+INTRO_TEXT_WIDTH_FRACTION: float = 0.6
 
 
 @validate_unit_data_on_task(data_validator=DATA_VALIDATOR)
