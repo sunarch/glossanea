@@ -27,10 +27,12 @@ def run(unit_obj: Unit) -> None:
         if task_index >= len(task_list):
             break
 
-        if not hasattr(tasks, task_list[task_index]):
-            raise ValueError(f'Unrecognized task type: {task_list[task_index]}')
+        task_name = task_list[task_index]
 
-        task_fn: Callable = getattr(tasks, task_list[task_index]).task
+        if not hasattr(tasks, task_name):
+            raise ValueError(f'Unrecognized task type: {task_name}')
+
+        task_fn: Callable = getattr(tasks, task_name).task
 
         task_result = task_fn(unit_obj.unit_data)
 
@@ -50,7 +52,7 @@ def run(unit_obj: Unit) -> None:
             case TaskResult.DATA_VALIDATION_FAILED:
                 msg: str = "Failed to validate task data: "
                 msg += f'Week {unit_obj.week_number} / Day {unit_obj.unit_number}'
-                msg += f' / {task_list[task_index]}'
+                msg += f' / {task_name}'
                 output.empty_line()
                 output.warning(msg)
                 logging.warning(msg)
