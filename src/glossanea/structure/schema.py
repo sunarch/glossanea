@@ -79,7 +79,7 @@ def schema_text_list(data_key: str, minimum_items: int) -> dict[str, Any]:
     }
 
 
-def schema_items_task(data_key: str) -> dict[str, Any]:
+def schema_wr_questions(data_key: str) -> dict[str, Any]:
     """Subschema for multiple WR tasks"""
 
     return {

@@ -11,13 +11,12 @@ from typing import Any
 from jsonschema import Draft202012Validator
 
 # imports: project
-from glossanea.cli import output
-# from glossanea.cli import user_input
 from glossanea.structure import schema
+from glossanea.tasks import wr_questions_common
 from glossanea.tasks._common import TaskResult, validate_unit_data_on_task
 
 DATA_KEY: str = 'wr_translation'
-DATA_SCHEMA = schema.schema_items_task(DATA_KEY)
+DATA_SCHEMA = schema.schema_wr_questions(DATA_KEY)
 DATA_VALIDATOR = Draft202012Validator(DATA_SCHEMA)
 
 TITLE: str = 'translation'.upper()
@@ -27,9 +26,4 @@ TITLE: str = 'translation'.upper()
 def task(unit_data: dict[str, Any]) -> TaskResult:
     """Display translation section"""
 
-    # skip until data files are complete
-    return TaskResult.NOT_IMPLEMENTED
-
-    task_data: dict[str, Any] = unit_data[DATA_KEY]
-
-    output.section_title(f'{TITLE}:')
+    return wr_questions_common.questions(unit_data, DATA_KEY, TITLE)
